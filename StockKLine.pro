@@ -30,18 +30,22 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += main.cpp\
+    backtesting.cpp \
         mainwindow.cpp \
     autogrid.cpp \
     klinegrid.cpp \
     datafile.cpp \
+    marketdataadmin.cpp \
     marketdatatab.cpp \
     showdetail.cpp \
     kvolumegrid.cpp
 
 HEADERS  += mainwindow.h \
     autogrid.h \
+    backtesting.h \
     klinegrid.h \
     datafile.h \
+    marketdataadmin.h \
     marketdatatab.h \
     showdetail.h \
     kvolumegrid.h

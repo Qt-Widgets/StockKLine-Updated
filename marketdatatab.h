@@ -1,4 +1,4 @@
-﻿#ifndef MARKETDATATAB_H
+#ifndef MARKETDATATAB_H
 #define MARKETDATATAB_H
 
 #include <QWidget>
@@ -9,6 +9,10 @@ class MarketDataTab : public QWidget
 
 public:
     explicit MarketDataTab(QWidget *parent = nullptr);
+
+private:
+    QWidget* createChartWidget(QWidget* parent);
+    QWidget* createAdminWidget(QWidget* parent);
 };
 
 #endif // MARKETDATATAB_H

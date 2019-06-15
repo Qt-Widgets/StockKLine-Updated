@@ -1,39 +1,21 @@
 #include <QSplitter>
 #include "kvolumegrid.h"
-#include "marketdatatab.h"
+#include "klinegrid.h"
 #include "mainwindow.h"
-
+#include "ui_mainwindow.h"
+#include "marketdatatab.h"
+#include "backtesting.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {   
     ui->setupUi(this);
-    tabWidget = new QTabWidget(this);
-    tabWidget->addTab(new MarketDataTab(), QStringLiteral(""));
 
-//    pgrid = new kVolumeGrid(this);
-//    pgrid->setObjectName(QStringLiteral("kline"));
-//    pgrid->setFocusPolicy(Qt::StrongFocus);
-
-//    auto p2 = new KLineGrid(this);
-//    p2->setFocusPolicy(Qt::StrongFocus);
-
-//   // setCentralWidget(pgrid);
-
-
-
-//    QSplitter *splitterMain = new QSplitter(Qt::Vertical, nullptr); //新建主分割窗口，水平分割
-//    QSplitter *splitterLeft = new QSplitter(Qt::Vertical, splitterMain);
-//    QSplitter *splitterRight = new QSplitter(Qt::Vertical, splitterMain);
-
-
-//    splitterMain->setHandleWidth(1);
-
-//    splitterLeft->addWidget(p2);
-//    splitterRight->addWidget(pgrid);
-//    this->setCentralWidget(splitterMain);
-
+    tabWidget = new QTabWidget();
+    tabWidget->addTab(new MarketDataTab(), QString("市场数据"));
+    tabWidget->addTab(new Backtesting(), QString("历史回测"));
+    this->setCentralWidget(tabWidget);
 
     resize(1600,800);
 
