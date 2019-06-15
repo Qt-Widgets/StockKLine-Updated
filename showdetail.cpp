@@ -1,9 +1,8 @@
-#include "showdetail.h"
+﻿#include "showdetail.h"
 #include "mainwindow.h"
 #include <QDockWidget>
 #include <QPainter>
 #include <QFont>
-#include <klinegrid.h>
 
 ShowDetail::ShowDetail(QWidget* parent) : QDialog(parent)
 {
@@ -52,7 +51,7 @@ void ShowDetail::drawStr()
     pen.setColor(QColor("#FFFFFF"));
     painter.setPen(pen);
     QRect rectTime3(20,80,100,30);
-    painter.drawText(rectTime3,tr("currentValue"));
+    painter.drawText(rectTime3,QStringLiteral("currentValue"));
 
 
     pen.setColor(currentPriceColor);
@@ -66,7 +65,7 @@ void ShowDetail::drawStr()
     pen.setColor(QColor("#FFFFFF"));
     painter.setPen(pen);
     QRect rectTime5(20,140,100,30);
-    painter.drawText(rectTime5,tr("opening"));
+    painter.drawText(rectTime5,QStringLiteral("opening"));
 
 
     pen.setColor(openingPriceColor);
@@ -92,7 +91,7 @@ void ShowDetail::drawStr()
     pen.setColor(QColor("#FFFFFF"));
     painter.setPen(pen);
     QRect rectTime9(20,260,100,30);
-    painter.drawText(rectTime9,tr("lowestBid"));
+    painter.drawText(rectTime9,QStringLiteral("lowestBid"));
 
 
     pen.setColor(lowestBidColor);
@@ -105,7 +104,7 @@ void ShowDetail::drawStr()
     pen.setColor(QColor("#FFFFFF"));
     painter.setPen(pen);
     QRect rectTime11(20,320,100,30);
-    painter.drawText(rectTime11,tr("closeingPrice"));
+    painter.drawText(rectTime11,QStringLiteral("closeingPrice"));
 
 
 
@@ -118,7 +117,7 @@ void ShowDetail::drawStr()
     pen.setColor(QColor("#FFFFFF"));
     painter.setPen(pen);
     QRect rectTime13(20,380,100,30);
-    painter.drawText(rectTime13,tr("amountOfIncrease"));
+    painter.drawText(rectTime13,QStringLiteral("amountOfIncrease"));
 
 
 
@@ -133,7 +132,7 @@ void ShowDetail::drawStr()
     pen.setColor(QColor("#FFFFFF"));
     painter.setPen(pen);
     QRect rectTime15(20,440,100,30);
-    painter.drawText(rectTime15,tr("amountOfAmplitude"));
+    painter.drawText(rectTime15,QStringLiteral("amountOfAmplitude"));
 
 
     pen.setColor(amountOfAmplitudeColor);
@@ -148,7 +147,7 @@ void ShowDetail::drawStr()
     pen.setColor(QColor("#FFFFFF"));
     painter.setPen(pen);
     QRect rectTime17(20,500,100,30);
-    painter.drawText(rectTime17,tr("totalVolume"));
+    painter.drawText(rectTime17,QStringLiteral("totalVolume"));
 
 
 
@@ -167,7 +166,7 @@ void ShowDetail::drawStr()
     pen.setColor(QColor("#FFFFFF"));
     painter.setPen(pen);
     QRect rectTime19(20,560,100,30);
-    painter.drawText(rectTime19,tr("totalAmount"));
+    painter.drawText(rectTime19,QStringLiteral("totalAmount"));
 
 
 

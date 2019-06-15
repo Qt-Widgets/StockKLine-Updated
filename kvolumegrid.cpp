@@ -1,4 +1,4 @@
-#include "kvolumegrid.h"
+﻿#include "kvolumegrid.h"
 
 #include <QMessageBox>
 #include <QPainter>
@@ -28,10 +28,10 @@ void kVolumeGrid::paintEvent(QPaintEvent *event)
 void kVolumeGrid::initial()
 {
     //读取数据
-    QString file = tr("dataKLine.txt");
+    QString file = QStringLiteral("F:\\qt-projects\\StockKLine\\dataKLine.txt");
     if( !mDataFile.readData(file) )
     {
-        QMessageBox::about(this,tr("数据文件读取失败"),tr("确定"));
+        QMessageBox::about(this,QStringLiteral("数据文件读取失败"),QStringLiteral("确定"));
         return ;
     }
 

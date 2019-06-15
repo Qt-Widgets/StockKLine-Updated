@@ -34,6 +34,7 @@ SOURCES += main.cpp\
     autogrid.cpp \
     klinegrid.cpp \
     datafile.cpp \
+    marketdatatab.cpp \
     showdetail.cpp \
     kvolumegrid.cpp
 
@@ -41,6 +42,7 @@ HEADERS  += mainwindow.h \
     autogrid.h \
     klinegrid.h \
     datafile.h \
+    marketdatatab.h \
     showdetail.h \
     kvolumegrid.h
 
@@ -49,3 +51,6 @@ FORMS    += mainwindow.ui
 
 
 TRANSLATIONS = myI18N_zh_CN.ts
+
+DISTFILES += \
+    dataKLine.txt

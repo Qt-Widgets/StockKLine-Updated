@@ -8,7 +8,7 @@ class AutoGrid : public QWidget
 {
     Q_OBJECT
 public:
-    explicit AutoGrid(QWidget *parent = 0);
+    explicit AutoGrid(QWidget *parent = nullptr);
 
     void virtual initial();
     void virtual drawBK();

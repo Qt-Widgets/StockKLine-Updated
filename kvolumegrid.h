@@ -1,4 +1,4 @@
-#ifndef KVOLUMEGRID_H
+﻿#ifndef KVOLUMEGRID_H
 #define KVOLUMEGRID_H
 
 

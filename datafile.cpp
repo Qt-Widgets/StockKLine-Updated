@@ -1,4 +1,4 @@
-#include "datafile.h"
+﻿#include "datafile.h"
 
 DataFile::DataFile()
 {
@@ -86,7 +86,7 @@ void DataFile::calAverageLine()
 {
 
     // 初始化各均线的值
-    for(int i=0;i<4;i++)
+    for(int i=0; i<4;i++)
         kline[i].averageLine5 = 0;
 
     for(int i=0;i<9;i++)

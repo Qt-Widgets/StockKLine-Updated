@@ -1,23 +1,19 @@
-#ifndef KLINEGRID_H
+﻿#ifndef KLINEGRID_H
 #define KLINEGRID_H
 
 #include "autogrid.h"
 #include "datafile.h"
+#include "showdetail.h"
 
 #include <QPoint>
-#include "showdetail.h"
 #include <QString>
-
-
-
-class ShowDetail;
 
 class KLineGrid : public AutoGrid
 {
     Q_OBJECT
 
 public:
-    explicit KLineGrid(QWidget *parent = 0);
+    explicit KLineGrid(QWidget *parent = nullptr);
     void virtual paintEvent(QPaintEvent* event);
     void virtual keyPressEvent(QKeyEvent* event);
     void virtual mouseMoveEvent(QMouseEvent* event);

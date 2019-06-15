@@ -1,7 +1,4 @@
-#include "klinegrid.h"
-#include <QMessageBox>
-
-
+﻿#include <QMessageBox>
 #include <QPainter>
 #include <QPen>
 #include <QKeyEvent>
@@ -10,6 +7,7 @@
 #include <QDockWidget>
 #include <QWidget>
 #include "mainwindow.h"
+#include "klinegrid.h"
 
 KLineGrid::KLineGrid(QWidget *parent) : AutoGrid(parent)
 {
@@ -37,10 +35,10 @@ void KLineGrid::initial()
 {
 
     //读取数据
-    QString file = tr("dataKLine.txt");
+    QString file = QStringLiteral("F:\\qt-projects\\StockKLine\\dataKLine.txt");
     if( !mDataFile.readData(file) )
     {
-        QMessageBox::about(this,tr("数据文件读取失败"),tr("确定"));
+        QMessageBox::about(this,QStringLiteral("数据文件读取失败"),QStringLiteral("确定"));
         return ;
     }
     //开启鼠标追踪

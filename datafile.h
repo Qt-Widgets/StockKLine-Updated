@@ -1,4 +1,4 @@
-#ifndef DATAFILE_H
+﻿#ifndef DATAFILE_H
 #define DATAFILE_H
 
 
@@ -7,7 +7,7 @@
 #include <QFile>
 
 
-typedef struct
+struct KLine
 {
     QString time;                   //时间
     double openingPrice;            //开盘
@@ -29,7 +29,7 @@ typedef struct
     double ftotalAmount;
     double volumeAverage5;          //成交量5日均值
     double volumeAverage10;         //成交量10日均值
-}KLine;
+};
 
 
 class DataFile
