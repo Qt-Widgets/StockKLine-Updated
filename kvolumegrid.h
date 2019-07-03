@@ -45,6 +45,8 @@ private:
 
     //鼠标位置
     QPoint mousePoint;
+    //键盘是否按下
+    bool isKeyDown = false;
 
 
     //线宽

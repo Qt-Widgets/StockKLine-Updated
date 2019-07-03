@@ -246,7 +246,7 @@ void KLineGrid::drawKline()
             pen.setWidth(lineWidth);
             painter.setPen(pen);
             p1.setX( getMarginLeft() + xstep *(i - beginDay) + 0.5*lineWidth);
-            p1.setY( getWidgetHeight() - (mDataFile.kline[i].openingPrice - lowestBid) *yscale - getMarginBottom());
+            p1.setY( getWidgetHeight() - (mDataFile.kline[i].openingPrice - lowestBid) *yscale - getMarginBottom() + 0.5*lineWidth);
             p2.setX( getMarginLeft() + xstep *(i - beginDay) + 0.5*lineWidth);
             p2.setY( getWidgetHeight() - (mDataFile.kline[i].closeingPrice - lowestBid) *yscale - getMarginBottom() - 0.5*lineWidth);
             painter.drawLine(p1,p2);
