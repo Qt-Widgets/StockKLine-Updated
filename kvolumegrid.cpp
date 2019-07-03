@@ -1,16 +1,55 @@
 ﻿#include "kvolumegrid.h"
+#include "marketdatasplitter.h"
 
 #include <QMessageBox>
 #include <QPainter>
 #include <QPen>
 #include <QString>
+#include <QMouseEvent>
+#include <iostream>
 
 
-kVolumeGrid::kVolumeGrid(QWidget* parent) : AutoGrid( parent)
+kVolumeGrid::kVolumeGrid(MarketDataSplitter* parent) : AutoGrid( parent)
 {
+    //开启鼠标追踪
+    setMouseTracking(true);
+
     setAtomGridHeightMin(40);
     initial();
 
+    connect(parent, &MarketDataSplitter::childMouseMoved, this, &kVolumeGrid::mouseMoveEventFromParent);
+    connect(parent, &MarketDataSplitter::childMousePressed, this, &kVolumeGrid::mousePressEventFromParent);
+    connect(parent, &MarketDataSplitter::childKeyPressed, this, &kVolumeGrid::keyPressEventFromParent);
+}
+
+void kVolumeGrid::keyPressEventFromParent(QKeyEvent* event)
+{
+    std::cout << "kVolumeGrid::keyPressEventFromParentt" << event->count() << std::endl;
+}
+
+void kVolumeGrid::mouseMoveEventFromParent(QMouseEvent* event)
+{
+    std::cout << "kVolumeGrid::mouseMoveEventFromParent" << event->x() << std::endl;
+}
+
+void kVolumeGrid::mousePressEventFromParent(QMouseEvent* event)
+{
+    std::cout << "mousePressEventFromParent" << std::endl;
+}
+
+void kVolumeGrid::mouseMoveEvent(QMouseEvent* event)
+{
+    static_cast<MarketDataSplitter*>(parent())->childMouseMoveEvent(event);
+}
+
+void kVolumeGrid::keyPressEvent(QKeyEvent* event)
+{
+    static_cast<MarketDataSplitter*>(parent())->childKeyPressEvent(event);
+}
+
+void kVolumeGrid::mousePressEvent(QMouseEvent* event)
+{
+    static_cast<MarketDataSplitter*>(parent())->childMousePressEvent(event);
 }
 
 void kVolumeGrid::paintEvent(QPaintEvent *event)

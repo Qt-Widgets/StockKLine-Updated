@@ -4,6 +4,7 @@
 #include "autogrid.h"
 #include "datafile.h"
 #include "showdetail.h"
+#include "marketdatasplitter.h"
 
 #include <QPoint>
 #include <QString>
@@ -13,7 +14,7 @@ class KLineGrid : public AutoGrid
     Q_OBJECT
 
 public:
-    explicit KLineGrid(QWidget *parent = nullptr);
+    explicit KLineGrid(MarketDataSplitter *parent = nullptr);
     void virtual paintEvent(QPaintEvent* event);
     void virtual keyPressEvent(QKeyEvent* event);
     void virtual mouseMoveEvent(QMouseEvent* event);
@@ -47,6 +48,11 @@ public:
 
     //画均线
     void drawAverageLine(int day);
+
+public slots:
+    void keyPressEventFromParent(QKeyEvent* event);
+    void mouseMoveEventFromParent(QMouseEvent* event);
+    void mousePressEventFromParent(QMouseEvent* event);
 
 private:
     DataFile mDataFile;

@@ -4,20 +4,29 @@
 
 #include "autogrid.h"
 #include "datafile.h"
+#include "marketdatasplitter.h"
 
 #include <QPoint>
 
 class kVolumeGrid : public AutoGrid
 {
 public:
-    explicit kVolumeGrid(QWidget* parent);
+    explicit kVolumeGrid(MarketDataSplitter* parent);
     bool readData(QString strFile);
     void initial();
     void drawYtick();
     void drawVolume();
     void virtual paintEvent(QPaintEvent* event);
+    void virtual keyPressEvent(QKeyEvent* event);
+    void virtual mouseMoveEvent(QMouseEvent* event);
+    void virtual mousePressEvent(QMouseEvent* event);
     void getIndicator();
     void drawAverageLine(int day);
+
+public slots:
+    void keyPressEventFromParent(QKeyEvent* event);
+    void mouseMoveEventFromParent(QMouseEvent* event);
+    void mousePressEventFromParent(QMouseEvent* event);
 
 private:
     DataFile mDataFile;

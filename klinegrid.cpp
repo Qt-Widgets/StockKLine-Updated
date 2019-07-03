@@ -6,16 +6,22 @@
 #include <QVector>
 #include <QDockWidget>
 #include <QWidget>
+#include <iostream>
 #include "mainwindow.h"
 #include "klinegrid.h"
 
-KLineGrid::KLineGrid(QWidget *parent) : AutoGrid(parent)
+KLineGrid::KLineGrid(MarketDataSplitter *parent) : AutoGrid(parent)
 {
     //开启鼠标追踪
     setMouseTracking(true);
 
     initial();
+
+    connect(parent, &MarketDataSplitter::childMouseMoved, this, &KLineGrid::mouseMoveEventFromParent);
+    connect(parent, &MarketDataSplitter::childMousePressed, this, &KLineGrid::mousePressEventFromParent);
+    connect(parent, &MarketDataSplitter::childKeyPressed, this, &KLineGrid::keyPressEventFromParent);
 }
+
 bool KLineGrid::readData(QString strFile)
 {
     if( mDataFile.readData(strFile) )
@@ -320,6 +326,11 @@ void KLineGrid::drawKline()
 
 void KLineGrid::keyPressEvent(QKeyEvent *event)
 {
+    static_cast<MarketDataSplitter*>(parent())->childKeyPressEvent(event);
+}
+
+void KLineGrid::keyPressEventFromParent(QKeyEvent *event)
+{
     currentDay = (double)( mousePoint.x() - getMarginLeft() ) / (getGridWidth()) * totalDay + beginDay;
 
     isKeyDown = true;
@@ -433,13 +444,22 @@ void KLineGrid::keyPressEvent(QKeyEvent *event)
 
 void KLineGrid::mouseMoveEvent(QMouseEvent *event)
 {
+    static_cast<MarketDataSplitter*>(parent())->childMouseMoveEvent(event);
+}
+
+void KLineGrid::mouseMoveEventFromParent(QMouseEvent *event)
+{
     mousePoint = event->pos();
     isKeyDown = false;
     update();
 }
 
-
 void KLineGrid::mousePressEvent(QMouseEvent *event)
+{
+    static_cast<MarketDataSplitter*>(parent())->childMousePressEvent(event);
+}
+
+void KLineGrid::mousePressEventFromParent(QMouseEvent *event)
 {
     if(event->button() == Qt::LeftButton)
     {

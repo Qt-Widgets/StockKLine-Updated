@@ -1,9 +1,9 @@
-#include <QSplitter>
-#include <QVBoxLayout>
+﻿#include <QVBoxLayout>
 #include "kvolumegrid.h"
 #include "klinegrid.h"
 #include "marketdatatab.h"
 #include "marketdataadmin.h"
+#include "marketdatasplitter.h"
 
 MarketDataTab::MarketDataTab(QWidget *parent)
     : QWidget(parent)
@@ -24,7 +24,7 @@ MarketDataTab::MarketDataTab(QWidget *parent)
 
 QWidget* MarketDataTab::createChartWidget(QWidget* parent)
 {
-    QSplitter *splitterMain = new QSplitter(Qt::Vertical, parent); //新建主分割窗口，水平分割
+    MarketDataSplitter *splitterMain = new MarketDataSplitter(parent); //新建主分割窗口，水平分割
 
     auto p2 = new KLineGrid(splitterMain);
     p2->setFocusPolicy(Qt::StrongFocus);

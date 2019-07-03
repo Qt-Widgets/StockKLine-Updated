@@ -36,6 +36,7 @@ SOURCES += main.cpp\
     klinegrid.cpp \
     datafile.cpp \
     marketdataadmin.cpp \
+    marketdatasplitter.cpp \
     marketdatatab.cpp \
     showdetail.cpp \
     kvolumegrid.cpp
@@ -46,6 +47,7 @@ HEADERS  += mainwindow.h \
     klinegrid.h \
     datafile.h \
     marketdataadmin.h \
+    marketdatasplitter.h \
     marketdatatab.h \
     showdetail.h \
     kvolumegrid.h
