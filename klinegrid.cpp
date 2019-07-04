@@ -615,12 +615,14 @@ void KLineGrid::drawTips()
 
 void KLineGrid::drawMouseMoveCrossVerLine()
 {
+    if (isUnderMouse) {
 
-    if(mousePoint.x() < getMarginLeft() || mousePoint.x() > getWidgetWidth() - getMarginRight())
-        return;
+        if(mousePoint.x() < getMarginLeft() || mousePoint.x() > getWidgetWidth() - getMarginRight())
+            return;
 
-    if(mousePoint.y() < getMarginTop() || mousePoint.y() > getWidgetHeight() - getMarginBottom())
-        return;
+        if(mousePoint.y() < getMarginTop() || mousePoint.y() > getWidgetHeight() - getMarginBottom())
+            return;
+    }
 
     QPainter painter(this);
     QPen     pen;
