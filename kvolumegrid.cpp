@@ -22,11 +22,6 @@ kVolumeGrid::kVolumeGrid(MarketDataSplitter* parent) : AutoGrid( parent)
     connect(parent, &MarketDataSplitter::childKeyPressed, this, &kVolumeGrid::keyPressEventFromParent);
 }
 
-void kVolumeGrid::mousePressEventFromParent(QMouseEvent* event)
-{
-    std::cout << "mousePressEventFromParent" << std::endl;
-}
-
 void kVolumeGrid::mouseMoveEvent(QMouseEvent* event)
 {
     static_cast<MarketDataSplitter*>(parent())->childMouseMoveEvent(event);
@@ -42,6 +37,23 @@ void kVolumeGrid::mousePressEvent(QMouseEvent* event)
     static_cast<MarketDataSplitter*>(parent())->childMousePressEvent(event);
 }
 
+void kVolumeGrid::mousePressEventFromParent(QMouseEvent* event)
+{
+    if(event->button() == Qt::LeftButton)
+    {
+        bCross = !bCross;
+        update();
+    }
+}
+
+void kVolumeGrid::resizeEvent(QResizeEvent* event)
+{
+
+    AutoGrid::resizeEvent(event);
+    bCross = false;
+
+}
+
 void kVolumeGrid::paintEvent(QPaintEvent *event)
 {
 
@@ -49,6 +61,18 @@ void kVolumeGrid::paintEvent(QPaintEvent *event)
     //画y轴坐标轴
     drawYtick();
     drawVolume();
+
+    //画十字线
+    if( !isKeyDown && bCross)
+    {
+        drawCross2();
+    }
+
+    if(isKeyDown && bCross)
+    {
+        drawCross();
+    }
+
     drawAverageLine(5);
     drawAverageLine(10);
 
@@ -214,6 +238,7 @@ void kVolumeGrid::keyPressEventFromParent(QKeyEvent *event)
 
 void kVolumeGrid::mouseMoveEventFromParent(QMouseEvent *event)
 {
+    isUnderMouse = this->underMouse();
     mousePoint = event->pos();
     isKeyDown = false;
     update();
@@ -375,6 +400,98 @@ void kVolumeGrid::drawAverageLine(int day){
     painter.setPen(pen);
     QPolygon polykline(point);
     painter.drawPolyline(polykline);
+
+}
+
+void kVolumeGrid::drawCross()
+{
+    drawCrossVerLine();
+    drawCrossHorLine();
+}
+
+void kVolumeGrid::drawCrossVerLine()
+{
+    QPainter painter(this);
+    QPen     pen;
+    pen.setColor(QColor("#FFFFFF"));
+    pen.setWidth(1);
+    painter.setPen(pen);
+
+    double xstep = getGridWidth() / totalDay ;
+    double xPos = getMarginLeft() ;
+    while( mousePoint.x() - xPos > xstep )
+    {
+        xPos += xstep;
+    }
+    xPos += 0.5*lineWidth;
+    QLine horline(xPos,getMarginTop(),xPos,getWidgetHeight() - getMarginBottom());
+    painter.drawLine(horline);
+
+}
+
+void kVolumeGrid::drawCrossHorLine()
+{
+    if(!isUnderMouse)
+        return;
+
+    QPainter painter(this);
+    QPen     pen;
+    pen.setColor(QColor("#FFFFFF"));
+    pen.setWidth(1);
+    painter.setPen(pen);
+
+    painter.drawLine(getMarginLeft(),mousePoint.y(),
+                     getWidgetWidth()-getMarginRight(),mousePoint.y());
+
+}
+
+void kVolumeGrid::drawCross2()
+{
+    drawMouseMoveCrossHorLine();
+    drawMouseMoveCrossVerLine();
+}
+
+void kVolumeGrid::drawMouseMoveCrossVerLine()
+{
+    if (isUnderMouse) {
+
+        if(mousePoint.x() < getMarginLeft() || mousePoint.x() > getWidgetWidth() - getMarginRight())
+            return;
+
+        if(mousePoint.y() < getMarginTop() || mousePoint.y() > getWidgetHeight() - getMarginBottom())
+            return;
+    }
+
+    QPainter painter(this);
+    QPen     pen;
+    pen.setColor(QColor("#FFFFFF"));
+    pen.setWidth(1);
+    painter.setPen(pen);
+    painter.drawLine(mousePoint.x(),getMarginTop(),
+                     mousePoint.x(),getWidgetHeight() - getMarginBottom());
+
+}
+
+
+void kVolumeGrid::drawMouseMoveCrossHorLine()
+{
+    if(!isUnderMouse)
+        return;
+
+    if(mousePoint.x() < getMarginLeft() || mousePoint.x() > getWidgetWidth() - getMarginRight())
+        return;
+
+    if(mousePoint.y() < getMarginTop() || mousePoint.y() > getWidgetHeight() - getMarginBottom())
+        return;
+
+    QPainter painter(this);
+    QPen     pen;
+    pen.setColor(QColor("#FFFFFF"));
+    pen.setWidth(1);
+    painter.setPen(pen);
+
+    painter.drawLine(getMarginLeft(),mousePoint.y(),
+                     getWidgetWidth()-getMarginRight(),mousePoint.y());
 
 }
 

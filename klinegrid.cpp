@@ -449,6 +449,7 @@ void KLineGrid::mouseMoveEvent(QMouseEvent *event)
 
 void KLineGrid::mouseMoveEventFromParent(QMouseEvent *event)
 {
+    isUnderMouse = this->underMouse();
     mousePoint = event->pos();
     isKeyDown = false;
     update();
@@ -508,6 +509,9 @@ void KLineGrid::drawCrossVerLine()
 
 void KLineGrid::drawCrossHorLine()
 {
+    if(!isUnderMouse)
+        return;
+
     QPainter painter(this);
     QPen     pen;
     pen.setColor(QColor("#FFFFFF"));
@@ -631,6 +635,8 @@ void KLineGrid::drawMouseMoveCrossVerLine()
 
 void KLineGrid::drawMouseMoveCrossHorLine()
 {
+    if(!isUnderMouse)
+        return;
 
     if(mousePoint.x() < getMarginLeft() || mousePoint.x() > getWidgetWidth() - getMarginRight())
         return;

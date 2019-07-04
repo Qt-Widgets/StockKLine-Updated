@@ -81,6 +81,7 @@ private:
 
     //鼠标位置
     QPoint mousePoint;
+    bool isUnderMouse = false;
 
     //画笔的线宽
     int lineWidth;

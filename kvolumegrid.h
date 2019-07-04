@@ -17,6 +17,7 @@ public:
     void drawYtick();
     void drawVolume();
     void virtual paintEvent(QPaintEvent* event);
+    void virtual resizeEvent(QResizeEvent* event);
     void virtual keyPressEvent(QKeyEvent* event);
     void virtual mouseMoveEvent(QMouseEvent* event);
     void virtual mousePressEvent(QMouseEvent* event);
@@ -27,6 +28,14 @@ public slots:
     void keyPressEventFromParent(QKeyEvent* event);
     void mouseMoveEventFromParent(QMouseEvent* event);
     void mousePressEventFromParent(QMouseEvent* event);
+
+private:
+    void drawCross2();
+    void drawCross();
+    void drawMouseMoveCrossHorLine();
+    void drawMouseMoveCrossVerLine();
+    void drawCrossVerLine();
+    void drawCrossHorLine();
 
 private:
     DataFile mDataFile;
@@ -42,9 +51,14 @@ private:
     //当前要画的成交量线中的最大成交量
     double maxVolume;
 
+    //是否显示十字线
+    bool bCross = false;
+
 
     //鼠标位置
     QPoint mousePoint;
+    bool isUnderMouse = false;
+
     //键盘是否按下
     bool isKeyDown = false;
 

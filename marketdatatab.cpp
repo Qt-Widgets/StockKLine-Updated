@@ -8,15 +8,6 @@
 MarketDataTab::MarketDataTab(QWidget *parent)
     : QWidget(parent)
 {
-//    QSplitter *splitter = new QSplitter(Qt::Horizontal, nullptr);
-//    //splitter->addWidget(createAdminWidget(splitter));
-//    //splitter->addWidget(createChartWidget(splitter));
-//    createAdminWidget(splitter);
-//    createChartWidget(splitter);
-//    splitter->setHandleWidth(1);
-//    splitter->setStretchFactor(0, 1);
-//    splitter->setStretchFactor(1, 4);
-
     QVBoxLayout *layout = new QVBoxLayout();
     layout->addWidget(createChartWidget(nullptr));
     this->setLayout(layout);
