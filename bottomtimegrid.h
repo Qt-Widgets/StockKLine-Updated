@@ -10,12 +10,11 @@ class BottomTimeGrid : public DataWidget
 
 public:
     explicit BottomTimeGrid(MarketDataSplitter* parent = nullptr, DataFile* dataFile = nullptr);
-    void virtual paintEvent(QPaintEvent* event);
+    void paintEvent(QPaintEvent* event) override;
 
 private:
-    void mouseMoveEventFromParent(QMouseEvent* event);
-    void mousePressEventFromParent(QMouseEvent* event);
-    void keyPressEventFromParent(QKeyEvent* event);
+    int tipsHeight = 20;
+    int tipsWidth = 120;
 };
 
 #endif // BOTTOMTIMEBAR_H

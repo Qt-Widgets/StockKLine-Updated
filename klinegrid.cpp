@@ -28,21 +28,11 @@ void KLineGrid::initial()
 {
     //开启鼠标追踪
     setMouseTracking(true);
-    //初始化一些成员变量
 
-    endDay = mDataFile->kline.size() - 1;
-    totalDay = 200;
-    beginDay  = endDay - totalDay;
-    currentDay = beginDay + totalDay /2;
-    if( beginDay < 0)
-    {
-        beginDay = 0;
-        totalDay = mDataFile->kline.size();
-    }
+    //初始化一些成员变量
     highestBid = 0;
     lowestBid = 1000;
     maxVolume = 0;
-
 
     //构造详细数据展示页面
     mShowDrtail = new ShowDetail(this);

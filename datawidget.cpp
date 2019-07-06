@@ -8,6 +8,16 @@ DataWidget::DataWidget(MarketDataSplitter* parent, DataFile* dataFile, bool need
     connect(parent, &MarketDataSplitter::childMouseMoved, this, &DataWidget::mouseMoveEventFromParent);
     connect(parent, &MarketDataSplitter::childMousePressed, this, &DataWidget::mousePressEventFromParent);
     connect(parent, &MarketDataSplitter::childKeyPressed, this, &DataWidget::keyPressEventFromParent);
+
+    endDay = mDataFile->kline.size() - 1;
+    totalDay = 200;
+    beginDay  = endDay - totalDay;
+    currentDay = beginDay + totalDay /2;
+    if( beginDay < 0)
+    {
+        beginDay = 0;
+        totalDay = mDataFile->kline.size();
+    }
 }
 
 void DataWidget::keyPressEventFromParent(QKeyEvent* event)
