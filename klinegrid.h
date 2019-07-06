@@ -1,7 +1,7 @@
 ﻿#ifndef KLINEGRID_H
 #define KLINEGRID_H
 
-#include "autogrid.h"
+#include "datawidget.h"
 #include "datafile.h"
 #include "showdetail.h"
 #include "marketdatasplitter.h"
@@ -9,12 +9,12 @@
 #include <QPoint>
 #include <QString>
 
-class KLineGrid : public AutoGrid
+class KLineGrid : public DataWidget
 {
     Q_OBJECT
 
 public:
-    explicit KLineGrid(MarketDataSplitter *parent = nullptr);
+    explicit KLineGrid(MarketDataSplitter *parent = nullptr, DataFile* dataFile = nullptr);
     void virtual paintEvent(QPaintEvent* event);
     void virtual keyPressEvent(QKeyEvent* event);
     void virtual mouseMoveEvent(QMouseEvent* event);
@@ -22,9 +22,6 @@ public:
     void virtual resizeEvent(QResizeEvent* event);
     ~KLineGrid();
 
-
-
-    bool readData(QString strFile);
     void initial();
     void drawLine();
     void getIndicator();
@@ -58,7 +55,6 @@ public slots:
     void mousePressEventFromParent(QMouseEvent* event);
 
 private:
-    DataFile mDataFile;
     ShowDetail* mShowDrtail;
 
 

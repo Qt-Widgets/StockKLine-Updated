@@ -31,7 +31,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp\
     backtesting.cpp \
+    bottomtimegrid.cpp \
     datadetailbox.cpp \
+    datawidget.cpp \
         mainwindow.cpp \
     autogrid.cpp \
     klinegrid.cpp \
@@ -40,19 +42,23 @@ SOURCES += main.cpp\
     marketdatasplitter.cpp \
     marketdatatab.cpp \
     showdetail.cpp \
-    kvolumegrid.cpp
+    kvolumegrid.cpp \
+    topinstrumentsummary.cpp
 
 HEADERS  += mainwindow.h \
     autogrid.h \
     backtesting.h \
+    bottomtimegrid.h \
     datadetailbox.h \
+    datawidget.h \
     klinegrid.h \
     datafile.h \
     marketdataadmin.h \
     marketdatasplitter.h \
     marketdatatab.h \
     showdetail.h \
-    kvolumegrid.h
+    kvolumegrid.h \
+    topinstrumentsummary.h
 
 FORMS    += mainwindow.ui
 

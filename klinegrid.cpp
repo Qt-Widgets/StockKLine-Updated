@@ -9,7 +9,8 @@
 #include "mainwindow.h"
 #include "klinegrid.h"
 
-KLineGrid::KLineGrid(MarketDataSplitter *parent) : AutoGrid(parent)
+KLineGrid::KLineGrid(MarketDataSplitter *parent, DataFile* dataFile)
+    : DataWidget(parent, dataFile)
 {
     //开启鼠标追踪
     setMouseTracking(true);
@@ -21,15 +22,6 @@ KLineGrid::KLineGrid(MarketDataSplitter *parent) : AutoGrid(parent)
     connect(parent, &MarketDataSplitter::childKeyPressed, this, &KLineGrid::keyPressEventFromParent);
 }
 
-bool KLineGrid::readData(QString strFile)
-{
-    if( mDataFile.readData(strFile) )
-        return true;
-    else
-        return false;
-}
-
-
 KLineGrid::~KLineGrid()
 {
     delete mShowDrtail;
@@ -38,26 +30,18 @@ KLineGrid::~KLineGrid()
 
 void KLineGrid::initial()
 {
-
-    //读取数据
-    QString file = QStringLiteral("F:\\qt-projects\\StockKLine\\dataKLine.txt");
-    if( !mDataFile.readData(file) )
-    {
-        QMessageBox::about(this,QStringLiteral("数据文件读取失败"),QStringLiteral("确定"));
-        return ;
-    }
     //开启鼠标追踪
     setMouseTracking(true);
     //初始化一些成员变量
 
-    endDay = mDataFile.kline.size() - 1;
+    endDay = mDataFile->kline.size() - 1;
     totalDay = 200;
     beginDay  = endDay - totalDay;
     currentDay = beginDay + totalDay /2;
     if( beginDay < 0)
     {
         beginDay = 0;
-        totalDay = mDataFile.kline.size();
+        totalDay = mDataFile->kline.size();
     }
     highestBid = 0;
     lowestBid = 1000;
@@ -82,8 +66,9 @@ void KLineGrid::drawDataDetailBox()
 {
     if (bCross) {
         //构造详细数据展示页面
-        QPoint klineOriginPos = this->pos();
-        mShowDrtail->move(klineOriginPos.x() + 2, klineOriginPos.y() + getMarginTop());
+        //QPoint klineOriginPos = this->pos();
+        //mShowDrtail->move(klineOriginPos.x() + 2, klineOriginPos.y() + getMarginTop());
+        mShowDrtail->move(2, 7);
         mShowDrtail->show();
     } else {
         mShowDrtail->hide();
@@ -140,12 +125,12 @@ void KLineGrid::getIndicator()
 
     for( int i= beginDay;i<endDay;++i)
     {
-        if( mDataFile.kline[i].highestBid > highestBid )
-            highestBid = mDataFile.kline[i].highestBid;
-        if( mDataFile.kline[i].lowestBid < lowestBid )
-            lowestBid = mDataFile.kline[i].lowestBid;
-//        if( mDataFile.kline[i].totalVolume.toFloat() > maxVolume )
-//            maxVolume = mDataFile.kline[i].totalVolume.toFloat();
+        if( mDataFile->kline[i].highestBid > highestBid )
+            highestBid = mDataFile->kline[i].highestBid;
+        if( mDataFile->kline[i].lowestBid < lowestBid )
+            lowestBid = mDataFile->kline[i].lowestBid;
+//        if( mDataFile->kline[i].totalVolume.toFloat() > maxVolume )
+//            maxVolume = mDataFile->kline[i].totalVolume.toFloat();
     }
 }
 
@@ -210,7 +195,7 @@ void KLineGrid::drawKline()
 
     for( int i= beginDay;i<endDay;++i)
     {
-        if( mDataFile.kline[i].openingPrice > mDataFile.kline[i].closeingPrice )
+        if( mDataFile->kline[i].openingPrice > mDataFile->kline[i].closeingPrice )
             pen.setColor(QColor(85,252,252));
         else
             pen.setColor(Qt::red);
@@ -229,15 +214,15 @@ void KLineGrid::drawKline()
 
         //阴线
 
-        if( mDataFile.kline[i].openingPrice > mDataFile.kline[i].closeingPrice )
+        if( mDataFile->kline[i].openingPrice > mDataFile->kline[i].closeingPrice )
         {
             //画开盘与收盘之间的粗实线
             pen.setWidth(lineWidth);
             painter.setPen(pen);
             p1.setX( getMarginLeft() + xstep *(i - beginDay) + 0.5*lineWidth);
-            p1.setY( getWidgetHeight() - (mDataFile.kline[i].openingPrice - lowestBid) *yscale - getMarginBottom() + 0.5*lineWidth);
+            p1.setY( getWidgetHeight() - (mDataFile->kline[i].openingPrice - lowestBid) *yscale - getMarginBottom() + 0.5*lineWidth);
             p2.setX( getMarginLeft() + xstep *(i - beginDay) + 0.5*lineWidth);
-            p2.setY( getWidgetHeight() - (mDataFile.kline[i].closeingPrice - lowestBid) *yscale - getMarginBottom() - 0.5*lineWidth);
+            p2.setY( getWidgetHeight() - (mDataFile->kline[i].closeingPrice - lowestBid) *yscale - getMarginBottom() - 0.5*lineWidth);
             painter.drawLine(p1,p2);
 
 
@@ -245,9 +230,9 @@ void KLineGrid::drawKline()
             pen.setWidth(1);
             painter.setPen(pen);
             p1.setX( getMarginLeft() + xstep *(i - beginDay) + 0.5*lineWidth);
-            p1.setY( getWidgetHeight() - (mDataFile.kline[i].highestBid - lowestBid) *yscale - getMarginBottom());
+            p1.setY( getWidgetHeight() - (mDataFile->kline[i].highestBid - lowestBid) *yscale - getMarginBottom());
             p2.setX( getMarginLeft() + xstep *(i - beginDay) + 0.5*lineWidth);
-            p2.setY( getWidgetHeight() - (mDataFile.kline[i].lowestBid - lowestBid) *yscale - getMarginBottom());
+            p2.setY( getWidgetHeight() - (mDataFile->kline[i].lowestBid - lowestBid) *yscale - getMarginBottom());
             painter.drawLine(p1,p2);
 
 
@@ -261,17 +246,17 @@ void KLineGrid::drawKline()
 
 
             p1.setX( getMarginLeft() + xstep *(i - beginDay) );
-            p1.setY( getWidgetHeight() - (mDataFile.kline[i].openingPrice - lowestBid) *yscale - getMarginBottom());
+            p1.setY( getWidgetHeight() - (mDataFile->kline[i].openingPrice - lowestBid) *yscale - getMarginBottom());
 
             p2.setX( getMarginLeft() + xstep *(i - beginDay) + lineWidth);
-            p2.setY( getWidgetHeight() - (mDataFile.kline[i].openingPrice - lowestBid) *yscale - getMarginBottom());
+            p2.setY( getWidgetHeight() - (mDataFile->kline[i].openingPrice - lowestBid) *yscale - getMarginBottom());
 
 
             p3.setX( getMarginLeft() + xstep *(i - beginDay) );
-            p3.setY( getWidgetHeight() - (mDataFile.kline[i].closeingPrice - lowestBid) *yscale - getMarginBottom());
+            p3.setY( getWidgetHeight() - (mDataFile->kline[i].closeingPrice - lowestBid) *yscale - getMarginBottom());
 
             p4.setX( getMarginLeft() + xstep *(i - beginDay) + lineWidth);
-            p4.setY( getWidgetHeight() - (mDataFile.kline[i].closeingPrice - lowestBid) *yscale - getMarginBottom());
+            p4.setY( getWidgetHeight() - (mDataFile->kline[i].closeingPrice - lowestBid) *yscale - getMarginBottom());
 
             painter.drawLine(p1,p2);
             painter.drawLine(p1,p3);
@@ -283,19 +268,19 @@ void KLineGrid::drawKline()
             pen.setWidth(1);
             painter.setPen(pen);
             p1.setX( getMarginLeft() + xstep *(i - beginDay) + 0.5*lineWidth);
-            p1.setY( getWidgetHeight() - (mDataFile.kline[i].highestBid - lowestBid) *yscale - getMarginBottom());
+            p1.setY( getWidgetHeight() - (mDataFile->kline[i].highestBid - lowestBid) *yscale - getMarginBottom());
 
 
             double y1,y2;
-            if( mDataFile.kline[i].openingPrice > mDataFile.kline[i].closeingPrice )
+            if( mDataFile->kline[i].openingPrice > mDataFile->kline[i].closeingPrice )
             {
-                y1 = mDataFile.kline[i].openingPrice;
-                y2 = mDataFile.kline[i].closeingPrice;
+                y1 = mDataFile->kline[i].openingPrice;
+                y2 = mDataFile->kline[i].closeingPrice;
             }
             else
             {
-                y1 = mDataFile.kline[i].closeingPrice;
-                y2 = mDataFile.kline[i].openingPrice;
+                y1 = mDataFile->kline[i].closeingPrice;
+                y2 = mDataFile->kline[i].openingPrice;
             }
 
             p2.setX( getMarginLeft() + xstep *(i - beginDay) + 0.5*lineWidth);
@@ -303,7 +288,7 @@ void KLineGrid::drawKline()
             p3.setX(getMarginLeft() + xstep *(i - beginDay) + 0.5*lineWidth);
             p3.setY( getWidgetHeight() - (y2 - lowestBid) *yscale - getMarginBottom());
             p4.setX(getMarginLeft() + xstep *(i - beginDay) + 0.5*lineWidth);
-            p4.setY(getWidgetHeight() - (mDataFile.kline[i].lowestBid - lowestBid) *yscale - getMarginBottom());
+            p4.setY(getWidgetHeight() - (mDataFile->kline[i].lowestBid - lowestBid) *yscale - getMarginBottom());
 
             painter.drawLine(p1,p2);
             painter.drawLine(p3,p4);
@@ -351,7 +336,7 @@ void KLineGrid::keyPressEventFromParent(QKeyEvent *event)
 
         if( mousePoint.x() + xstep > getWidgetWidth() - getMarginRight())
         {
-            if( endDay +1 > mDataFile.kline.size() -1)
+            if( endDay +1 > mDataFile->kline.size() -1)
                 return;
             endDay += 1;
             beginDay += 1;
@@ -376,11 +361,11 @@ void KLineGrid::keyPressEventFromParent(QKeyEvent *event)
         }
 
         endDay = currentDay + (endDay - currentDay) / 2;
-        beginDay = currentDay - (currentDay - beginDay) / 2;
+        beginDay = currentDay - (totalDay - (endDay - currentDay));
 
-        if( endDay > mDataFile.kline.size() -10)
+        if( endDay > mDataFile->kline.size() -10)
         {
-            endDay = mDataFile.kline.size() -10;
+            endDay = mDataFile->kline.size() -10;
             beginDay = endDay - totalDay;
         }
 
@@ -400,20 +385,20 @@ void KLineGrid::keyPressEventFromParent(QKeyEvent *event)
     {
         int currentTotalDay = totalDay;
 
-        if(totalDay == mDataFile.kline.size() -1 )
+        if(totalDay == mDataFile->kline.size() -1 )
             return;
 
         totalDay = totalDay * 2;
-        if( totalDay > mDataFile.kline.size() -1)
+        if( totalDay > mDataFile->kline.size() -1)
         {
-            totalDay = mDataFile.kline.size() -1;
+            totalDay = mDataFile->kline.size() -1;
         }
 
 
         endDay = currentDay + (int)((float)(endDay - currentDay) / currentTotalDay * totalDay);
-        if( endDay > mDataFile.kline.size() -1)
+        if( endDay > mDataFile->kline.size() -1)
         {
-            endDay = mDataFile.kline.size() -1;
+            endDay = mDataFile->kline.size() -1;
         }
 
         beginDay = currentDay - (totalDay - (endDay - currentDay));
@@ -511,10 +496,10 @@ void KLineGrid::drawCrossHorLine()
     currentDay = ( mousePoint.x() - getMarginLeft() ) * totalDay / getGridWidth() + beginDay;
 
 
-    if( mDataFile.kline[currentDay].openingPrice < mDataFile.kline[currentDay].closeingPrice )
-        yPos =  ( mDataFile.kline[currentDay].closeingPrice - lowestBid ) * yscale ;
+    if( mDataFile->kline[currentDay].openingPrice < mDataFile->kline[currentDay].closeingPrice )
+        yPos =  ( mDataFile->kline[currentDay].closeingPrice - lowestBid ) * yscale ;
     else
-        yPos =  ( mDataFile.kline[currentDay].closeingPrice - lowestBid ) * yscale ;
+        yPos =  ( mDataFile->kline[currentDay].closeingPrice - lowestBid ) * yscale ;
 
     QLine verline ( getMarginLeft(),getWidgetHeight()-getMarginBottom()-yPos,
                     getWidgetWidth()-getMarginRight(),getWidgetHeight()-getMarginBottom()-yPos);
@@ -540,14 +525,14 @@ void KLineGrid::drawTips()
 
 
     int currentDay = ( mousePoint.x() - getMarginLeft() ) * totalDay / getGridWidth() + beginDay;
-    double yval = mDataFile.kline[currentDay].closeingPrice;
+    double yval = mDataFile->kline[currentDay].closeingPrice;
 
 
     double yPos;
-    if( mDataFile.kline[currentDay].openingPrice < mDataFile.kline[currentDay].closeingPrice )
-        yPos =  ( mDataFile.kline[currentDay].closeingPrice - lowestBid ) * yscale ;
+    if( mDataFile->kline[currentDay].openingPrice < mDataFile->kline[currentDay].closeingPrice )
+        yPos =  ( mDataFile->kline[currentDay].closeingPrice - lowestBid ) * yscale ;
     else
-        yPos =  ( mDataFile.kline[currentDay].closeingPrice - lowestBid ) * yscale ;
+        yPos =  ( mDataFile->kline[currentDay].closeingPrice - lowestBid ) * yscale ;
 
 
     yPos = getWidgetHeight()-getMarginBottom()-yPos;
@@ -576,32 +561,32 @@ void KLineGrid::updateDataDetailBox()
         currentDayAtMouse = beginDay;
     }
 
-    QColor openingColor = mDataFile.kline[currentDayAtMouse].openingPrice > mDataFile.kline[currentDayAtMouse -1].openingPrice ?
+    QColor openingColor = mDataFile->kline[currentDayAtMouse].openingPrice > mDataFile->kline[currentDayAtMouse -1].openingPrice ?
                           QColor("#FF0000"):QColor("#00FF00");
 
-    QColor highestColor = mDataFile.kline[currentDayAtMouse].highestBid > mDataFile.kline[currentDayAtMouse -1].closeingPrice ?
+    QColor highestColor = mDataFile->kline[currentDayAtMouse].highestBid > mDataFile->kline[currentDayAtMouse -1].closeingPrice ?
                 QColor("#FF0000"):QColor("#00FF00");
 
-    QColor lowestColor = mDataFile.kline[currentDayAtMouse].lowestBid > mDataFile.kline[currentDayAtMouse -1].closeingPrice ?
+    QColor lowestColor = mDataFile->kline[currentDayAtMouse].lowestBid > mDataFile->kline[currentDayAtMouse -1].closeingPrice ?
                 QColor("#FF0000"):QColor("#00FF00");
 
-    QColor closeingColor = mDataFile.kline[currentDayAtMouse].closeingPrice > mDataFile.kline[currentDayAtMouse ].openingPrice ?
+    QColor closeingColor = mDataFile->kline[currentDayAtMouse].closeingPrice > mDataFile->kline[currentDayAtMouse ].openingPrice ?
                 QColor("#FF0000"):QColor("#00FF00");
 
-    QColor amountOfIncreaseColor = mDataFile.kline[currentDayAtMouse].amountOfIncrease > 0 ?
+    QColor amountOfIncreaseColor = mDataFile->kline[currentDayAtMouse].amountOfIncrease > 0 ?
                 QColor("#FF0000"):QColor("#00FF00");
 
-    mShowDrtail->receiveParams(      mDataFile.kline[currentDayAtMouse].time,QColor("#FFFFFF"),
-                                     mDataFile.kline[currentDayAtMouse].closeingPrice,QColor("#FF0000"),
-                                     mDataFile.kline[currentDayAtMouse].openingPrice,openingColor,
-                                     mDataFile.kline[currentDayAtMouse].highestBid,highestColor,
-                                     mDataFile.kline[currentDayAtMouse].lowestBid,lowestColor,
-                                     mDataFile.kline[currentDayAtMouse].closeingPrice,closeingColor,
-                                     mDataFile.kline[currentDayAtMouse].amountOfIncrease,amountOfIncreaseColor,
-                                     mDataFile.kline[currentDayAtMouse].amountOfAmplitude,QColor("#02E2F4"),
-                                     mDataFile.kline[currentDayAtMouse].totalVolume,QColor("#02E2F4"),
-                                     mDataFile.kline[currentDayAtMouse].totalAmount,QColor("#02E2F4"),
-                                     mDataFile.kline[currentDayAtMouse].turnoverRate,QColor("#02E2F4")
+    mShowDrtail->receiveParams(      mDataFile->kline[currentDayAtMouse].time,QColor("#FFFFFF"),
+                                     mDataFile->kline[currentDayAtMouse].closeingPrice,QColor("#FF0000"),
+                                     mDataFile->kline[currentDayAtMouse].openingPrice,openingColor,
+                                     mDataFile->kline[currentDayAtMouse].highestBid,highestColor,
+                                     mDataFile->kline[currentDayAtMouse].lowestBid,lowestColor,
+                                     mDataFile->kline[currentDayAtMouse].closeingPrice,closeingColor,
+                                     mDataFile->kline[currentDayAtMouse].amountOfIncrease,amountOfIncreaseColor,
+                                     mDataFile->kline[currentDayAtMouse].amountOfAmplitude,QColor("#02E2F4"),
+                                     mDataFile->kline[currentDayAtMouse].totalVolume,QColor("#02E2F4"),
+                                     mDataFile->kline[currentDayAtMouse].totalAmount,QColor("#02E2F4"),
+                                     mDataFile->kline[currentDayAtMouse].turnoverRate,QColor("#02E2F4")
                                      );
 }
 
@@ -721,50 +706,50 @@ void KLineGrid::drawAverageLine(int day)
     case 5:
         for( int i= beginDay;i<endDay;++i)
         {
-            if( mDataFile.kline[i].averageLine5 == 0)
+            if( mDataFile->kline[i].averageLine5 == 0)
                 continue;
             temp.setX(getMarginLeft() + xstep *(i - beginDay) + 0.5*lineWidth);
-            temp.setY(getWidgetHeight() - (mDataFile.kline[i].averageLine5 - lowestBid) *yscale - getMarginBottom());
+            temp.setY(getWidgetHeight() - (mDataFile->kline[i].averageLine5 - lowestBid) *yscale - getMarginBottom());
             point.push_back(temp);
         }
         break;
     case 10:
         for( int i= beginDay;i<endDay;++i)
         {
-            if( mDataFile.kline[i].averageLine10 == 0)
+            if( mDataFile->kline[i].averageLine10 == 0)
                 continue;
             temp.setX(getMarginLeft() + xstep *(i - beginDay) + 0.5*lineWidth);
-            temp.setY(getWidgetHeight() - (mDataFile.kline[i].averageLine10 - lowestBid) *yscale - getMarginBottom());
+            temp.setY(getWidgetHeight() - (mDataFile->kline[i].averageLine10 - lowestBid) *yscale - getMarginBottom());
             point.push_back(temp);
         }
         break;
     case 20:
         for( int i= beginDay;i<endDay;++i)
         {
-            if( mDataFile.kline[i].averageLine20 == 0)
+            if( mDataFile->kline[i].averageLine20 == 0)
                 continue;
             temp.setX(getMarginLeft() + xstep *(i - beginDay) + 0.5*lineWidth);
-            temp.setY(getWidgetHeight() - (mDataFile.kline[i].averageLine20 - lowestBid) *yscale - getMarginBottom());
+            temp.setY(getWidgetHeight() - (mDataFile->kline[i].averageLine20 - lowestBid) *yscale - getMarginBottom());
             point.push_back(temp);
         }
         break;
     case 30:
         for( int i= beginDay;i<endDay;++i)
         {
-            if( mDataFile.kline[i].averageLine30 == 0)
+            if( mDataFile->kline[i].averageLine30 == 0)
                 continue;
             temp.setX(getMarginLeft() + xstep *(i - beginDay) + 0.5*lineWidth);
-            temp.setY(getWidgetHeight() - (mDataFile.kline[i].averageLine30 - lowestBid) *yscale - getMarginBottom());
+            temp.setY(getWidgetHeight() - (mDataFile->kline[i].averageLine30 - lowestBid) *yscale - getMarginBottom());
             point.push_back(temp);
         }
         break;
     case 60:
         for( int i= beginDay;i<endDay;++i)
         {
-            if( mDataFile.kline[i].averageLine60 == 0)
+            if( mDataFile->kline[i].averageLine60 == 0)
                 continue;
             temp.setX(getMarginLeft() + xstep *(i - beginDay) + 0.5*lineWidth);
-            temp.setY(getWidgetHeight() - (mDataFile.kline[i].averageLine60 - lowestBid) *yscale - getMarginBottom());
+            temp.setY(getWidgetHeight() - (mDataFile->kline[i].averageLine60 - lowestBid) *yscale - getMarginBottom());
             point.push_back(temp);
         }
         break;

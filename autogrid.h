@@ -8,7 +8,7 @@ class AutoGrid : public QWidget
 {
     Q_OBJECT
 public:
-    explicit AutoGrid(QWidget *parent = nullptr);
+    AutoGrid(QWidget *parent = nullptr, bool needGrid = true);
 
     void virtual initial();
     void virtual drawBK();
@@ -63,8 +63,8 @@ private:
     //表格距边框距离
     int marginLeft      = 80;
     int marginRight     = 80;
-    int marginTop       = 20;
-    int marginBottom    = 20;
+    int marginTop       = 1;
+    int marginBottom    = 1;
 
 
     //当前widget的宽度和高度
@@ -89,6 +89,7 @@ private:
     double atomGridHeightMin;
     double atomGridWidthMin;
 
+    bool needGrid;
 
 signals:
 

@@ -1,0 +1,11 @@
+﻿#ifndef BOTTOMTIMEBAR_H
+#define BOTTOMTIMEBAR_H
+
+#include "autogrid.h"
+
+class BottomTimeBar
+{
+    Q_O
+};
+
+#endif // BOTTOMTIMEBAR_H

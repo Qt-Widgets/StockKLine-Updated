@@ -1,7 +1,6 @@
 ﻿#include "kvolumegrid.h"
 #include "marketdatasplitter.h"
 
-#include <QMessageBox>
 #include <QPainter>
 #include <QPen>
 #include <QString>
@@ -9,7 +8,8 @@
 #include <iostream>
 
 
-kVolumeGrid::kVolumeGrid(MarketDataSplitter* parent) : AutoGrid( parent)
+kVolumeGrid::kVolumeGrid(MarketDataSplitter* parent, DataFile* dataFile)
+    : DataWidget( parent, dataFile)
 {
     //开启鼠标追踪
     setMouseTracking(true);
@@ -80,17 +80,9 @@ void kVolumeGrid::paintEvent(QPaintEvent *event)
 
 void kVolumeGrid::initial()
 {
-    //读取数据
-    QString file = QStringLiteral("F:\\qt-projects\\StockKLine\\dataKLine.txt");
-    if( !mDataFile.readData(file) )
-    {
-        QMessageBox::about(this,QStringLiteral("数据文件读取失败"),QStringLiteral("确定"));
-        return ;
-    }
-
     //初始化一些成员变量值
 
-    endDay = mDataFile.kline.size() - 1;
+    endDay = mDataFile->kline.size() - 1;
     totalDay = 200;
     beginDay  = endDay - totalDay;
     currentDay = beginDay + totalDay /2;
@@ -98,22 +90,13 @@ void kVolumeGrid::initial()
 
 }
 
-bool kVolumeGrid::readData(QString strFile)
-{
-    if( mDataFile.readData(strFile) )
-        return true;
-    else
-        return false;
-}
-
-
 //获得画图所需的各项指标
 void kVolumeGrid::getIndicator()
 {
     maxVolume = 0;
     for(int i=beginDay;i<endDay;++i)
     {
-        QString strVolume = mDataFile.kline[i].totalVolume;
+        QString strVolume = mDataFile->kline[i].totalVolume;
         strVolume = strVolume.mid(1,strVolume.length());
         strVolume = strVolume.mid(0,strVolume.length()-1);
         strVolume.replace(QString(","),QString(""));
@@ -154,7 +137,7 @@ void kVolumeGrid::keyPressEventFromParent(QKeyEvent *event)
 
         if( mousePoint.x() + xstep > getWidgetWidth() - getMarginRight())
         {
-            if( endDay +1 > mDataFile.kline.size() -1)
+            if( endDay +1 > mDataFile->kline.size() -1)
                 return;
             endDay += 1;
             beginDay += 1;
@@ -179,11 +162,11 @@ void kVolumeGrid::keyPressEventFromParent(QKeyEvent *event)
         }
 
         endDay = currentDay + (endDay - currentDay) / 2;
-        beginDay = currentDay - (currentDay - beginDay) / 2;
+        beginDay = currentDay - (totalDay - (endDay - currentDay));
 
-        if( endDay > mDataFile.kline.size() -10)
+        if( endDay > mDataFile->kline.size() -10)
         {
-            endDay = mDataFile.kline.size() -10;
+            endDay = mDataFile->kline.size() -10;
             beginDay = endDay - totalDay;
         }
 
@@ -203,20 +186,20 @@ void kVolumeGrid::keyPressEventFromParent(QKeyEvent *event)
     {
         int currentTotalDay = totalDay;
 
-        if(totalDay == mDataFile.kline.size() -1 )
+        if(totalDay == mDataFile->kline.size() -1 )
             return;
 
         totalDay = totalDay * 2;
-        if( totalDay > mDataFile.kline.size() -1)
+        if( totalDay > mDataFile->kline.size() -1)
         {
-            totalDay = mDataFile.kline.size() -1;
+            totalDay = mDataFile->kline.size() -1;
         }
 
 
         endDay = currentDay + (int)((float)(endDay - currentDay) / currentTotalDay * totalDay);
-        if( endDay > mDataFile.kline.size() -1)
+        if( endDay > mDataFile->kline.size() -1)
         {
-            endDay = mDataFile.kline.size() -1;
+            endDay = mDataFile->kline.size() -1;
         }
 
         beginDay = currentDay - (totalDay - (endDay - currentDay));
@@ -271,7 +254,7 @@ void kVolumeGrid::drawVolume()
 
     for( int i= beginDay;i<endDay;++i)
     {
-        if( mDataFile.kline[i].openingPrice > mDataFile.kline[i].closeingPrice )
+        if( mDataFile->kline[i].openingPrice > mDataFile->kline[i].closeingPrice )
             pen.setColor(QColor(85,252,252));
         else
             pen.setColor(Qt::red);
@@ -296,7 +279,7 @@ void kVolumeGrid::drawVolume()
 
 
 
-        QString strtemp = mDataFile.kline[i].totalVolume;
+        QString strtemp = mDataFile->kline[i].totalVolume;
         strtemp = strtemp.mid(1,strtemp.length());
         strtemp = strtemp.mid(0,strtemp.length()-1);
         strtemp.replace(QString(","),QString(""));
@@ -304,7 +287,7 @@ void kVolumeGrid::drawVolume()
 
 
         //阴线
-        if( mDataFile.kline[i].openingPrice > mDataFile.kline[i].closeingPrice )
+        if( mDataFile->kline[i].openingPrice > mDataFile->kline[i].closeingPrice )
         {
             pen.setWidth(lineWidth);
             painter.setPen(pen);
@@ -341,8 +324,6 @@ void kVolumeGrid::drawVolume()
 
 void kVolumeGrid::drawAverageLine(int day){
 
-
-
     //画线要连接的点
     QVector<QPoint> point;
 
@@ -353,28 +334,25 @@ void kVolumeGrid::drawAverageLine(int day){
     double xstep = getGridWidth() / totalDay;
     double yscale = getGridHeight() / maxVolume;
 
-
-
-
     switch(day)
     {
     case 5:
         for( int i= beginDay;i<endDay;++i)
         {
-            if( mDataFile.kline[i].volumeAverage5 == 0)
+            if( mDataFile->kline[i].volumeAverage5 == 0)
                 continue;
             temp.setX(getMarginLeft() + xstep *(i - beginDay) + 0.5*lineWidth);
-            temp.setY(getWidgetHeight() - mDataFile.kline[i].volumeAverage5 /100 *yscale - getMarginBottom());
+            temp.setY(getWidgetHeight() - mDataFile->kline[i].volumeAverage5 /100 *yscale - getMarginBottom());
             point.push_back(temp);
         }
         break;
     case 10:
         for( int i= beginDay;i<endDay;++i)
         {
-            if( mDataFile.kline[i].volumeAverage10 == 0)
+            if( mDataFile->kline[i].volumeAverage10 == 0)
                 continue;
             temp.setX(getMarginLeft() + xstep *(i - beginDay) + 0.5*lineWidth);
-            temp.setY(getWidgetHeight() - mDataFile.kline[i].volumeAverage10 /100 *yscale - getMarginBottom());
+            temp.setY(getWidgetHeight() - mDataFile->kline[i].volumeAverage10 /100 *yscale - getMarginBottom());
             point.push_back(temp);
         }
         break;

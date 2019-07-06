@@ -1,18 +1,16 @@
 ﻿#ifndef KVOLUMEGRID_H
 #define KVOLUMEGRID_H
 
-
-#include "autogrid.h"
+#include "datawidget.h"
 #include "datafile.h"
 #include "marketdatasplitter.h"
 
 #include <QPoint>
 
-class kVolumeGrid : public AutoGrid
+class kVolumeGrid : public DataWidget
 {
 public:
-    explicit kVolumeGrid(MarketDataSplitter* parent);
-    bool readData(QString strFile);
+    explicit kVolumeGrid(MarketDataSplitter* parent = nullptr, DataFile* dataFile = nullptr);
     void initial();
     void drawYtick();
     void drawVolume();
@@ -38,7 +36,6 @@ private:
     void drawCrossHorLine();
 
 private:
-    DataFile mDataFile;
 
     //画成交量线的起始日期和终止日期
     int beginDay;

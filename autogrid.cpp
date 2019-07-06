@@ -2,11 +2,11 @@
 #include <QPainter>
 #include <QPen>
 
-AutoGrid::AutoGrid(QWidget *parent) : QWidget(parent)
+AutoGrid::AutoGrid(QWidget *parent, bool needGrid)
+    : QWidget(parent)
 {
-
+    this->needGrid = needGrid;
     initial();
-
 }
 
 
@@ -68,7 +68,9 @@ void AutoGrid::calAtomGridWidth()
 
 void AutoGrid::paintEvent(QPaintEvent* event)
 {
-    drawGrid();
+    if (needGrid) {
+        drawGrid();
+    }
 }
 
 void AutoGrid::drawHorLine()
@@ -78,6 +80,9 @@ void AutoGrid::drawHorLine()
     pen.setColor(QColor("#FF0000"));
     painter.setPen(pen);
 
+    QPen     pen2;
+    pen2.setColor(QColor("#FF0000"));
+    pen2.setWidthF(0.4);
 
     int xstart = marginLeft;
     int ystart = marginTop;
@@ -93,8 +98,8 @@ void AutoGrid::drawHorLine()
         }
         else
         {
-            pen.setStyle(Qt::DashDotLine);
-            painter.setPen(pen);
+            pen2.setStyle(Qt::DashLine);
+            painter.setPen(pen2);
         }
         painter.drawLine(xstart,ystart+i*atomGridHeight,
                          xend,yend+i*atomGridHeight);
