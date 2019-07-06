@@ -11,6 +11,12 @@ class TopInstrumentSummary : public AutoGrid
 public:
     TopInstrumentSummary(QWidget* parent);
     void virtual paintEvent(QPaintEvent* event);
+
+private:
+    void drawBottomLine();
+
+private:
+    int barHeight = 20;
 };
 
 #endif // TOPINSTRUMENTSUMMARY_H
