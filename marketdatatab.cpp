@@ -1,14 +1,15 @@
-﻿#include <QVBoxLayout>
+﻿#include <QHBoxLayout>
 #include "kvolumegrid.h"
 #include "klinegrid.h"
 #include "marketdatatab.h"
 #include "marketdataadmin.h"
 #include "marketdatasplitter.h"
+#include "datadetailbox.h"
 
 MarketDataTab::MarketDataTab(QWidget *parent)
     : QWidget(parent)
 {
-    QVBoxLayout *layout = new QVBoxLayout();
+    QHBoxLayout* layout = new QHBoxLayout();
     layout->addWidget(createChartWidget(nullptr));
     this->setLayout(layout);
 }

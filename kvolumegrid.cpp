@@ -258,7 +258,7 @@ void kVolumeGrid::drawYtick()
     for( int i=0;i<=getHGridNum();++i)
     {
         str.sprintf("%d", (int)(i*ystep) );
-        painter.drawText( QPoint( getWidgetWidth() - getMarginLeft() + 10,
+        painter.drawText( QPoint( getWidgetWidth() - getMarginRight() + 10,
                                   getWidgetHeight() - getMarginBottom() - i*getAtomGridHeight()),
                           str);
     }

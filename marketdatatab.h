@@ -1,4 +1,4 @@
-#ifndef MARKETDATATAB_H
+﻿#ifndef MARKETDATATAB_H
 #define MARKETDATATAB_H
 
 #include <QWidget>

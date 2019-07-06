@@ -1,4 +1,4 @@
-#ifndef SHOWDETAIL_H
+﻿#ifndef SHOWDETAIL_H
 #define SHOWDETAIL_H
 
 
@@ -46,6 +46,11 @@ private:
     QColor totalVolumeColor ;
     QColor totalAmountColor ;
     QColor turnoverRateColor ;
+
+    int boxWidth = 75;
+    int dataMarginLeft = 4;
+    int dataHeight = 12;
+    int dataSpacing = 4;
 
 public :
 

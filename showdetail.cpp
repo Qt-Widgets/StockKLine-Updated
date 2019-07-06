@@ -1,15 +1,18 @@
 ﻿#include "showdetail.h"
 #include "mainwindow.h"
-#include <QDockWidget>
 #include <QPainter>
 #include <QFont>
 
-ShowDetail::ShowDetail(QWidget* parent) : QDialog(parent)
+ShowDetail::ShowDetail(QWidget* parent) : QDialog(parent, Qt::FramelessWindowHint)
 {
 
     QFont ft;
-    ft.setPointSize(14);
+    ft.setPointSize(10);
     this->setFont(ft);
+    this->setStyleSheet("border: 1px solid white");
+    this->setModal(false);
+    this->setFixedSize(boxWidth, 200);
+    this->setWindowFlags(Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint);
 }
 
 
@@ -25,8 +28,6 @@ void ShowDetail::paintEvent(QPaintEvent *event)
 {
     drawBK();
     drawStr();
-
-
 }
 
 void ShowDetail::drawStr()
@@ -36,99 +37,89 @@ void ShowDetail::drawStr()
     pen.setColor(QColor("#FFFFFF"));
     painter.setPen(pen);
 
-    QRect rectTime( 20,20,100,30);
-    painter.drawText(rectTime,tr("time"));
-
+    int count = 0;
 
     pen.setColor(timeColor);
     painter.setPen(pen);
-    QRect rectTime2( 20,50,100,30);
-    QString str = time.mid(1,10);
+    QRect rectTime2(dataMarginLeft, 4, boxWidth, dataHeight);
+    QString str = time.mid(1,10).remove("-");
     painter.drawText(rectTime2,str);
 
+//    count++;
+//    pen.setColor(QColor("#FFFFFF"));
+//    painter.setPen(pen);
+//    QRect rectTime3(dataMarginLeft, 4 + (dataHeight + dataSpacing) * count, boxWidth, dataHeight);
+//    painter.drawText(rectTime3,QStringLiteral("currentValue"));
 
+//    count++;
+//    pen.setColor(currentPriceColor);
+//    painter.setPen(pen);
+//    QRect rectTime4(dataMarginLeft, 4 + (dataHeight + dataSpacing) * count, boxWidth, dataHeight);
+//    painter.drawText(rectTime4,str.sprintf("%.2f",currentPrice));
 
+    count++;
     pen.setColor(QColor("#FFFFFF"));
     painter.setPen(pen);
-    QRect rectTime3(20,80,100,30);
-    painter.drawText(rectTime3,QStringLiteral("currentValue"));
+    QRect rectTime5(dataMarginLeft, 4 + (dataHeight + dataSpacing) * count, boxWidth, dataHeight);
+    painter.drawText(rectTime5,QStringLiteral("开盘"));
 
-
-    pen.setColor(currentPriceColor);
-    painter.setPen(pen);
-    QRect rectTime4(20,110,100,30);
-    painter.drawText(rectTime4,str.sprintf("%.2f",currentPrice));
-
-
-
-
-    pen.setColor(QColor("#FFFFFF"));
-    painter.setPen(pen);
-    QRect rectTime5(20,140,100,30);
-    painter.drawText(rectTime5,QStringLiteral("opening"));
-
-
+    count++;
     pen.setColor(openingPriceColor);
     painter.setPen(pen);
-    QRect rectTime6(20,170,100,30);
+    QRect rectTime6(dataMarginLeft, 4 + (dataHeight + dataSpacing) * count, boxWidth, dataHeight);
     painter.drawText(rectTime6,str.sprintf("%.2f",openingPrice));
 
-
-
+    count++;
     pen.setColor(QColor("#FFFFFF"));
     painter.setPen(pen);
-    QRect rectTime7(20,200,100,30);
-    painter.drawText(rectTime7,tr("highestBid"));
+    QRect rectTime7(dataMarginLeft, 4 + (dataHeight + dataSpacing) * count, boxWidth, dataHeight);
+    painter.drawText(rectTime7,QStringLiteral("最高"));
 
-
+    count++;
     pen.setColor(highestBidColor);
     painter.setPen(pen);
-    QRect rectTime8(20,230,100,30);
+    QRect rectTime8(dataMarginLeft, 4 + (dataHeight + dataSpacing) * count, boxWidth, dataHeight);
     painter.drawText(rectTime8,str.sprintf("%.2f",highestBid));
 
-
-
+    count++;
     pen.setColor(QColor("#FFFFFF"));
     painter.setPen(pen);
-    QRect rectTime9(20,260,100,30);
-    painter.drawText(rectTime9,QStringLiteral("lowestBid"));
+    QRect rectTime9(dataMarginLeft, 4 + (dataHeight + dataSpacing) * count, boxWidth, dataHeight);
+    painter.drawText(rectTime9,QStringLiteral("最低"));
 
-
+    count++;
     pen.setColor(lowestBidColor);
     painter.setPen(pen);
-    QRect rectTime10(20,290,100,30);
+    QRect rectTime10(dataMarginLeft, 4 + (dataHeight + dataSpacing) * count, boxWidth, dataHeight);
     painter.drawText(rectTime10,str.sprintf("%.2f",lowestBid));
 
-
-
+    count++;
     pen.setColor(QColor("#FFFFFF"));
     painter.setPen(pen);
-    QRect rectTime11(20,320,100,30);
-    painter.drawText(rectTime11,QStringLiteral("closeingPrice"));
+    QRect rectTime11(dataMarginLeft, 4 + (dataHeight + dataSpacing) * count, boxWidth, dataHeight);
+    painter.drawText(rectTime11,QStringLiteral("收盘"));
 
-
-
+    count++;
     pen.setColor(closeingPriceColor);
     painter.setPen(pen);
-    QRect rectTime12(20,350,100,30);
+    QRect rectTime12(dataMarginLeft, 4 + (dataHeight + dataSpacing) * count, boxWidth, dataHeight);
     painter.drawText(rectTime12,str.sprintf("%.2f",closeingPrice));
 
-
+    count++;
     pen.setColor(QColor("#FFFFFF"));
     painter.setPen(pen);
-    QRect rectTime13(20,380,100,30);
-    painter.drawText(rectTime13,QStringLiteral("amountOfIncrease"));
+    QRect rectTime13(dataMarginLeft, 4 + (dataHeight + dataSpacing) * count, boxWidth, dataHeight);
+    painter.drawText(rectTime13,QStringLiteral("总手"));
 
-
-
+    count++;
     pen.setColor(amountOfIncreaseColor);
     painter.setPen(pen);
-    QRect rectTime14(20,410,100,30);
+    QRect rectTime14(dataMarginLeft, 4 + (dataHeight + dataSpacing) * count, boxWidth, dataHeight);
     painter.drawText(rectTime14,str.sprintf("%.2f%",amountOfIncrease));
 
 
 
-
+    /*
     pen.setColor(QColor("#FFFFFF"));
     painter.setPen(pen);
     QRect rectTime15(20,440,100,30);
@@ -192,7 +183,7 @@ void ShowDetail::drawStr()
     pen.setColor(turnoverRateColor);
     painter.setPen(pen);
     QRect rectTime22(20,650,100,30);
-    painter.drawText(rectTime22,str.sprintf("%.2f",turnoverRate));
+    painter.drawText(rectTime22,str.sprintf("%.2f",turnoverRate));*/
 
 
 

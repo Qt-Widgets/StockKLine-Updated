@@ -45,9 +45,12 @@ public:
     void drawTips2();
 
 
-
     //画均线
     void drawAverageLine(int day);
+
+private:
+    void drawDataDetailBox();
+    void updateDataDetailBox();
 
 public slots:
     void keyPressEventFromParent(QKeyEvent* event);

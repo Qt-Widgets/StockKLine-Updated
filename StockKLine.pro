@@ -31,6 +31,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp\
     backtesting.cpp \
+    datadetailbox.cpp \
         mainwindow.cpp \
     autogrid.cpp \
     klinegrid.cpp \
@@ -44,6 +45,7 @@ SOURCES += main.cpp\
 HEADERS  += mainwindow.h \
     autogrid.h \
     backtesting.h \
+    datadetailbox.h \
     klinegrid.h \
     datafile.h \
     marketdataadmin.h \

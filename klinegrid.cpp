@@ -4,7 +4,6 @@
 #include <QKeyEvent>
 #include <QMouseEvent>
 #include <QVector>
-#include <QDockWidget>
 #include <QWidget>
 #include <iostream>
 #include "mainwindow.h"
@@ -65,33 +64,8 @@ void KLineGrid::initial()
     maxVolume = 0;
 
 
-    //构造详情展示页面
-
-    /*
-        mShowDrtail = new ShowDetail(this);
-        //mShowDrtail->setFeatures(QDockWidget::DockWidgetFloatable | QDockWidget::DockWidgetClosable);
-        mShowDrtail->setFeatures(QDockWidget::QDockWidget::DockWidgetVerticalTitleBar);
-        QWidget* main = this->parentWidget() ;
-        static_cast<MainWindow*>(main)->addDockWidget(Qt::AllDockWidgetAreas,mShowDrtail);
-        QWidget* titleWidget = new QWidget(this);
-        //mShowDrtail->setTitleBarWidget( titleWidget );
-        mShowDrtail->resize(50,100);
-        //mShowDrtail->setGeometry(20,20,100,300);
-        //mShowDrtail->move(20,20);
-    */
-
-
     //构造详细数据展示页面
     mShowDrtail = new ShowDetail(this);
-    mShowDrtail->setModal(false);
-    mShowDrtail->setFixedSize(140,700);
-    mShowDrtail->show();
-
-    //mShowDrtail->setFeatures(QDockWidget::DockWidgetFloatable | QDockWidget::DockWidgetMovable);
-    QWidget* main = this->parentWidget() ;
-    //static_cast<MainWindow*>(main)->addDockWidget(Qt::LeftDockWidgetArea,mShowDrtail);
-    //delete main;
-
 }
 
 
@@ -101,6 +75,19 @@ void KLineGrid::paintEvent(QPaintEvent *event)
 
     //画k线
     drawLine();
+    drawDataDetailBox();
+}
+
+void KLineGrid::drawDataDetailBox()
+{
+    if (bCross) {
+        //构造详细数据展示页面
+        QPoint klineOriginPos = this->pos();
+        mShowDrtail->move(klineOriginPos.x() + 2, klineOriginPos.y() + getMarginTop());
+        mShowDrtail->show();
+    } else {
+        mShowDrtail->hide();
+    }
 }
 
 
@@ -126,6 +113,8 @@ void KLineGrid::drawLine()
     {
         drawCross();
     }
+
+    updateDataDetailBox();
 
 
     //画5日均线
@@ -174,11 +163,11 @@ void KLineGrid::drawYtick()
     if( 0 == getHGridNum() )
     {
         str.sprintf("%.2f",lowestBid);
-        painter.drawText( QPoint( getWidgetWidth() - getMarginLeft() + 10,
+        painter.drawText( QPoint( getWidgetWidth() - getMarginRight() + 10,
                                   getWidgetHeight() - getMarginBottom() ),
                           str);
         str.sprintf("%.2f",highestBid);
-        painter.drawText( QPoint( getWidgetWidth() - getMarginLeft() + 10,
+        painter.drawText( QPoint( getWidgetWidth() - getMarginRight() + 10,
                                   getMarginTop() ),
                           str);
         return;
@@ -187,7 +176,7 @@ void KLineGrid::drawYtick()
     for( int i=0;i<=getHGridNum();++i)
     {
         str.sprintf("%.2f",lowestBid+ i*ystep);
-        painter.drawText( QPoint( getWidgetWidth() - getMarginLeft() + 10,
+        painter.drawText( QPoint( getWidgetWidth() - getMarginRight() + 10,
                                   getWidgetHeight() - getMarginBottom() - i*getAtomGridHeight()),
                           str);
     }
@@ -327,6 +316,8 @@ void KLineGrid::drawKline()
 void KLineGrid::keyPressEvent(QKeyEvent *event)
 {
     static_cast<MarketDataSplitter*>(parent())->childKeyPressEvent(event);
+    std::cout << "KLineGrid::keyPressEvent" << std::endl;
+
 }
 
 void KLineGrid::keyPressEventFromParent(QKeyEvent *event)
@@ -574,44 +565,45 @@ void KLineGrid::drawTips()
     QRect rectText( getWidgetWidth() - getMarginRight() + iTipsWidth/4,
                 yPos - iTipsHeight/4,iTipsWidth,iTipsHeight);
     painter.drawText(rectText, str.sprintf("%.2f",yval));
-
-
-
-    if( currentDay ==0)
-        return;
-
-
-    QColor openingColor = mDataFile.kline[currentDay].openingPrice > mDataFile.kline[currentDay -1].openingPrice ?
-                          QColor("#FF0000"):QColor("#00FF00");
-
-    QColor highestColor = mDataFile.kline[currentDay].highestBid > mDataFile.kline[currentDay -1].closeingPrice ?
-                QColor("#FF0000"):QColor("#00FF00");
-
-    QColor lowestColor = mDataFile.kline[currentDay].lowestBid > mDataFile.kline[currentDay -1].closeingPrice ?
-                QColor("#FF0000"):QColor("#00FF00");
-
-
-    QColor closeingColor = mDataFile.kline[currentDay].closeingPrice > mDataFile.kline[currentDay ].openingPrice ?
-                QColor("#FF0000"):QColor("#00FF00");
-
-
-    QColor amountOfIncreaseColor = mDataFile.kline[currentDay].amountOfIncrease > 0 ?
-                QColor("#FF0000"):QColor("#00FF00");
-
-    mShowDrtail->receiveParams(      mDataFile.kline[currentDay].time,QColor("#FFFFFF"),
-                                     mDataFile.kline[currentDay].closeingPrice,QColor("#FF0000"),
-                                     mDataFile.kline[currentDay].openingPrice,openingColor,
-                                     mDataFile.kline[currentDay].highestBid,highestColor,
-                                     mDataFile.kline[currentDay].lowestBid,lowestColor,
-                                     mDataFile.kline[currentDay].closeingPrice,closeingColor,
-                                     mDataFile.kline[currentDay].amountOfIncrease,amountOfIncreaseColor,
-                                     mDataFile.kline[currentDay].amountOfAmplitude,QColor("#02E2F4"),
-                                     mDataFile.kline[currentDay].totalVolume,QColor("#02E2F4"),
-                                     mDataFile.kline[currentDay].totalAmount,QColor("#02E2F4"),
-                                     mDataFile.kline[currentDay].turnoverRate,QColor("#02E2F4")
-                                     );
 }
 
+void KLineGrid::updateDataDetailBox()
+{
+    int currentDayAtMouse = ( mousePoint.x() - getMarginLeft() ) * totalDay / getGridWidth() + beginDay;
+    if( currentDayAtMouse >= endDay) {
+        currentDayAtMouse = endDay;
+    } else if (currentDayAtMouse <= beginDay) {
+        currentDayAtMouse = beginDay;
+    }
+
+    QColor openingColor = mDataFile.kline[currentDayAtMouse].openingPrice > mDataFile.kline[currentDayAtMouse -1].openingPrice ?
+                          QColor("#FF0000"):QColor("#00FF00");
+
+    QColor highestColor = mDataFile.kline[currentDayAtMouse].highestBid > mDataFile.kline[currentDayAtMouse -1].closeingPrice ?
+                QColor("#FF0000"):QColor("#00FF00");
+
+    QColor lowestColor = mDataFile.kline[currentDayAtMouse].lowestBid > mDataFile.kline[currentDayAtMouse -1].closeingPrice ?
+                QColor("#FF0000"):QColor("#00FF00");
+
+    QColor closeingColor = mDataFile.kline[currentDayAtMouse].closeingPrice > mDataFile.kline[currentDayAtMouse ].openingPrice ?
+                QColor("#FF0000"):QColor("#00FF00");
+
+    QColor amountOfIncreaseColor = mDataFile.kline[currentDayAtMouse].amountOfIncrease > 0 ?
+                QColor("#FF0000"):QColor("#00FF00");
+
+    mShowDrtail->receiveParams(      mDataFile.kline[currentDayAtMouse].time,QColor("#FFFFFF"),
+                                     mDataFile.kline[currentDayAtMouse].closeingPrice,QColor("#FF0000"),
+                                     mDataFile.kline[currentDayAtMouse].openingPrice,openingColor,
+                                     mDataFile.kline[currentDayAtMouse].highestBid,highestColor,
+                                     mDataFile.kline[currentDayAtMouse].lowestBid,lowestColor,
+                                     mDataFile.kline[currentDayAtMouse].closeingPrice,closeingColor,
+                                     mDataFile.kline[currentDayAtMouse].amountOfIncrease,amountOfIncreaseColor,
+                                     mDataFile.kline[currentDayAtMouse].amountOfAmplitude,QColor("#02E2F4"),
+                                     mDataFile.kline[currentDayAtMouse].totalVolume,QColor("#02E2F4"),
+                                     mDataFile.kline[currentDayAtMouse].totalAmount,QColor("#02E2F4"),
+                                     mDataFile.kline[currentDayAtMouse].turnoverRate,QColor("#02E2F4")
+                                     );
+}
 
 void KLineGrid::drawMouseMoveCrossVerLine()
 {
@@ -629,11 +621,9 @@ void KLineGrid::drawMouseMoveCrossVerLine()
     pen.setColor(QColor("#FFFFFF"));
     pen.setWidth(1);
     painter.setPen(pen);
-    painter.drawLine(mousePoint.x(),getMarginTop(),
-                     mousePoint.x(),getWidgetHeight() - getMarginBottom());
-
+    painter.drawLine(mousePoint.x(), getMarginTop(),
+                     mousePoint.x(), getWidgetHeight() - getMarginBottom());
 }
-
 
 void KLineGrid::drawMouseMoveCrossHorLine()
 {
@@ -661,14 +651,10 @@ void KLineGrid::drawMouseMoveCrossHorLine()
 
 void KLineGrid::drawCross2()
 {
-
     drawMouseMoveCrossHorLine();
     drawMouseMoveCrossVerLine();
     drawTips2();
 }
-
-
-
 
 void KLineGrid::drawTips2()
 {
