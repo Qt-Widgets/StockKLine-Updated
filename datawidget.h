@@ -13,7 +13,7 @@ class DataWidget : public AutoGrid
 
 public:
     DataWidget(MarketDataSplitter* parent = nullptr, DataFile* dataFile = nullptr, bool needGrid = true);
-    //virtual ~DataWiddget();
+    void resizeEvent(QResizeEvent* event) override;
 
 public slots:
     void keyPressEventFromParent(QKeyEvent* event);
@@ -28,6 +28,9 @@ protected:
     int endDay;
     int totalDay;
     int currentDay;
+
+    //是否显示十字线
+    bool bCross = false;
 
     //鼠标位置
     QPoint mousePoint;

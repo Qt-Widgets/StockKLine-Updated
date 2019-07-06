@@ -15,17 +15,11 @@ public:
     void drawYtick();
     void drawVolume();
     void virtual paintEvent(QPaintEvent* event);
-    void virtual resizeEvent(QResizeEvent* event);
     void virtual keyPressEvent(QKeyEvent* event);
     void virtual mouseMoveEvent(QMouseEvent* event);
     void virtual mousePressEvent(QMouseEvent* event);
     void getIndicator();
     void drawAverageLine(int day);
-
-public slots:
-    void keyPressEventFromParent(QKeyEvent* event);
-    void mouseMoveEventFromParent(QMouseEvent* event);
-    void mousePressEventFromParent(QMouseEvent* event);
 
 private:
     void drawCross2();
@@ -37,33 +31,11 @@ private:
 
 private:
 
-    //画成交量线的起始日期和终止日期
-    int beginDay;
-    int endDay;
-    int totalDay;
-    int currentDay;
-
-
-
     //当前要画的成交量线中的最大成交量
     double maxVolume;
 
-    //是否显示十字线
-    bool bCross = false;
-
-
-    //鼠标位置
-    QPoint mousePoint;
-    bool isUnderMouse = false;
-
-    //键盘是否按下
-    bool isKeyDown = false;
-
-
     //线宽
     int lineWidth;
-
-
 };
 
 #endif // KVOLUMEGRID_H

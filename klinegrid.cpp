@@ -16,10 +16,6 @@ KLineGrid::KLineGrid(MarketDataSplitter *parent, DataFile* dataFile)
     setMouseTracking(true);
 
     initial();
-
-    connect(parent, &MarketDataSplitter::childMouseMoved, this, &KLineGrid::mouseMoveEventFromParent);
-    connect(parent, &MarketDataSplitter::childMousePressed, this, &KLineGrid::mousePressEventFromParent);
-    connect(parent, &MarketDataSplitter::childKeyPressed, this, &KLineGrid::keyPressEventFromParent);
 }
 
 KLineGrid::~KLineGrid()
@@ -52,6 +48,20 @@ void KLineGrid::initial()
     mShowDrtail = new ShowDetail(this);
 }
 
+void KLineGrid::keyPressEvent(QKeyEvent *event)
+{
+    static_cast<MarketDataSplitter*>(parent())->childKeyPressEvent(event);
+}
+
+void KLineGrid::mouseMoveEvent(QMouseEvent *event)
+{
+    static_cast<MarketDataSplitter*>(parent())->childMouseMoveEvent(event);
+}
+
+void KLineGrid::mousePressEvent(QMouseEvent *event)
+{
+    static_cast<MarketDataSplitter*>(parent())->childMousePressEvent(event);
+}
 
 void KLineGrid::paintEvent(QPaintEvent *event)
 {
@@ -296,159 +306,6 @@ void KLineGrid::drawKline()
 
 
     }
-}
-
-void KLineGrid::keyPressEvent(QKeyEvent *event)
-{
-    static_cast<MarketDataSplitter*>(parent())->childKeyPressEvent(event);
-    std::cout << "KLineGrid::keyPressEvent" << std::endl;
-
-}
-
-void KLineGrid::keyPressEventFromParent(QKeyEvent *event)
-{
-    currentDay = (double)( mousePoint.x() - getMarginLeft() ) / (getGridWidth()) * totalDay + beginDay;
-
-    isKeyDown = true;
-    switch(event->key())
-    {
-    case Qt::Key_Left:
-    {
-        double xstep = getGridWidth() / totalDay ;
-
-        if( mousePoint.x() - xstep < getMarginLeft())
-        {
-            if( beginDay -1 < 0)
-                return;
-            endDay -= 1;
-            beginDay -= 1;
-        }
-        else
-            mousePoint.setX(mousePoint.x() - xstep);
-
-        update();
-        break;
-    }
-
-    case Qt::Key_Right:
-    {
-        double xstep = getGridWidth() / totalDay ;
-
-        if( mousePoint.x() + xstep > getWidgetWidth() - getMarginRight())
-        {
-            if( endDay +1 > mDataFile->kline.size() -1)
-                return;
-            endDay += 1;
-            beginDay += 1;
-        }
-        else
-            mousePoint.setX(mousePoint.x() + xstep);
-
-
-        update();
-        break;
-    }
-
-    case Qt::Key_Up:
-    {
-        totalDay = totalDay /2;
-
-        //最少显示10个
-        if( totalDay < 10)
-        {
-            totalDay *= 2;
-            return;
-        }
-
-        endDay = currentDay + (endDay - currentDay) / 2;
-        beginDay = currentDay - (totalDay - (endDay - currentDay));
-
-        if( endDay > mDataFile->kline.size() -10)
-        {
-            endDay = mDataFile->kline.size() -10;
-            beginDay = endDay - totalDay;
-        }
-
-        if(beginDay < 0 )
-        {
-            beginDay = 0;
-            endDay = beginDay + totalDay;
-        }
-
-        update();
-
-
-        break;
-    }
-
-    case Qt::Key_Down:
-    {
-        int currentTotalDay = totalDay;
-
-        if(totalDay == mDataFile->kline.size() -1 )
-            return;
-
-        totalDay = totalDay * 2;
-        if( totalDay > mDataFile->kline.size() -1)
-        {
-            totalDay = mDataFile->kline.size() -1;
-        }
-
-
-        endDay = currentDay + (int)((float)(endDay - currentDay) / currentTotalDay * totalDay);
-        if( endDay > mDataFile->kline.size() -1)
-        {
-            endDay = mDataFile->kline.size() -1;
-        }
-
-        beginDay = currentDay - (totalDay - (endDay - currentDay));
-        if( beginDay < 0)
-            beginDay = 0;
-
-        totalDay = endDay - beginDay;
-        mousePoint.setX((double)(currentDay - beginDay) / totalDay * getGridWidth() + getMarginLeft());
-
-        update();
-    }
-    default:
-        break;
-    }
-}
-
-void KLineGrid::mouseMoveEvent(QMouseEvent *event)
-{
-    static_cast<MarketDataSplitter*>(parent())->childMouseMoveEvent(event);
-}
-
-void KLineGrid::mouseMoveEventFromParent(QMouseEvent *event)
-{
-    isUnderMouse = this->underMouse();
-    mousePoint = event->pos();
-    isKeyDown = false;
-    update();
-}
-
-void KLineGrid::mousePressEvent(QMouseEvent *event)
-{
-    static_cast<MarketDataSplitter*>(parent())->childMousePressEvent(event);
-}
-
-void KLineGrid::mousePressEventFromParent(QMouseEvent *event)
-{
-    if(event->button() == Qt::LeftButton)
-    {
-        bCross = !bCross;
-        update();
-    }
-}
-
-
-void KLineGrid::resizeEvent(QResizeEvent* event)
-{
-
-    AutoGrid::resizeEvent(event);
-    bCross = false;
-
 }
 
 void KLineGrid::drawCross()
@@ -786,6 +643,3 @@ void KLineGrid::drawAverageLine(int day)
     QPolygon polykline(point);
     painter.drawPolyline(polykline);
 }
-
-
-

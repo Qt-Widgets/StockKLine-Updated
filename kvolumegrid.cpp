@@ -16,10 +16,6 @@ kVolumeGrid::kVolumeGrid(MarketDataSplitter* parent, DataFile* dataFile)
 
     setAtomGridHeightMin(40);
     initial();
-
-    connect(parent, &MarketDataSplitter::childMouseMoved, this, &kVolumeGrid::mouseMoveEventFromParent);
-    connect(parent, &MarketDataSplitter::childMousePressed, this, &kVolumeGrid::mousePressEventFromParent);
-    connect(parent, &MarketDataSplitter::childKeyPressed, this, &kVolumeGrid::keyPressEventFromParent);
 }
 
 void kVolumeGrid::mouseMoveEvent(QMouseEvent* event)
@@ -35,23 +31,6 @@ void kVolumeGrid::keyPressEvent(QKeyEvent* event)
 void kVolumeGrid::mousePressEvent(QMouseEvent* event)
 {
     static_cast<MarketDataSplitter*>(parent())->childMousePressEvent(event);
-}
-
-void kVolumeGrid::mousePressEventFromParent(QMouseEvent* event)
-{
-    if(event->button() == Qt::LeftButton)
-    {
-        bCross = !bCross;
-        update();
-    }
-}
-
-void kVolumeGrid::resizeEvent(QResizeEvent* event)
-{
-
-    AutoGrid::resizeEvent(event);
-    bCross = false;
-
 }
 
 void kVolumeGrid::paintEvent(QPaintEvent *event)
@@ -106,124 +85,6 @@ void kVolumeGrid::getIndicator()
     maxVolume = maxVolume / 100;
 }
 
-void kVolumeGrid::keyPressEventFromParent(QKeyEvent *event)
-{
-    currentDay = (double)( mousePoint.x() - getMarginLeft() ) / (getGridWidth()) * totalDay + beginDay;
-
-    isKeyDown = true;
-    switch(event->key())
-    {
-    case Qt::Key_Left:
-    {
-        double xstep = getGridWidth() / totalDay ;
-
-        if( mousePoint.x() - xstep < getMarginLeft())
-        {
-            if( beginDay -1 < 0)
-                return;
-            endDay -= 1;
-            beginDay -= 1;
-        }
-        else
-            mousePoint.setX(mousePoint.x() - xstep);
-
-        update();
-        break;
-    }
-
-    case Qt::Key_Right:
-    {
-        double xstep = getGridWidth() / totalDay ;
-
-        if( mousePoint.x() + xstep > getWidgetWidth() - getMarginRight())
-        {
-            if( endDay +1 > mDataFile->kline.size() -1)
-                return;
-            endDay += 1;
-            beginDay += 1;
-        }
-        else
-            mousePoint.setX(mousePoint.x() + xstep);
-
-
-        update();
-        break;
-    }
-
-    case Qt::Key_Up:
-    {
-        totalDay = totalDay /2;
-
-        //最少显示10个
-        if( totalDay < 10)
-        {
-            totalDay *= 2;
-            return;
-        }
-
-        endDay = currentDay + (endDay - currentDay) / 2;
-        beginDay = currentDay - (totalDay - (endDay - currentDay));
-
-        if( endDay > mDataFile->kline.size() -10)
-        {
-            endDay = mDataFile->kline.size() -10;
-            beginDay = endDay - totalDay;
-        }
-
-        if(beginDay < 0 )
-        {
-            beginDay = 0;
-            endDay = beginDay + totalDay;
-        }
-
-        update();
-
-
-        break;
-    }
-
-    case Qt::Key_Down:
-    {
-        int currentTotalDay = totalDay;
-
-        if(totalDay == mDataFile->kline.size() -1 )
-            return;
-
-        totalDay = totalDay * 2;
-        if( totalDay > mDataFile->kline.size() -1)
-        {
-            totalDay = mDataFile->kline.size() -1;
-        }
-
-
-        endDay = currentDay + (int)((float)(endDay - currentDay) / currentTotalDay * totalDay);
-        if( endDay > mDataFile->kline.size() -1)
-        {
-            endDay = mDataFile->kline.size() -1;
-        }
-
-        beginDay = currentDay - (totalDay - (endDay - currentDay));
-        if( beginDay < 0)
-            beginDay = 0;
-
-        totalDay = endDay - beginDay;
-        mousePoint.setX((double)(currentDay - beginDay) / totalDay * getGridWidth() + getMarginLeft());
-
-        update();
-    }
-    default:
-        break;
-    }
-}
-
-void kVolumeGrid::mouseMoveEventFromParent(QMouseEvent *event)
-{
-    isUnderMouse = this->underMouse();
-    mousePoint = event->pos();
-    isKeyDown = false;
-    update();
-}
-
 void kVolumeGrid::drawYtick()
 {
 
@@ -259,7 +120,6 @@ void kVolumeGrid::drawVolume()
         else
             pen.setColor(Qt::red);
 
-
         lineWidth = getGridWidth() / totalDay;
 
         //为了各个k线之间不贴在一起，设置一个间隔
@@ -269,7 +129,6 @@ void kVolumeGrid::drawVolume()
         if( lineWidth < 3)
             lineWidth = 3;
 
-
         //画线连接的两个点
         QPoint p1;
         QPoint p2;
@@ -277,14 +136,11 @@ void kVolumeGrid::drawVolume()
         QPoint p3;
         QPoint p4;
 
-
-
         QString strtemp = mDataFile->kline[i].totalVolume;
         strtemp = strtemp.mid(1,strtemp.length());
         strtemp = strtemp.mid(0,strtemp.length()-1);
         strtemp.replace(QString(","),QString(""));
         int temp = strtemp.toInt()/100;
-
 
         //阴线
         if( mDataFile->kline[i].openingPrice > mDataFile->kline[i].closeingPrice )
@@ -371,7 +227,6 @@ void kVolumeGrid::drawAverageLine(int day){
         break;
     }
 
-
     painter.setPen(pen);
     QPolygon polykline(point);
     painter.drawPolyline(polykline);
@@ -445,7 +300,6 @@ void kVolumeGrid::drawMouseMoveCrossVerLine()
                      mousePoint.x(),getWidgetHeight() - getMarginBottom());
 
 }
-
 
 void kVolumeGrid::drawMouseMoveCrossHorLine()
 {

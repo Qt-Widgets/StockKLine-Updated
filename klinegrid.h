@@ -19,7 +19,6 @@ public:
     void virtual keyPressEvent(QKeyEvent* event);
     void virtual mouseMoveEvent(QMouseEvent* event);
     void virtual mousePressEvent(QMouseEvent* event);
-    void virtual resizeEvent(QResizeEvent* event);
     ~KLineGrid();
 
     void initial();
@@ -49,21 +48,8 @@ private:
     void drawDataDetailBox();
     void updateDataDetailBox();
 
-public slots:
-    void keyPressEventFromParent(QKeyEvent* event);
-    void mouseMoveEventFromParent(QMouseEvent* event);
-    void mousePressEventFromParent(QMouseEvent* event);
-
 private:
     ShowDetail* mShowDrtail;
-
-
-    //画k线的起始日期和终止日期
-    int beginDay;
-    int endDay;
-    int totalDay;
-    int currentDay;
-
 
     //当前要画的k线日期中的最高价，最低价，最大成交量
     double highestBid;
@@ -74,22 +60,8 @@ private:
     double xscale;
     double yscale;
 
-    //是否显示十字线
-    bool bCross = false;
-
-
-    //鼠标位置
-    QPoint mousePoint;
-    bool isUnderMouse = false;
-
     //画笔的线宽
     int lineWidth;
-
-
-    //键盘是否按下
-    bool isKeyDown = false;
-
-
 
     //是否画均线
     bool isDrawAverageLine = true;
