@@ -375,9 +375,8 @@ void KLineGrid::keyPressEventFromParent(QKeyEvent *event)
             return;
         }
 
-
-        endDay = currentDay + totalDay/2;
-        beginDay = currentDay - totalDay/2;
+        endDay = currentDay + (endDay - currentDay) / 2;
+        beginDay = currentDay - (currentDay - beginDay) / 2;
 
         if( endDay > mDataFile.kline.size() -10)
         {
@@ -399,6 +398,8 @@ void KLineGrid::keyPressEventFromParent(QKeyEvent *event)
 
     case Qt::Key_Down:
     {
+        int currentTotalDay = totalDay;
+
         if(totalDay == mDataFile.kline.size() -1 )
             return;
 
@@ -409,24 +410,20 @@ void KLineGrid::keyPressEventFromParent(QKeyEvent *event)
         }
 
 
-        endDay = currentDay + totalDay/2;
-        if( endDay > mDataFile.kline.size() -10)
+        endDay = currentDay + (int)((float)(endDay - currentDay) / currentTotalDay * totalDay);
+        if( endDay > mDataFile.kline.size() -1)
         {
-            endDay = mDataFile.kline.size() -10;
+            endDay = mDataFile.kline.size() -1;
         }
 
-
-
-        beginDay = currentDay - totalDay/2;
+        beginDay = currentDay - (totalDay - (endDay - currentDay));
         if( beginDay < 0)
             beginDay = 0;
 
-
-
         totalDay = endDay - beginDay;
+        mousePoint.setX((double)(currentDay - beginDay) / totalDay * getGridWidth() + getMarginLeft());
 
         update();
-
     }
     default:
         break;
@@ -530,6 +527,9 @@ void KLineGrid::drawCrossHorLine()
 
 void KLineGrid::drawTips()
 {
+    if (!isUnderMouse)
+        return;
+
     QPainter painter(this);
     QPen     pen;
     QBrush brush(QColor(64,0,128));
@@ -607,11 +607,10 @@ void KLineGrid::updateDataDetailBox()
 
 void KLineGrid::drawMouseMoveCrossVerLine()
 {
+    if(mousePoint.x() < getMarginLeft() || mousePoint.x() > getWidgetWidth() - getMarginRight())
+        return;
+
     if (isUnderMouse) {
-
-        if(mousePoint.x() < getMarginLeft() || mousePoint.x() > getWidgetWidth() - getMarginRight())
-            return;
-
         if(mousePoint.y() < getMarginTop() || mousePoint.y() > getWidgetHeight() - getMarginBottom())
             return;
     }
@@ -658,6 +657,8 @@ void KLineGrid::drawCross2()
 
 void KLineGrid::drawTips2()
 {
+    if (!isUnderMouse)
+        return;
 
     if(mousePoint.x() < getMarginLeft() || mousePoint.x() > getWidgetWidth() - getMarginRight())
         return;

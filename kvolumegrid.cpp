@@ -178,9 +178,8 @@ void kVolumeGrid::keyPressEventFromParent(QKeyEvent *event)
             return;
         }
 
-
-        endDay = currentDay + totalDay/2;
-        beginDay = currentDay - totalDay/2;
+        endDay = currentDay + (endDay - currentDay) / 2;
+        beginDay = currentDay - (currentDay - beginDay) / 2;
 
         if( endDay > mDataFile.kline.size() -10)
         {
@@ -202,6 +201,8 @@ void kVolumeGrid::keyPressEventFromParent(QKeyEvent *event)
 
     case Qt::Key_Down:
     {
+        int currentTotalDay = totalDay;
+
         if(totalDay == mDataFile.kline.size() -1 )
             return;
 
@@ -212,24 +213,20 @@ void kVolumeGrid::keyPressEventFromParent(QKeyEvent *event)
         }
 
 
-        endDay = currentDay + totalDay/2;
-        if( endDay > mDataFile.kline.size() -10)
+        endDay = currentDay + (int)((float)(endDay - currentDay) / currentTotalDay * totalDay);
+        if( endDay > mDataFile.kline.size() -1)
         {
-            endDay = mDataFile.kline.size() -10;
+            endDay = mDataFile.kline.size() -1;
         }
 
-
-
-        beginDay = currentDay - totalDay/2;
+        beginDay = currentDay - (totalDay - (endDay - currentDay));
         if( beginDay < 0)
             beginDay = 0;
 
-
-
         totalDay = endDay - beginDay;
+        mousePoint.setX((double)(currentDay - beginDay) / totalDay * getGridWidth() + getMarginLeft());
 
         update();
-
     }
     default:
         break;
@@ -453,11 +450,10 @@ void kVolumeGrid::drawCross2()
 
 void kVolumeGrid::drawMouseMoveCrossVerLine()
 {
+    if(mousePoint.x() < getMarginLeft() || mousePoint.x() > getWidgetWidth() - getMarginRight())
+        return;
+
     if (isUnderMouse) {
-
-        if(mousePoint.x() < getMarginLeft() || mousePoint.x() > getWidgetWidth() - getMarginRight())
-            return;
-
         if(mousePoint.y() < getMarginTop() || mousePoint.y() > getWidgetHeight() - getMarginBottom())
             return;
     }
