@@ -55,6 +55,21 @@ void kVolumeGrid::paintEvent(QPaintEvent *event)
     drawAverageLine(5);
     drawAverageLine(10);
 
+    drawTopInfo();
+}
+
+void kVolumeGrid::drawTopInfo()
+{
+    QPainter painter(this);
+    QFont font;
+    font.setPointSize(11);
+    painter.setFont(font);
+    QPen     pen;
+    pen.setColor(Qt::yellow);
+    painter.setPen(pen);
+
+    QRect rectText(5 + getMarginLeft(), 3, 80, topInfoHeight);
+    painter.drawText(rectText, QStringLiteral("VOL"));
 }
 
 void kVolumeGrid::initial()
@@ -80,7 +95,6 @@ void kVolumeGrid::getIndicator()
 
 void kVolumeGrid::drawYtick()
 {
-
     getIndicator();
 
     QPainter painter(this);
@@ -89,7 +103,7 @@ void kVolumeGrid::drawYtick()
     painter.setPen(pen);
     double ystep = maxVolume / getHGridNum() ;
     QString str;
-    for( int i=0;i<=getHGridNum();++i)
+    for( int i=0;i<getHGridNum();++i)
     {
         str.sprintf("%d", (int)(i*ystep) );
         painter.drawText( QPoint( getWidgetWidth() - getMarginRight() + 10,

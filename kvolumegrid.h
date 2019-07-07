@@ -28,6 +28,7 @@ private:
     void drawMouseMoveCrossVerLine();
     void drawCrossVerLine();
     void drawCrossHorLine();
+    void drawTopInfo();
 
 private:
 
@@ -36,6 +37,8 @@ private:
 
     //线宽
     int lineWidth;
+
+    int topInfoHeight = 20;
 };
 
 #endif // KVOLUMEGRID_H

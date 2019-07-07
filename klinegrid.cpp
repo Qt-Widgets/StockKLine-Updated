@@ -158,7 +158,7 @@ void KLineGrid::drawYtick()
         return;
     }
 
-    for( int i=0;i<=getHGridNum();++i)
+    for( int i=0;i<getHGridNum();++i)
     {
         str.sprintf("%.2f",lowestBid+ i*ystep);
         painter.drawText( QPoint( getWidgetWidth() - getMarginRight() + 10,
