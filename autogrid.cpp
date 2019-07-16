@@ -26,10 +26,7 @@ void AutoGrid::resizeEvent(QResizeEvent *event)
     gridWidth = widgetWidth - marginLeft - marginRight;
     calAtomGridHeight();
     calAtomGridWidth();
-
 }
-
-
 
 void AutoGrid::initial()
 {
@@ -39,7 +36,6 @@ void AutoGrid::initial()
     atomGridWidthMin = 640;
     drawBK();
 }
-
 
 void AutoGrid::calAtomGridHeight()
 {

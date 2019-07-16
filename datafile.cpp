@@ -8,74 +8,125 @@ DataFile::DataFile()
 
 DataFile::~DataFile()
 {
-    delete pfile;
-    pfile = nullptr;
+
+}
+
+bool DataFile::readBacktestingResult(QString filestr)
+{
+    QFile file(filestr);
+    if( !file.open(QFile::ReadOnly) )
+        return false;
+
+    char    line[1024];
+    char    *token;
+    QString time;
+    QString tradingSignal;
+    int klineIndex = 0;
+
+    while( file.readLine(line,1024)  > 0 ) {
+        token = strtok( line, "," );
+        if( token != nullptr )
+            time = token;
+
+        token = strtok( nullptr, "\r\n" );
+        if( token != nullptr )
+            tradingSignal = token;
+
+        while (kline[klineIndex].time != time) {
+            klineIndex++;
+        }
+        kline[klineIndex++].tradingSignal = tradingSignal;
+    }
 }
 
 bool DataFile::readData(QString filestr)
 {
-    pfile = new QFile(filestr);
-    if( !pfile->open(QFile::ReadOnly) )
+    QFile file(filestr);
+    if( !file.open(QFile::ReadOnly) )
         return false;
 
     char    line[1024];
     char    *token;
     KLine temp;
 
-    while( pfile->readLine(line,1024)  > 0 )
+    while( file.readLine(line,1024)  > 0 )
     {
-        token = strtok( line, "'\t'" );
-        if( token != NULL )
+//        token = strtok( line, "'\t'" );
+//        if( token != NULL )
+//            temp.time = token;
+
+//        token = strtok( NULL, "'\t'" );
+//        if( token != NULL )
+//            temp.openingPrice = atof(token);
+
+//        token = strtok( NULL, "'\t'" );
+//        if( token != NULL )
+//            temp.highestBid = atof(token);
+
+//        token = strtok( NULL, "'\t'" );
+//        if( token != NULL )
+//            temp.lowestBid = atof(token);
+
+//        token = strtok( NULL, "'\t'" );
+//        if( token != NULL )
+//            temp.closeingPrice = atof(token);
+
+//        token = strtok( NULL, "'\t'" );
+//        if( token != NULL )
+//            temp.amountOfIncrease = atof(token);
+
+//        token = strtok( NULL, "'\t'" );
+//        if( token != NULL )
+//            temp.amountOfAmplitude = atof(token);
+
+//        token = strtok( NULL, "'\t'" );
+//        if( token != NULL )
+//            temp.totalVolume = (token);
+
+//        token = strtok( NULL, "'\t'" );
+//        if( token != NULL )
+//            temp.totalAmount = (token);
+
+//        token = strtok( NULL, "'\t'" );
+//        if( token != NULL )
+//            temp.turnoverRate = atof(token);
+
+//        token = strtok( NULL, "'\t'" );
+//        if( token != NULL )
+//            temp.volumeAmount = atof(token);
+
+        token = strtok( line, "," );
+        if( token != nullptr )
             temp.time = token;
 
-        token = strtok( NULL, "'\t'" );
-        if( token != NULL )
+        token = strtok( nullptr, "," );
+        if( token != nullptr )
             temp.openingPrice = atof(token);
 
-        token = strtok( NULL, "'\t'" );
-        if( token != NULL )
+        token = strtok( nullptr, "," );
+        if( token != nullptr )
             temp.highestBid = atof(token);
 
-        token = strtok( NULL, "'\t'" );
-        if( token != NULL )
+        token = strtok( nullptr, "," );
+        if( token != nullptr )
             temp.lowestBid = atof(token);
 
-        token = strtok( NULL, "'\t'" );
-        if( token != NULL )
+        token = strtok( nullptr, "," );
+        if( token != nullptr )
             temp.closeingPrice = atof(token);
 
-        token = strtok( NULL, "'\t'" );
-        if( token != NULL )
-            temp.amountOfIncrease = atof(token);
-
-        token = strtok( NULL, "'\t'" );
-        if( token != NULL )
-            temp.amountOfAmplitude = atof(token);
-
-        token = strtok( NULL, "'\t'" );
-        if( token != NULL )
-            temp.totalVolume = (token);
-
-        token = strtok( NULL, "'\t'" );
-        if( token != NULL )
-            temp.totalAmount = (token);
-
-        token = strtok( NULL, "'\t'" );
-        if( token != NULL )
-            temp.turnoverRate = atof(token);
-
-        token = strtok( NULL, "'\t'" );
-        if( token != NULL )
-            temp.volumeAmount = atof(token);
+        token = strtok( nullptr, "," );
+        if( token != nullptr ) {
+            temp.totalVolume = token;
+            temp.ftotalVolume = atof(token);
+        }
 
         kline.push_back(temp);
-
-
-        }
+    }
 
 
     calAverageLine();
-    Corvert();
+    //Corvert();
     calvolumeAverage5();
     calvolumeAverage10();
     return true;
@@ -215,14 +266,14 @@ void DataFile::calvolumeAverage10()
 
 void DataFile::Corvert()
 {
-    for(int i=0;i<kline.size();++i)
-    {
-        QString strtemp = kline[i].totalVolume;
-        strtemp = strtemp.mid(1,strtemp.length());
-        strtemp = strtemp.mid(0,strtemp.length()-1);
-        strtemp.replace(QString(","),QString(""));
-        kline[i].ftotalVolume= strtemp.toInt();
-    }
+//    for(int i=0;i<kline.size();++i)
+//    {
+//        QString strtemp = kline[i].totalVolume;
+//        strtemp = strtemp.mid(1,strtemp.length());
+//        strtemp = strtemp.mid(0,strtemp.length()-1);
+//        strtemp.replace(QString(","),QString(""));
+//        kline[i].ftotalVolume= strtemp.toInt();
+//    }
 }
 
 

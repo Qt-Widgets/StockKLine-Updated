@@ -26,6 +26,7 @@ public:
     void getIndicator();
     void drawYtick();
     void drawKline();
+    void drawTradingSignal(int index, int x, QPainter& painter);
 
 
     //键盘按下后画的十字线

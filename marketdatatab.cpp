@@ -30,8 +30,17 @@ void MarketDataTab::loadData()
     mDataFile = new DataFile();
 
     //读取数据
-    QString file = QStringLiteral("F:\\qt-projects\\StockKLine\\dataKLine.txt");
+    //QString file = QStringLiteral("F:\\qt-projects\\StockKLine\\dataKLine.txt");
+
+    QString file = QStringLiteral("E:\\cbm\\startup\\qihuoshuju_good\\JiaoTan_1Hour_JL9.csv");
     if( !mDataFile->readData(file) )
+    {
+        QMessageBox::about(this, QStringLiteral("数据文件读取失败"), QStringLiteral("确定"));
+        return;
+    }
+
+    file = QStringLiteral("E:\\cbm\\startup\\qihuoshuju_good\\JiaoTan_1Hour_Backtesting_Stats.csv");
+    if( !mDataFile->readBacktestingResult(file) )
     {
         QMessageBox::about(this, QStringLiteral("数据文件读取失败"), QStringLiteral("确定"));
         return;

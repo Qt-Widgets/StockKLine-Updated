@@ -52,8 +52,8 @@ void kVolumeGrid::paintEvent(QPaintEvent *event)
         drawCross();
     }
 
-    drawAverageLine(5);
-    drawAverageLine(10);
+    //drawAverageLine(5);
+    //drawAverageLine(10);
 
     drawTopInfo();
 }
@@ -83,12 +83,13 @@ void kVolumeGrid::getIndicator()
     maxVolume = 0;
     for(int i=beginDay;i<endDay;++i)
     {
-        QString strVolume = mDataFile->kline[i].totalVolume;
-        strVolume = strVolume.mid(1,strVolume.length());
-        strVolume = strVolume.mid(0,strVolume.length()-1);
-        strVolume.replace(QString(","),QString(""));
-        if( strVolume.toInt() > maxVolume)
-            maxVolume = strVolume.toInt();
+//        QString strVolume = mDataFile->kline[i].totalVolume;
+//        strVolume = strVolume.mid(1,strVolume.length());
+//        strVolume = strVolume.mid(0,strVolume.length()-1);
+//        strVolume.replace(QString(","),QString(""));
+        double volume = mDataFile->kline[i].ftotalVolume;
+        if( volume > maxVolume)
+            maxVolume = volume;
     }
     maxVolume = maxVolume / 100;
 }
@@ -143,11 +144,11 @@ void kVolumeGrid::drawVolume()
         QPoint p3;
         QPoint p4;
 
-        QString strtemp = mDataFile->kline[i].totalVolume;
-        strtemp = strtemp.mid(1,strtemp.length());
-        strtemp = strtemp.mid(0,strtemp.length()-1);
-        strtemp.replace(QString(","),QString(""));
-        int temp = strtemp.toInt()/100;
+//        QString strtemp = mDataFile->kline[i].totalVolume;
+//        strtemp = strtemp.mid(1,strtemp.length());
+//        strtemp = strtemp.mid(0,strtemp.length()-1);
+//        strtemp.replace(QString(","),QString(""));
+        int temp = mDataFile->kline[i].ftotalVolume/100;
 
         //阴线
         if( mDataFile->kline[i].openingPrice > mDataFile->kline[i].closeingPrice )

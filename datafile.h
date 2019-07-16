@@ -29,6 +29,8 @@ struct KLine
     double ftotalAmount;
     double volumeAverage5;          //成交量5日均值
     double volumeAverage10;         //成交量10日均值
+
+    QString tradingSignal;
 };
 
 
@@ -38,8 +40,9 @@ public:
     explicit DataFile();
     ~DataFile();
     bool readData(QString filestr);
+    bool readBacktestingResult(QString filestr);
     std::vector<KLine> kline;
-    QFile* pfile = nullptr;
+
     void calAverageLine();
     void calAverageLine5();
     void calAverageLine10();

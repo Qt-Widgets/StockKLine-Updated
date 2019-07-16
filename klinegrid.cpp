@@ -103,15 +103,15 @@ void KLineGrid::drawLine()
 
 
     //画5日均线
-    drawAverageLine(5);
+    //drawAverageLine(5);
     //画5日均线
-    drawAverageLine(10);
+    //drawAverageLine(10);
     //画5日均线
-    drawAverageLine(20);
+    //drawAverageLine(20);
     //画5日均线
-    drawAverageLine(30);
+    //drawAverageLine(30);
     //画5日均线
-    drawAverageLine(60);
+    //drawAverageLine(60);
 
 }
 
@@ -120,7 +120,7 @@ void KLineGrid::getIndicator()
 {
 
     highestBid = 0;
-    lowestBid = 1000;
+    lowestBid = std::numeric_limits<double>::max();
     maxVolume = 0;
 
     for( int i= beginDay;i<endDay;++i)
@@ -292,9 +292,16 @@ void KLineGrid::drawKline()
 
             painter.drawLine(p1,p2);
             painter.drawLine(p3,p4);
+
+            drawTradingSignal(i, getMarginLeft() + xstep *(i - beginDay) + 0.5*lineWidth, painter);
         }
+    }
+}
 
-
+void KLineGrid::drawTradingSignal(int index, int x, QPainter& painter)
+{
+    if (mDataFile->kline[index].tradingSignal == "BPK") {
+        painter.drawText(QPoint( x - 2, getMarginTop() + 15), "*");
     }
 }
 

@@ -42,7 +42,7 @@ void ShowDetail::drawStr()
     pen.setColor(timeColor);
     painter.setPen(pen);
     QRect rectTime2(dataMarginLeft, 4, boxWidth, dataHeight);
-    QString str = time.mid(1,10).remove("-");
+    QString str = time.mid(0,10).remove("-");
     painter.drawText(rectTime2,str);
 
 //    count++;
@@ -115,7 +115,7 @@ void ShowDetail::drawStr()
     pen.setColor(amountOfIncreaseColor);
     painter.setPen(pen);
     QRect rectTime14(dataMarginLeft, 4 + (dataHeight + dataSpacing) * count, boxWidth, dataHeight);
-    painter.drawText(rectTime14,str.sprintf("%.2f%",amountOfIncrease));
+    painter.drawText(rectTime14,totalVolume);
 
 
 
