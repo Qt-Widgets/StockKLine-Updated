@@ -6,6 +6,8 @@
 #include <QVector>
 #include <QWidget>
 #include <iostream>
+#include <iomanip>
+#include <sstream>
 #include "mainwindow.h"
 #include "klinegrid.h"
 
@@ -100,17 +102,13 @@ void KLineGrid::drawLine()
     }
 
     updateDataDetailBox();
+    updateTopAverageLineInfo();
 
 
-    //画5日均线
-    //drawAverageLine(5);
-    //画5日均线
+    drawAverageLine();
     //drawAverageLine(10);
-    //画5日均线
     //drawAverageLine(20);
-    //画5日均线
     //drawAverageLine(30);
-    //画5日均线
     //drawAverageLine(60);
 
 }
@@ -173,6 +171,8 @@ void KLineGrid::drawKline()
     QPen     pen;
     pen.setColor(Qt::red);
     painter.setPen(pen);
+
+    QPen tradingSignalPen;
 
 
     if (beginDay <0)
@@ -293,16 +293,24 @@ void KLineGrid::drawKline()
             painter.drawLine(p1,p2);
             painter.drawLine(p3,p4);
 
-            drawTradingSignal(i, getMarginLeft() + xstep *(i - beginDay) + 0.5*lineWidth, painter);
+            drawTradingSignal(i, getMarginLeft() + xstep *(i - beginDay) + 0.5*lineWidth, painter, tradingSignalPen);
         }
     }
 }
 
-void KLineGrid::drawTradingSignal(int index, int x, QPainter& painter)
+void KLineGrid::drawTradingSignal(int index, int x, QPainter& painter, QPen& pen)
 {
-    if (mDataFile->kline[index].tradingSignal == "BPK") {
-        painter.drawText(QPoint( x - 2, getMarginTop() + 15), "*");
+    QPen originalPen = painter.pen();
+    auto it = mDataFile->tradingSignalColors.find(mDataFile->kline[index].tradingSignal);
+    if (it == mDataFile->tradingSignalColors.end()) {
+        return;
     }
+    Qt::GlobalColor color = it->second;
+    pen.setColor(color);
+    painter.setPen(pen);
+    painter.drawText(QPoint( x - 2, getMarginTop() + 35), "*");
+
+    painter.setPen(originalPen);
 }
 
 void KLineGrid::drawCross()
@@ -406,6 +414,35 @@ void KLineGrid::drawTips()
     painter.drawText(rectText, str.sprintf("%.2f",yval));
 }
 
+void KLineGrid::updateTopAverageLineInfo()
+{
+    int currentDayAtMouse = ( mousePoint.x() - getMarginLeft() ) * totalDay / getGridWidth() + beginDay;
+    if( currentDayAtMouse >= endDay) {
+        currentDayAtMouse = endDay;
+    } else if (currentDayAtMouse <= beginDay) {
+        currentDayAtMouse = beginDay;
+    }
+
+    QPainter painter(this);
+    QFont font;
+    font.setPointSize(11);
+    painter.setFont(font);
+    QPen     pen;
+
+    int x = 5 + getMarginLeft();
+    for (int i = 0; i < mDataFile->averageLineCount; ++i) {
+        pen.setColor(mDataFile->averageLineColors[i]);
+        painter.setPen(pen);
+        std::stringstream stream;
+        stream << "MA" << std::fixed << std::setprecision(2) << mDataFile->averageLinePeriod[i]
+                  << " " << std::fixed << std::setprecision(2) << mDataFile->kline[currentDayAtMouse].averages[i];
+
+        QRect rectText(x, 3, x + 100, topAverageLineInfoHeight);
+        painter.drawText(rectText, QString(stream.str().c_str()));
+        x += 100 + 20;
+    }
+}
+
 void KLineGrid::updateDataDetailBox()
 {
     int currentDayAtMouse = ( mousePoint.x() - getMarginLeft() ) * totalDay / getGridWidth() + beginDay;
@@ -415,13 +452,13 @@ void KLineGrid::updateDataDetailBox()
         currentDayAtMouse = beginDay;
     }
 
-    QColor openingColor = mDataFile->kline[currentDayAtMouse].openingPrice > mDataFile->kline[currentDayAtMouse -1].openingPrice ?
+    QColor openingColor = mDataFile->kline[currentDayAtMouse].openingPrice > mDataFile->kline[std::max(currentDayAtMouse -1, 0)].openingPrice ?
                           QColor("#FF0000"):QColor("#00FF00");
 
-    QColor highestColor = mDataFile->kline[currentDayAtMouse].highestBid > mDataFile->kline[currentDayAtMouse -1].closeingPrice ?
+    QColor highestColor = mDataFile->kline[currentDayAtMouse].highestBid > mDataFile->kline[std::max(currentDayAtMouse -1, 0)].closeingPrice ?
                 QColor("#FF0000"):QColor("#00FF00");
 
-    QColor lowestColor = mDataFile->kline[currentDayAtMouse].lowestBid > mDataFile->kline[currentDayAtMouse -1].closeingPrice ?
+    QColor lowestColor = mDataFile->kline[currentDayAtMouse].lowestBid > mDataFile->kline[std::max(currentDayAtMouse -1, 0)].closeingPrice ?
                 QColor("#FF0000"):QColor("#00FF00");
 
     QColor closeingColor = mDataFile->kline[currentDayAtMouse].closeingPrice > mDataFile->kline[currentDayAtMouse ].openingPrice ?
@@ -533,7 +570,7 @@ void KLineGrid::drawTips2()
 
 
 
-void KLineGrid::drawAverageLine(int day)
+void KLineGrid::drawAverageLine()
 {
 
     //y轴缩放
@@ -555,88 +592,99 @@ void KLineGrid::drawAverageLine(int day)
         return;
 
 
-    switch(day)
-    {
-    case 5:
-        for( int i= beginDay;i<endDay;++i)
-        {
-            if( mDataFile->kline[i].averageLine5 == 0)
+//    switch(day)
+//    {
+//    case 5:
+//        for( int i= beginDay;i<endDay;++i)
+//        {
+//            if( mDataFile->kline[i].averageLine5 == 0)
+//                continue;
+//            temp.setX(getMarginLeft() + xstep *(i - beginDay) + 0.5*lineWidth);
+//            temp.setY(getWidgetHeight() - (mDataFile->kline[i].averageLine5 - lowestBid) *yscale - getMarginBottom());
+//            point.push_back(temp);
+//        }
+//        break;
+//    case 10:
+//        for( int i= beginDay;i<endDay;++i)
+//        {
+//            if( mDataFile->kline[i].averageLine10 == 0)
+//                continue;
+//            temp.setX(getMarginLeft() + xstep *(i - beginDay) + 0.5*lineWidth);
+//            temp.setY(getWidgetHeight() - (mDataFile->kline[i].averageLine10 - lowestBid) *yscale - getMarginBottom());
+//            point.push_back(temp);
+//        }
+//        break;
+//    case 20:
+//        for( int i= beginDay;i<endDay;++i)
+//        {
+//            if( mDataFile->kline[i].averageLine20 == 0)
+//                continue;
+//            temp.setX(getMarginLeft() + xstep *(i - beginDay) + 0.5*lineWidth);
+//            temp.setY(getWidgetHeight() - (mDataFile->kline[i].averageLine20 - lowestBid) *yscale - getMarginBottom());
+//            point.push_back(temp);
+//        }
+//        break;
+//    case 30:
+//        for( int i= beginDay;i<endDay;++i)
+//        {
+//            if( mDataFile->kline[i].averageLine30 == 0)
+//                continue;
+//            temp.setX(getMarginLeft() + xstep *(i - beginDay) + 0.5*lineWidth);
+//            temp.setY(getWidgetHeight() - (mDataFile->kline[i].averageLine30 - lowestBid) *yscale - getMarginBottom());
+//            point.push_back(temp);
+//        }
+//        break;
+//    case 60:
+//        for( int i= beginDay;i<endDay;++i)
+//        {
+//            if( mDataFile->kline[i].averageLine60 == 0)
+//                continue;
+//            temp.setX(getMarginLeft() + xstep *(i - beginDay) + 0.5*lineWidth);
+//            temp.setY(getWidgetHeight() - (mDataFile->kline[i].averageLine60 - lowestBid) *yscale - getMarginBottom());
+//            point.push_back(temp);
+//        }
+//        break;
+//    default:
+//        break;
+//    }
+
+    for (int i = 0; i < mDataFile->averageLineCount; i++) {
+        point.clear();
+        for (int j = beginDay; j < endDay; j++) {
+            if (mDataFile->kline[j].averages[i] <= 0.0)
                 continue;
-            temp.setX(getMarginLeft() + xstep *(i - beginDay) + 0.5*lineWidth);
-            temp.setY(getWidgetHeight() - (mDataFile->kline[i].averageLine5 - lowestBid) *yscale - getMarginBottom());
+            temp.setX(getMarginLeft() + xstep *(j - beginDay) + 0.5*lineWidth);
+            temp.setY(getWidgetHeight() - (mDataFile->kline[j].averages[i] - lowestBid) *yscale - getMarginBottom());
             point.push_back(temp);
         }
-        break;
-    case 10:
-        for( int i= beginDay;i<endDay;++i)
-        {
-            if( mDataFile->kline[i].averageLine10 == 0)
-                continue;
-            temp.setX(getMarginLeft() + xstep *(i - beginDay) + 0.5*lineWidth);
-            temp.setY(getWidgetHeight() - (mDataFile->kline[i].averageLine10 - lowestBid) *yscale - getMarginBottom());
-            point.push_back(temp);
-        }
-        break;
-    case 20:
-        for( int i= beginDay;i<endDay;++i)
-        {
-            if( mDataFile->kline[i].averageLine20 == 0)
-                continue;
-            temp.setX(getMarginLeft() + xstep *(i - beginDay) + 0.5*lineWidth);
-            temp.setY(getWidgetHeight() - (mDataFile->kline[i].averageLine20 - lowestBid) *yscale - getMarginBottom());
-            point.push_back(temp);
-        }
-        break;
-    case 30:
-        for( int i= beginDay;i<endDay;++i)
-        {
-            if( mDataFile->kline[i].averageLine30 == 0)
-                continue;
-            temp.setX(getMarginLeft() + xstep *(i - beginDay) + 0.5*lineWidth);
-            temp.setY(getWidgetHeight() - (mDataFile->kline[i].averageLine30 - lowestBid) *yscale - getMarginBottom());
-            point.push_back(temp);
-        }
-        break;
-    case 60:
-        for( int i= beginDay;i<endDay;++i)
-        {
-            if( mDataFile->kline[i].averageLine60 == 0)
-                continue;
-            temp.setX(getMarginLeft() + xstep *(i - beginDay) + 0.5*lineWidth);
-            temp.setY(getWidgetHeight() - (mDataFile->kline[i].averageLine60 - lowestBid) *yscale - getMarginBottom());
-            point.push_back(temp);
-        }
-        break;
-    default:
-        break;
+
+        QPainter painter(this);
+        QPen     pen;
+
+//        switch(i)
+//        {
+//        case 5:
+//            pen.setColor(Qt::white);
+//            break;
+//        case 10:
+//            pen.setColor(Qt::yellow);
+//            break;
+//        case 20:
+//            pen.setColor(Qt::magenta);
+//            break;
+//        case 30:
+//            pen.setColor(Qt::green);
+//            break;
+//        case 60:
+//            pen.setColor(Qt::cyan);
+//            break;
+//        default:
+//            pen.setColor(Qt::white);
+//            break;
+//        }
+        pen.setColor(mDataFile->averageLineColors[i]);
+        painter.setPen(pen);
+        QPolygon polykline(point);
+        painter.drawPolyline(polykline);
     }
-
-
-    QPainter painter(this);
-    QPen     pen;
-
-    switch(day)
-    {
-    case 5:
-        pen.setColor(Qt::white);
-        break;
-    case 10:
-        pen.setColor(Qt::yellow);
-        break;
-    case 20:
-        pen.setColor(Qt::magenta);
-        break;
-    case 30:
-        pen.setColor(Qt::green);
-        break;
-    case 60:
-        pen.setColor(Qt::cyan);
-        break;
-    default:
-        pen.setColor(Qt::white);
-        break;
-    }
-    painter.setPen(pen);
-    QPolygon polykline(point);
-    painter.drawPolyline(polykline);
 }

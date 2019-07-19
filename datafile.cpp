@@ -127,8 +127,8 @@ bool DataFile::readData(QString filestr)
 
     calAverageLine();
     //Corvert();
-    calvolumeAverage5();
-    calvolumeAverage10();
+    //calvolumeAverage5();
+    //calvolumeAverage10();
     return true;
 }
 
@@ -136,29 +136,42 @@ bool DataFile::readData(QString filestr)
 void DataFile::calAverageLine()
 {
 
-    // 初始化各均线的值
-    for(int i=0; i<4;i++)
-        kline[i].averageLine5 = 0;
+//    // 初始化各均线的值
+//    for(int i=0; i<4;i++)
+//        kline[i].averageLine5 = 0;
 
-    for(int i=0;i<9;i++)
-        kline[i].averageLine10 = 0;
+//    for(int i=0;i<9;i++)
+//        kline[i].averageLine10 = 0;
 
-    for(int i=0;i<19;i++)
-        kline[i].averageLine20 = 0;
+//    for(int i=0;i<19;i++)
+//        kline[i].averageLine20 = 0;
 
-    for(int i=0;i<29;i++)
-        kline[i].averageLine30 = 0;
+//    for(int i=0;i<29;i++)
+//        kline[i].averageLine30 = 0;
 
-    for(int i=0;i<59;i++)
-        kline[i].averageLine60 = 0;
+//    for(int i=0;i<59;i++)
+//        kline[i].averageLine60 = 0;
 
 
-    calAverageLine5();
-    calAverageLine10();
-    calAverageLine20();
-    calAverageLine30();
-    calAverageLine60();
+//    calAverageLine5();
+//    calAverageLine10();
+//    calAverageLine20();
+//    calAverageLine30();
+//    calAverageLine60();
 
+    for (int i = 0; i < averageLineCount; i++) {
+        double sum = 0.0;
+        int period = averageLinePeriod[i];
+        for (int j = 0; j < period - 1; j++) {
+            sum += kline[j].closeingPrice;
+            kline[j].averages[i] = 0.0;
+        }
+        for (int j = period - 1; j < kline.size(); j++) {
+            sum += kline[j].closeingPrice;
+            kline[j].averages[i] = sum / period;
+            sum -= kline[j - (period - 1)].closeingPrice;
+        }
+    }
 }
 
 

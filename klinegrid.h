@@ -26,8 +26,6 @@ public:
     void getIndicator();
     void drawYtick();
     void drawKline();
-    void drawTradingSignal(int index, int x, QPainter& painter);
-
 
     //键盘按下后画的十字线
     void drawCross();
@@ -43,11 +41,13 @@ public:
 
 
     //画均线
-    void drawAverageLine(int day);
+    void drawAverageLine();
 
 private:
     void drawDataDetailBox();
     void updateDataDetailBox();
+    void updateTopAverageLineInfo();
+    void drawTradingSignal(int index, int x, QPainter& painter, QPen& pen);
 
 private:
     ShowDetail* mShowDrtail;
@@ -67,9 +67,9 @@ private:
     //是否画均线
     bool isDrawAverageLine = true;
 
+    int topAverageLineInfoHeight = 20;
+
 signals:
-
-
 
 };
 
