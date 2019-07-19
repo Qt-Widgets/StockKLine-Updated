@@ -14,10 +14,11 @@ public:
     void initial();
     void drawYtick();
     void drawVolume();
-    void virtual paintEvent(QPaintEvent* event);
-    void virtual keyPressEvent(QKeyEvent* event);
-    void virtual mouseMoveEvent(QMouseEvent* event);
-    void virtual mousePressEvent(QMouseEvent* event);
+    void virtual paintEvent(QPaintEvent* event) override;
+    void virtual keyPressEvent(QKeyEvent* event) override;
+    void virtual mouseMoveEvent(QMouseEvent* event) override;
+    void virtual mousePressEvent(QMouseEvent* event) override;
+    void virtual mouseReleaseEvent(QMouseEvent* event) override;
     void getIndicator();
     void drawAverageLine(int day);
 

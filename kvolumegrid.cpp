@@ -33,6 +33,11 @@ void kVolumeGrid::mousePressEvent(QMouseEvent* event)
     static_cast<MarketDataSplitter*>(parent())->childMousePressEvent(event);
 }
 
+void kVolumeGrid::mouseReleaseEvent(QMouseEvent* event)
+{
+    static_cast<MarketDataSplitter*>(parent())->childMouseReleaseEvent(event);
+}
+
 void kVolumeGrid::paintEvent(QPaintEvent *event)
 {
 

@@ -55,6 +55,11 @@ void KLineGrid::mousePressEvent(QMouseEvent *event)
     static_cast<MarketDataSplitter*>(parent())->childMousePressEvent(event);
 }
 
+void KLineGrid::mouseReleaseEvent(QMouseEvent *event)
+{
+    static_cast<MarketDataSplitter*>(parent())->childMouseReleaseEvent(event);
+}
+
 void KLineGrid::paintEvent(QPaintEvent *event)
 {
     AutoGrid::paintEvent(event);

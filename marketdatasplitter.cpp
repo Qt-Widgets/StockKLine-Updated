@@ -14,3 +14,8 @@ void MarketDataSplitter::childMousePressEvent(QMouseEvent* event)
 {
     emit childMousePressed(event);
 }
+
+void MarketDataSplitter::childMouseReleaseEvent(QMouseEvent* event)
+{
+    emit childMouseReleased(event);
+}

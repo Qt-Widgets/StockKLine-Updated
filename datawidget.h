@@ -15,10 +15,14 @@ public:
     DataWidget(MarketDataSplitter* parent = nullptr, DataFile* dataFile = nullptr, bool needGrid = true);
     void resizeEvent(QResizeEvent* event) override;
 
+private:
+    void moveDataWindow(QMouseEvent* event);
+
 public slots:
     void keyPressEventFromParent(QKeyEvent* event);
     void mouseMoveEventFromParent(QMouseEvent* event);
     void mousePressEventFromParent(QMouseEvent* event);
+    void mouseReleaseEventFromParent(QMouseEvent* event);
 
 protected:
     DataFile* mDataFile;
@@ -35,6 +39,9 @@ protected:
     //鼠标位置
     QPoint mousePoint;
     bool isUnderMouse = false;
+
+    QPoint mousePressedPoint;
+    bool isMouseReleased = true;
 
     //键盘是否按下
     bool isKeyDown = false;

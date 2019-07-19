@@ -21,7 +21,7 @@ void TopInstrumentSummary::paintEvent(QPaintEvent* event)
     painter.setPen(pen);
 
     QRect rect(30, 2, 100, barHeight - 3);
-    QString str = QStringLiteral("螺纹 rb1910");
+    QString str = QStringLiteral("产品");
     painter.drawText(rect,str);
 }
 

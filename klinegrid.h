@@ -15,10 +15,11 @@ class KLineGrid : public DataWidget
 
 public:
     explicit KLineGrid(MarketDataSplitter *parent = nullptr, DataFile* dataFile = nullptr);
-    void virtual paintEvent(QPaintEvent* event);
-    void virtual keyPressEvent(QKeyEvent* event);
-    void virtual mouseMoveEvent(QMouseEvent* event);
-    void virtual mousePressEvent(QMouseEvent* event);
+    void virtual paintEvent(QPaintEvent* event) override;
+    void virtual keyPressEvent(QKeyEvent* event) override;
+    void virtual mouseMoveEvent(QMouseEvent* event) override;
+    void virtual mousePressEvent(QMouseEvent* event) override;
+    void virtual mouseReleaseEvent(QMouseEvent* event) override;
     ~KLineGrid();
 
     void initial();

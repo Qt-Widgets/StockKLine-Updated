@@ -7,6 +7,7 @@ DataWidget::DataWidget(MarketDataSplitter* parent, DataFile* dataFile, bool need
 
     connect(parent, &MarketDataSplitter::childMouseMoved, this, &DataWidget::mouseMoveEventFromParent);
     connect(parent, &MarketDataSplitter::childMousePressed, this, &DataWidget::mousePressEventFromParent);
+    connect(parent, &MarketDataSplitter::childMouseReleased, this, &DataWidget::mouseReleaseEventFromParent);
     connect(parent, &MarketDataSplitter::childKeyPressed, this, &DataWidget::keyPressEventFromParent);
 
     endDay = mDataFile->kline.size() - 1;
@@ -100,20 +101,20 @@ void DataWidget::keyPressEventFromParent(QKeyEvent* event)
     {
         int currentTotalDay = totalDay;
 
-        if(totalDay == mDataFile->kline.size() -1 )
+        if(totalDay == mDataFile->kline.size() - 1)
             return;
 
         totalDay = totalDay * 2;
-        if( totalDay > mDataFile->kline.size() -1)
+        if( totalDay > mDataFile->kline.size() - 1)
         {
-            totalDay = mDataFile->kline.size() -1;
+            totalDay = mDataFile->kline.size() - 1;
         }
 
 
         endDay = currentDay + (int)((float)(endDay - currentDay) / currentTotalDay * totalDay);
-        if( endDay > mDataFile->kline.size() -1)
+        if( endDay > mDataFile->kline.size() - 1)
         {
-            endDay = mDataFile->kline.size() -1;
+            endDay = mDataFile->kline.size() - 1;
         }
 
         beginDay = currentDay - (totalDay - (endDay - currentDay));
@@ -129,18 +130,41 @@ void DataWidget::keyPressEventFromParent(QKeyEvent* event)
         break;
     }
 }
+
 void DataWidget::mouseMoveEventFromParent(QMouseEvent* event)
 {
+    if (!isMouseReleased) {
+        bCross = false;
+        moveDataWindow(event);
+    }
+
     isUnderMouse = this->underMouse();
     mousePoint = event->pos();
     isKeyDown = false;
     update();
 }
+
 void DataWidget::mousePressEventFromParent(QMouseEvent* event)
 {
     if(event->button() == Qt::LeftButton)
     {
-        bCross = !bCross;
+        isMouseReleased = false;
+        mousePressedPoint = event->pos();
+        //bCross = !bCross;
+        //update();
+    }
+}
+
+void DataWidget::mouseReleaseEventFromParent(QMouseEvent* event)
+{
+    if(event->button() == Qt::LeftButton) {
+        isMouseReleased = true;
+
+        //no mouse movement
+        if (event->pos().x() == mousePressedPoint.x() && event->y() == mousePressedPoint.y()) {
+            bCross = !bCross;
+        }
+
         update();
     }
 }
@@ -149,4 +173,28 @@ void DataWidget::resizeEvent(QResizeEvent* event)
 {
     AutoGrid::resizeEvent(event);
     bCross = false;
+}
+
+void DataWidget::moveDataWindow(QMouseEvent* event)
+{
+    int xDelta = event->x() - mousePoint.x();
+    int interval = (endDay - beginDay) * std::fabs(xDelta) / (getWidgetWidth() - getMarginLeft() - getMarginRight());
+    if (xDelta > 0) {
+        if( beginDay - interval < 0) {
+            endDay -= beginDay;
+            beginDay = 0;
+        } else {
+            endDay -= interval;
+            beginDay -= interval;
+        }
+    } else if (xDelta < 0) {
+        if( endDay + interval > mDataFile->kline.size() - 1) {
+            int remaining = mDataFile->kline.size() - 1 - endDay;
+            beginDay += remaining;
+            endDay = mDataFile->kline.size() - 1;
+        } else {
+            endDay += interval;
+            beginDay += interval;
+        }
+    }
 }
