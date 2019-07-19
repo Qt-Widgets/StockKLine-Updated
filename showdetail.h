@@ -32,8 +32,7 @@ private:
     QString totalVolume = "";
     QString totalAmount = "";
     double turnoverRate = 0;
-
-
+    QString tradingSignal = "";
 
     QColor timeColor ;
     QColor currentPriceColor ;
@@ -46,6 +45,7 @@ private:
     QColor totalVolumeColor ;
     QColor totalAmountColor ;
     QColor turnoverRateColor ;
+    QColor tradingSignalColor;
 
     int boxWidth = 75;
     int dataMarginLeft = 4;
@@ -64,7 +64,8 @@ public :
                      double amountOfAmplitude,QColor amountOfAmplitudeColor,
                      QString totalVolume,QColor totalVolumeColor,
                      QString totalAmount,QColor totalAmountColor,
-                     double turnoverRate,QColor turnoverRateColor);
+                     double turnoverRate,QColor turnoverRateColor,
+                     QString tradingSignal, QColor tradingSignalColor);
 };
 
 #endif // SHOWDETAIL_H

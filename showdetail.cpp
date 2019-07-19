@@ -11,7 +11,7 @@ ShowDetail::ShowDetail(QWidget* parent) : QDialog(parent, Qt::FramelessWindowHin
     this->setFont(ft);
     this->setStyleSheet("border: 1px solid white");
     this->setModal(false);
-    this->setFixedSize(boxWidth, 200);
+    this->setFixedSize(boxWidth, 220);
     this->setWindowFlags(Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint);
 }
 
@@ -44,18 +44,6 @@ void ShowDetail::drawStr()
     QRect rectTime2(dataMarginLeft, 4, boxWidth, dataHeight);
     QString str = time.mid(0,10).remove("-");
     painter.drawText(rectTime2,str);
-
-//    count++;
-//    pen.setColor(QColor("#FFFFFF"));
-//    painter.setPen(pen);
-//    QRect rectTime3(dataMarginLeft, 4 + (dataHeight + dataSpacing) * count, boxWidth, dataHeight);
-//    painter.drawText(rectTime3,QStringLiteral("currentValue"));
-
-//    count++;
-//    pen.setColor(currentPriceColor);
-//    painter.setPen(pen);
-//    QRect rectTime4(dataMarginLeft, 4 + (dataHeight + dataSpacing) * count, boxWidth, dataHeight);
-//    painter.drawText(rectTime4,str.sprintf("%.2f",currentPrice));
 
     count++;
     pen.setColor(QColor("#FFFFFF"));
@@ -117,79 +105,17 @@ void ShowDetail::drawStr()
     QRect rectTime14(dataMarginLeft, 4 + (dataHeight + dataSpacing) * count, boxWidth, dataHeight);
     painter.drawText(rectTime14,totalVolume);
 
-
-
-    /*
+    count++;
     pen.setColor(QColor("#FFFFFF"));
     painter.setPen(pen);
-    QRect rectTime15(20,440,100,30);
-    painter.drawText(rectTime15,QStringLiteral("amountOfAmplitude"));
+    QRect rectTime15(dataMarginLeft, 4 + (dataHeight + dataSpacing) * count, boxWidth, dataHeight);
+    painter.drawText(rectTime15,QStringLiteral("交易信号"));
 
-
-    pen.setColor(amountOfAmplitudeColor);
+    count++;
+    pen.setColor(tradingSignalColor);
     painter.setPen(pen);
-    QRect rectTime16(20,470,100,30);
-    painter.drawText(rectTime16,str.sprintf("%.2f%",amountOfAmplitude));
-
-
-
-
-
-    pen.setColor(QColor("#FFFFFF"));
-    painter.setPen(pen);
-    QRect rectTime17(20,500,100,30);
-    painter.drawText(rectTime17,QStringLiteral("totalVolume"));
-
-
-
-
-    pen.setColor(totalVolumeColor);
-    painter.setPen(pen);
-    QRect rectTime18(20,530,100,30);
-    str = totalVolume;
-    str = str.mid(1,str.length());
-    str = str.mid(0,str.length()-1);
-    painter.drawText(rectTime18,str);
-
-
-
-
-    pen.setColor(QColor("#FFFFFF"));
-    painter.setPen(pen);
-    QRect rectTime19(20,560,100,30);
-    painter.drawText(rectTime19,QStringLiteral("totalAmount"));
-
-
-
-    pen.setColor(totalAmountColor);
-    painter.setPen(pen);
-    QRect rectTime20(20,590,100,30);
-
-    str = totalAmount;
-    str = str.mid(1,str.length());
-    str = str.mid(0,str.length()-1);
-    painter.drawText(rectTime20,str);
-
-
-
-
-    pen.setColor(QColor("#FFFFFF"));
-    painter.setPen(pen);
-    QRect rectTime21(20,620,100,30);
-    painter.drawText(rectTime21,tr("turnoverRate"));
-
-
-
-    pen.setColor(turnoverRateColor);
-    painter.setPen(pen);
-    QRect rectTime22(20,650,100,30);
-    painter.drawText(rectTime22,str.sprintf("%.2f",turnoverRate));*/
-
-
-
-//    QRect rectTime4( 20,50,100,30);
-//    painter.drawText(rectTime4,str.sprintf("%.2f",currentPrice));
-
+    QRect rectTime16(dataMarginLeft, 4 + (dataHeight + dataSpacing) * count, boxWidth, dataHeight);
+    painter.drawText(rectTime16, tradingSignal == "" ? QStringLiteral("无") : tradingSignal);
 }
 
 void ShowDetail::receiveParams(QString time,QColor timeColor,
@@ -202,7 +128,8 @@ void ShowDetail::receiveParams(QString time,QColor timeColor,
                                double amountOfAmplitude,QColor amountOfAmplitudeColor,
                                QString totalVolume,QColor totalVolumeColor,
                                QString totalAmount,QColor totalAmountColor,
-                               double turnoverRate,QColor turnoverRateColor)
+                               double turnoverRate,QColor turnoverRateColor,
+                               QString tradingSignal, QColor tradingSignalColor)
 {
     this->time = time;
     this->currentPrice = currentPrice;
@@ -215,6 +142,7 @@ void ShowDetail::receiveParams(QString time,QColor timeColor,
     this->totalVolume = totalVolume;
     this->totalAmount = totalAmount;
     this->turnoverRate = turnoverRate;
+    this->tradingSignal = tradingSignal;
 
 
     this->timeColor = timeColor;
@@ -228,6 +156,7 @@ void ShowDetail::receiveParams(QString time,QColor timeColor,
     this->totalVolumeColor = totalVolumeColor;
     this->totalAmountColor = totalAmountColor;
     this->turnoverRateColor = turnoverRateColor;
+    this->tradingSignalColor = tradingSignalColor;
 
     update();
 }

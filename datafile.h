@@ -60,7 +60,7 @@ public:
 
     std::map<QString, Qt::GlobalColor> tradingSignalColors = {
         {"BPK", Qt::yellow}, {"SPK", Qt::red} , {"BK", Qt::white},
-        {"SK", Qt::green}, {"BP", Qt::blue}, {"SP", Qt::magenta}
+        {"SK", Qt::green}, {"BP", Qt::blue}, {"SP", Qt::darkMagenta}
     };
 };
 

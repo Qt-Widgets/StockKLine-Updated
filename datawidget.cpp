@@ -1,4 +1,5 @@
-﻿#include "datawidget.h"
+﻿#include <iostream>
+#include "datawidget.h"
 
 DataWidget::DataWidget(MarketDataSplitter* parent, DataFile* dataFile, bool needGrid)
     : AutoGrid(parent, needGrid)
@@ -30,11 +31,11 @@ void DataWidget::keyPressEventFromParent(QKeyEvent* event)
     {
     case Qt::Key_Left:
     {
-        double xstep = getGridWidth() / totalDay ;
+        double xstep = std::max(getGridWidth() / totalDay, 1.0);
 
         if( mousePoint.x() - xstep < getMarginLeft())
         {
-            if( beginDay -1 < 0)
+            if( beginDay - 1 < 0)
                 return;
             endDay -= 1;
             beginDay -= 1;
@@ -48,18 +49,17 @@ void DataWidget::keyPressEventFromParent(QKeyEvent* event)
 
     case Qt::Key_Right:
     {
-        double xstep = getGridWidth() / totalDay ;
+        double xstep = std::max(getGridWidth() / totalDay, 1.0);
 
         if( mousePoint.x() + xstep > getWidgetWidth() - getMarginRight())
         {
-            if( endDay +1 > mDataFile->kline.size() -1)
+            if( endDay + 1 > mDataFile->kline.size() - 1)
                 return;
             endDay += 1;
             beginDay += 1;
         }
         else
             mousePoint.setX(mousePoint.x() + xstep);
-
 
         update();
         break;

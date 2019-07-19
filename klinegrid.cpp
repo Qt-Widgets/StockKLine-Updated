@@ -334,14 +334,12 @@ void KLineGrid::drawCrossVerLine()
     pen.setWidth(1);
     painter.setPen(pen);
 
-
-    double xstep = getGridWidth() / totalDay ;
-    double xPos = getMarginLeft() ;
-    while( mousePoint.x() - xPos > xstep )
-    {
+    double xstep = getGridWidth() / totalDay;
+    double xPos = getMarginLeft();
+    while( mousePoint.x() - xPos > xstep ) {
         xPos += xstep;
     }
-    xPos += 0.5*lineWidth;
+    xPos += 0.5 * lineWidth;
     QLine horline(xPos,getMarginTop(),xPos,getWidgetHeight() - getMarginBottom());
     painter.drawLine(horline);
 
@@ -362,7 +360,6 @@ void KLineGrid::drawCrossHorLine()
     double yPos;
     currentDay = ( mousePoint.x() - getMarginLeft() ) * totalDay / getGridWidth() + beginDay;
 
-
     if( mDataFile->kline[currentDay].openingPrice < mDataFile->kline[currentDay].closeingPrice )
         yPos =  ( mDataFile->kline[currentDay].closeingPrice - lowestBid ) * yscale ;
     else
@@ -373,9 +370,6 @@ void KLineGrid::drawCrossHorLine()
     painter.drawLine(verline);
 
 }
-
-
-
 
 void KLineGrid::drawTips()
 {
@@ -482,7 +476,8 @@ void KLineGrid::updateDataDetailBox()
                                      mDataFile->kline[currentDayAtMouse].amountOfAmplitude,QColor("#02E2F4"),
                                      mDataFile->kline[currentDayAtMouse].totalVolume,QColor("#02E2F4"),
                                      mDataFile->kline[currentDayAtMouse].totalAmount,QColor("#02E2F4"),
-                                     mDataFile->kline[currentDayAtMouse].turnoverRate,QColor("#02E2F4")
+                                     mDataFile->kline[currentDayAtMouse].turnoverRate,QColor("#02E2F4"),
+                                     mDataFile->kline[currentDayAtMouse].tradingSignal, QColor("#FFFFFF")
                                      );
 }
 
