@@ -111,6 +111,7 @@ void KLineGrid::drawLine()
 
 
     drawAverageLine();
+    drawCapitalLine();
     //drawAverageLine(10);
     //drawAverageLine(20);
     //drawAverageLine(30);
@@ -126,6 +127,9 @@ void KLineGrid::getIndicator()
     lowestBid = std::numeric_limits<double>::max();
     maxVolume = 0;
 
+    highestCapital = 0.0;
+    lowestCapital = std::numeric_limits<double>::max();
+
     for( int i= beginDay;i<endDay;++i)
     {
         if( mDataFile->kline[i].highestBid > highestBid )
@@ -134,6 +138,12 @@ void KLineGrid::getIndicator()
             lowestBid = mDataFile->kline[i].lowestBid;
 //        if( mDataFile->kline[i].totalVolume.toFloat() > maxVolume )
 //            maxVolume = mDataFile->kline[i].totalVolume.toFloat();
+        if (mDataFile->kline[i].capital > highestCapital) {
+            highestCapital = mDataFile->kline[i].capital;
+        }
+        if (mDataFile->kline[i].lowestBid < lowestCapital) {
+            lowestCapital = mDataFile->kline[i].capital;
+        }
     }
 }
 
@@ -568,7 +578,29 @@ void KLineGrid::drawTips2()
     painter.drawText(rectText, str.sprintf("%.2f",yval));
 }
 
+void KLineGrid::drawCapitalLine()
+{
+    if( beginDay < 0)
+        return;
 
+    double capitalYScale = getGridHeight() / (highestCapital - lowestCapital);
+    QVector<QPoint> point;
+    QPoint temp;
+    double xstep = getGridWidth() / totalDay;
+
+    for(int i = beginDay; i < endDay; ++i) {
+        temp.setX(getMarginLeft() + xstep *(i - beginDay) + 0.5*lineWidth);
+        temp.setY(getWidgetHeight() - (mDataFile->kline[i].capital - lowestCapital) *capitalYScale - getMarginBottom());
+        point.push_back(temp);
+    }
+
+    QPainter painter(this);
+    QPen pen;
+    pen.setColor(Qt::darkGreen);
+    painter.setPen(pen);
+    QPolygon polykline(point);
+    painter.drawPolyline(polykline);
+}
 
 void KLineGrid::drawAverageLine()
 {

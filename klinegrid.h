@@ -44,6 +44,8 @@ public:
     //画均线
     void drawAverageLine();
 
+    void drawCapitalLine();
+
 private:
     void drawDataDetailBox();
     void updateDataDetailBox();
@@ -57,6 +59,8 @@ private:
     double highestBid;
     double lowestBid;
     double maxVolume;
+    double highestCapital;
+    double lowestCapital;
 
     //x轴和y轴的缩放比
     double xscale;

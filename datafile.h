@@ -31,6 +31,7 @@ struct KLine
 
     double averages[6];
     QString tradingSignal;
+    double capital;
 };
 
 class DataFile

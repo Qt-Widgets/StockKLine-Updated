@@ -21,6 +21,8 @@ bool DataFile::readBacktestingResult(QString filestr)
     char    *token;
     QString time;
     QString tradingSignal;
+    double lastCapital = 1000000.0;
+    double capital = 0.0;;
     int klineIndex = 0;
 
     while( file.readLine(line,1024)  > 0 ) {
@@ -32,10 +34,18 @@ bool DataFile::readBacktestingResult(QString filestr)
         if( token != nullptr )
             tradingSignal = token;
 
+        token = strtok( nullptr, "," );
+        if( token != nullptr )
+            capital = std::atof(token);
+
         while (kline[klineIndex].time != time) {
+            kline[klineIndex].capital = lastCapital;
             klineIndex++;
         }
-        kline[klineIndex++].tradingSignal = tradingSignal;
+        kline[klineIndex].tradingSignal = tradingSignal;
+        kline[klineIndex].capital = capital;
+        lastCapital = capital;
+        klineIndex++;
     }
 }
 
