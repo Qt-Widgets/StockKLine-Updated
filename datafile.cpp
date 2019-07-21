@@ -28,7 +28,7 @@ bool DataFile::readBacktestingResult(QString filestr)
         if( token != nullptr )
             time = token;
 
-        token = strtok( nullptr, "\r\n" );
+        token = strtok( nullptr, "," );
         if( token != nullptr )
             tradingSignal = token;
 
