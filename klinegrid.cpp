@@ -307,9 +307,8 @@ void KLineGrid::drawKline()
 
             painter.drawLine(p1,p2);
             painter.drawLine(p3,p4);
-
-            drawTradingSignal(i, getMarginLeft() + xstep *(i - beginDay) + 0.5*lineWidth, painter, tradingSignalPen);
         }
+        drawTradingSignal(i, getMarginLeft() + xstep * (i - beginDay) + 0.5 * lineWidth, painter, tradingSignalPen);
     }
 }
 

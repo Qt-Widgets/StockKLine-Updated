@@ -61,50 +61,6 @@ bool DataFile::readData(QString filestr)
 
     while( file.readLine(line,1024)  > 0 )
     {
-//        token = strtok( line, "'\t'" );
-//        if( token != NULL )
-//            temp.time = token;
-
-//        token = strtok( NULL, "'\t'" );
-//        if( token != NULL )
-//            temp.openingPrice = atof(token);
-
-//        token = strtok( NULL, "'\t'" );
-//        if( token != NULL )
-//            temp.highestBid = atof(token);
-
-//        token = strtok( NULL, "'\t'" );
-//        if( token != NULL )
-//            temp.lowestBid = atof(token);
-
-//        token = strtok( NULL, "'\t'" );
-//        if( token != NULL )
-//            temp.closeingPrice = atof(token);
-
-//        token = strtok( NULL, "'\t'" );
-//        if( token != NULL )
-//            temp.amountOfIncrease = atof(token);
-
-//        token = strtok( NULL, "'\t'" );
-//        if( token != NULL )
-//            temp.amountOfAmplitude = atof(token);
-
-//        token = strtok( NULL, "'\t'" );
-//        if( token != NULL )
-//            temp.totalVolume = (token);
-
-//        token = strtok( NULL, "'\t'" );
-//        if( token != NULL )
-//            temp.totalAmount = (token);
-
-//        token = strtok( NULL, "'\t'" );
-//        if( token != NULL )
-//            temp.turnoverRate = atof(token);
-
-//        token = strtok( NULL, "'\t'" );
-//        if( token != NULL )
-//            temp.volumeAmount = atof(token);
-
         token = strtok( line, "," );
         if( token != nullptr )
             temp.time = token;
@@ -176,10 +132,12 @@ void DataFile::calAverageLine()
             sum += kline[j].closeingPrice;
             kline[j].averages[i] = 0.0;
         }
-        for (int j = period - 1; j < kline.size(); j++) {
+        sum += kline[period - 1].closeingPrice;
+        kline[period - 1].averages[i] = sum / period;
+        for (int j = period; j < kline.size(); j++) {
             sum += kline[j].closeingPrice;
+            sum -= kline[j - period].closeingPrice;
             kline[j].averages[i] = sum / period;
-            sum -= kline[j - (period - 1)].closeingPrice;
         }
     }
 }
