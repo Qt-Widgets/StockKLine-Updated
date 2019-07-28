@@ -1,4 +1,5 @@
 ﻿#include "datafile.h"
+#include <vector>
 
 DataFile::DataFile()
 {
@@ -21,31 +22,32 @@ bool DataFile::readBacktestingResult(QString filestr)
     char    *token;
     QString time;
     QString tradingSignal;
-    double lastCapital = 1000000.0;
     double capital = 0.0;;
     int klineIndex = 0;
+    std::vector<std::string> columns;
 
     while( file.readLine(line,1024)  > 0 ) {
-        token = strtok( line, "," );
-        if( token != nullptr )
-            time = token;
+        columns.clear();
+        split(line, ',', columns);
 
-        token = strtok( nullptr, "," );
-        if( token != nullptr )
-            tradingSignal = token;
-
-        token = strtok( nullptr, "," );
-        if( token != nullptr )
-            capital = std::atof(token);
-
-        while (kline[klineIndex].time != time) {
-            kline[klineIndex].capital = lastCapital;
-            klineIndex++;
-        }
-        kline[klineIndex].tradingSignal = tradingSignal;
-        kline[klineIndex].capital = capital;
-        lastCapital = capital;
+        kline[klineIndex].tradingSignal = columns[1].c_str();
+        kline[klineIndex].capital = std::atof(columns[2].c_str());
         klineIndex++;
+    }
+}
+
+void DataFile::split(const std::string& s, char c, std::vector<std::string>& v)
+{
+    std::string::size_type i = 0;
+    std::string::size_type j = s.find(c);
+
+    while (j != std::string::npos) {
+        v.push_back(s.substr(i, j - i));
+        i = ++j;
+        j = s.find(c, j);
+
+        if (j == std::string::npos)
+            v.push_back(s.substr(i, s.length()));
     }
 }
 

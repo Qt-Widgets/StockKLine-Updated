@@ -63,6 +63,9 @@ public:
         {"BPK", Qt::yellow}, {"SPK", Qt::red} , {"BK", Qt::white},
         {"SK", Qt::green}, {"BP", Qt::blue}, {"SP", Qt::darkMagenta}
     };
+
+private:
+    void split(const std::string& s, char c, std::vector<std::string>& v);
 };
 
 #endif // DATAFILE_H
