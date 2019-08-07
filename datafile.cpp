@@ -6,7 +6,6 @@ DataFile::DataFile()
 
 }
 
-
 DataFile::~DataFile()
 {
 
@@ -34,6 +33,8 @@ bool DataFile::readBacktestingResult(QString filestr)
         kline[klineIndex].capital = std::atof(columns[2].c_str());
         klineIndex++;
     }
+
+    calCapitalAverageLine();
 }
 
 void DataFile::split(const std::string& s, char c, std::vector<std::string>& v)
@@ -92,41 +93,12 @@ bool DataFile::readData(QString filestr)
         kline.push_back(temp);
     }
 
-
     calAverageLine();
-    //Corvert();
-    //calvolumeAverage5();
-    //calvolumeAverage10();
     return true;
 }
 
-
 void DataFile::calAverageLine()
 {
-
-//    // 初始化各均线的值
-//    for(int i=0; i<4;i++)
-//        kline[i].averageLine5 = 0;
-
-//    for(int i=0;i<9;i++)
-//        kline[i].averageLine10 = 0;
-
-//    for(int i=0;i<19;i++)
-//        kline[i].averageLine20 = 0;
-
-//    for(int i=0;i<29;i++)
-//        kline[i].averageLine30 = 0;
-
-//    for(int i=0;i<59;i++)
-//        kline[i].averageLine60 = 0;
-
-
-//    calAverageLine5();
-//    calAverageLine10();
-//    calAverageLine20();
-//    calAverageLine30();
-//    calAverageLine60();
-
     for (int i = 0; i < averageLineCount; i++) {
         double sum = 0.0;
         int period = averageLinePeriod[i];
@@ -144,119 +116,21 @@ void DataFile::calAverageLine()
     }
 }
 
-
-void DataFile::calAverageLine5()
+void DataFile::calCapitalAverageLine()
 {
-    for( int i=4;i<kline.size();++i)
-    {
-        double sum = 0;
-        for(int j=i-4;j<=i;++j)
-        {
-            sum += kline[j].closeingPrice;
+    for (int i = 0; i < capitalAverageLineCount; i++) {
+        double sum = 0.0;
+        int period = capitalAverageLinePeriod[i];
+        for (int j = 0; j < period - 1; j++) {
+            sum += kline[j].capital;
+            kline[j].capitalAvgs[i] = 0.0;
         }
-        kline[i].averageLine5 = sum /5;
+        sum += kline[period - 1].capital;
+        kline[period - 1].capitalAvgs[i] = sum / period;
+        for (int j = period; j < kline.size(); j++) {
+            sum += kline[j].capital;
+            sum -= kline[j - period].capital;
+            kline[j].capitalAvgs[i] = sum / period;
+        }
     }
 }
-
-
-void DataFile::calAverageLine10()
-{
-    for( int i=9;i<kline.size();++i)
-    {
-        double sum = 0;
-        for(int j=i-9;j<=i;++j)
-        {
-            sum += kline[j].closeingPrice;
-        }
-        kline[i].averageLine10 = sum /10;
-    }
-}
-
-
-
-
-void DataFile::calAverageLine20()
-{
-    for( int i=19;i<kline.size();++i)
-    {
-        double sum = 0;
-        for(int j=i-19;j<=i;++j)
-        {
-            sum += kline[j].closeingPrice;
-        }
-        kline[i].averageLine20 = sum /20;
-    }
-}
-
-
-void DataFile::calAverageLine30()
-{
-    for( int i=29;i<kline.size();++i)
-    {
-        double sum = 0;
-        for(int j=i-29;j<=i;++j)
-        {
-            sum += kline[j].closeingPrice;
-        }
-        kline[i].averageLine30 = sum /30;
-    }
-}
-
-
-
-void DataFile::calAverageLine60()
-{
-    for( int i=59;i<kline.size();++i)
-    {
-        double sum = 0;
-        for(int j=i-59;j<=i;++j)
-        {
-            sum += kline[j].closeingPrice;
-        }
-        kline[i].averageLine60 = sum /60;
-    }
-}
-
-void DataFile::calvolumeAverage5()
-{
-
-    for( int i=4;i<kline.size();++i)
-    {
-        double sum = 0;
-        for(int j=i-4;j<=i;++j)
-        {
-            sum += kline[j].ftotalVolume;
-        }
-        kline[i].volumeAverage5 = sum /5;
-    }
-
-
-}
-
-
-void DataFile::calvolumeAverage10()
-{
-    for( int i=9;i<kline.size();++i)
-    {
-        double sum = 0;
-        for(int j=i-9;j<=i;++j)
-        {
-            sum += kline[j].ftotalVolume;
-        }
-        kline[i].volumeAverage10 = sum /10;
-    }
-}
-
-void DataFile::Corvert()
-{
-//    for(int i=0;i<kline.size();++i)
-//    {
-//        QString strtemp = kline[i].totalVolume;
-//        strtemp = strtemp.mid(1,strtemp.length());
-//        strtemp = strtemp.mid(0,strtemp.length()-1);
-//        strtemp.replace(QString(","),QString(""));
-//        kline[i].ftotalVolume= strtemp.toInt();
-//    }
-}
-
-

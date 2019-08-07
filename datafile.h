@@ -31,7 +31,9 @@ struct KLine
 
     double averages[6];
     QString tradingSignal;
+
     double capital;
+    double capitalAvgs[6];
 };
 
 class DataFile
@@ -44,20 +46,18 @@ public:
     std::vector<KLine> kline;
 
     void calAverageLine();
-    void calAverageLine5();
-    void calAverageLine10();
-    void calAverageLine20();
-    void calAverageLine30();
-    void calAverageLine60();
+    void calCapitalAverageLine();
 
     void calvolumeAverage5();
     void calvolumeAverage10();
 
-    void Corvert();
-
     constexpr static int averageLineCount = 3;
     int averageLinePeriod[averageLineCount] = {6, 150, 250};
     Qt::GlobalColor averageLineColors[averageLineCount] = {Qt::white, Qt::yellow, Qt::magenta};
+
+    constexpr static int capitalAverageLineCount = 3;
+    int capitalAverageLinePeriod[capitalAverageLineCount] = {6, 150, 250};
+    Qt::GlobalColor capitalAverageLineColors[capitalAverageLineCount] = {Qt::white, Qt::yellow, Qt::magenta};
 
     std::map<QString, Qt::GlobalColor> tradingSignalColors = {
         {"BPK", Qt::yellow}, {"SPK", Qt::red} , {"BK", Qt::white},
