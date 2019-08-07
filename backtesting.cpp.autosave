@@ -1,0 +1,7 @@
+﻿#include "backtestingtab.h"
+
+BacktestingTab::BacktestingTab(QWidget *parent)
+    : QWidget(parent)
+{
+
+}

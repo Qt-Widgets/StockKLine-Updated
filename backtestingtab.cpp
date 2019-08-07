@@ -2,14 +2,14 @@
 #include <QMessageBox>
 #include "kvolumegrid.h"
 #include "klinegrid.h"
-#include "marketdatatab.h"
+#include "backtestingtab.h"
 #include "marketdataadmin.h"
 #include "marketdatasplitter.h"
 #include "datadetailbox.h"
 #include "bottomtimegrid.h"
 #include "topinstrumentsummary.h"
 
-MarketDataTab::MarketDataTab(QWidget *parent)
+BacktestingTab::BacktestingTab(QWidget *parent)
     : QWidget(parent)
 {
     loadData();
@@ -20,12 +20,12 @@ MarketDataTab::MarketDataTab(QWidget *parent)
     this->setLayout(layout);
 }
 
-MarketDataTab::~MarketDataTab()
+BacktestingTab::~BacktestingTab()
 {
     delete mDataFile;
 }
 
-void MarketDataTab::loadData()
+void BacktestingTab::loadData()
 {
     mDataFile = new DataFile();
 
@@ -47,7 +47,7 @@ void MarketDataTab::loadData()
     }
 }
 
-QWidget* MarketDataTab::createChartWidget(QWidget* parent)
+QWidget* BacktestingTab::createChartWidget(QWidget* parent)
 {
     MarketDataSplitter *splitterMain = new MarketDataSplitter(parent); //新建主分割窗口，水平分割
 
@@ -71,7 +71,7 @@ QWidget* MarketDataTab::createChartWidget(QWidget* parent)
     return splitterMain;
 }
 
-QWidget* MarketDataTab::createAdminWidget(QWidget* parent)
+QWidget* BacktestingTab::createAdminWidget(QWidget* parent)
 {
     return new MarketDataAdmin(parent);
 }

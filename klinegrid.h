@@ -43,7 +43,6 @@ public:
 
     //画均线
     void drawAverageLine();
-
     void drawCapitalLine();
 
 private:
