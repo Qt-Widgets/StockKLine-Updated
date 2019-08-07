@@ -125,39 +125,22 @@ void CapitalAverageDiffGrid::drawVolume()
 
         double temp = mDataFile->kline[i].capitalAvgDiff;
 
-//        //阴线
-//        if( mDataFile->kline[i].openingPrice > mDataFile->kline[i].closeingPrice )
-//        {
-//            pen.setWidth(lineWidth);
-//            painter.setPen(pen);
-//            p1.setX( getMarginLeft() + xstep *(i - beginDay) + 0.5*lineWidth);
-//            p1.setY( getWidgetHeight() - (temp ) *yscale - getMarginBottom() + 0.5*lineWidth);
-//            p2.setX( getMarginLeft() + xstep *(i - beginDay) + 0.5*lineWidth);
-//            p2.setY( getWidgetHeight()  - getMarginBottom() - 0.5*lineWidth);
-//            painter.drawLine(p1,p2);
-//        }
+        pen.setWidth(1);
+        painter.setPen(pen);
 
-//        //阳线
-//        else
-//        {
-            pen.setWidth(1);
-            painter.setPen(pen);
+        p1.setX( getMarginLeft() + xstep *(i - beginDay) );
+        p1.setY( ypZeroLine - (temp ) *yscale - getMarginBottom());
+        p2.setX(getMarginLeft() + xstep *(i - beginDay) + lineWidth);
+        p2.setY( ypZeroLine - (temp ) *yscale - getMarginBottom());
+        p3.setX( getMarginLeft() + xstep *(i - beginDay) );
+        p3.setY( ypZeroLine  - getMarginBottom() );
+        p4.setX( getMarginLeft() + xstep *(i - beginDay) + lineWidth);
+        p4.setY( ypZeroLine  - getMarginBottom() );
 
-            p1.setX( getMarginLeft() + xstep *(i - beginDay) );
-            p1.setY( ypZeroLine - (temp ) *yscale - getMarginBottom());
-            p2.setX(getMarginLeft() + xstep *(i - beginDay) + lineWidth);
-            p2.setY( ypZeroLine - (temp ) *yscale - getMarginBottom());
-            p3.setX( getMarginLeft() + xstep *(i - beginDay) );
-            p3.setY( ypZeroLine  - getMarginBottom() );
-            p4.setX( getMarginLeft() + xstep *(i - beginDay) + lineWidth);
-            p4.setY( ypZeroLine  - getMarginBottom() );
-
-            painter.drawLine(p1,p2);
-            painter.drawLine(p1,p3);
-            painter.drawLine(p2,p4);
-            painter.drawLine(p3,p4);
-
-//        }
+        painter.drawLine(p1,p2);
+        painter.drawLine(p1,p3);
+        painter.drawLine(p2,p4);
+        painter.drawLine(p3,p4);
     }
 }
 
