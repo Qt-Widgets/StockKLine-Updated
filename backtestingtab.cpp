@@ -1,6 +1,6 @@
 ﻿#include <QVBoxLayout>
 #include <QMessageBox>
-#include "kvolumegrid.h"
+#include "capitalaveragediffgrid.h"
 #include "capitallinegrid.h"
 #include "backtestingtab.h"
 #include "marketdataadmin.h"
@@ -57,7 +57,7 @@ QWidget* BacktestingTab::createChartWidget(QWidget* parent)
     auto kline = new CapitalLineGrid(splitterMain, mDataFile);
     kline->setFocusPolicy(Qt::StrongFocus);
 
-    auto volume = new kVolumeGrid(splitterMain, mDataFile);
+    auto volume = new CapitalAverageDiffGrid(splitterMain, mDataFile);
     volume->setObjectName(QStringLiteral("kline"));
     volume->setFocusPolicy(Qt::StrongFocus);
 

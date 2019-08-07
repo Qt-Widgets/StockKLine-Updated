@@ -34,6 +34,7 @@ struct KLine
 
     double capital;
     double capitalAvgs[6];
+    double capitalAvgDiff;
 };
 
 class DataFile

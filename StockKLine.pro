@@ -32,6 +32,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += main.cpp\
     backtestingtab.cpp \
     bottomtimegrid.cpp \
+    capitalaveragediffgrid.cpp \
     capitallinegrid.cpp \
     datadetailbox.cpp \
     datawidget.cpp \
@@ -50,6 +51,7 @@ HEADERS  += mainwindow.h \
     autogrid.h \
     backtestingtab.h \
     bottomtimegrid.h \
+    capitalaveragediffgrid.h \
     capitallinegrid.h \
     datadetailbox.h \
     datawidget.h \

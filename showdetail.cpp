@@ -15,7 +15,6 @@ ShowDetail::ShowDetail(QWidget* parent) : QDialog(parent, Qt::FramelessWindowHin
     this->setWindowFlags(Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint);
 }
 
-
 void ShowDetail::drawBK()
 {
     this->setAutoFillBackground(true);

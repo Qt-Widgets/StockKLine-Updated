@@ -133,4 +133,8 @@ void DataFile::calCapitalAverageLine()
             kline[j].capitalAvgs[i] = sum / period;
         }
     }
+
+    for (int i = 0; i < kline.size(); ++i) {
+        kline[i].capitalAvgDiff = kline[i].capital - kline[i].capitalAvgs[1];
+    }
 }
