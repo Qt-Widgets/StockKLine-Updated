@@ -36,6 +36,6 @@ void BottomTimeGrid::paintEvent(QPaintEvent* event)
         currentDayAtMouse = beginDay;
     }
 
-    QRect rectText(mousePoint.x(), 0, tipsWidth, tipsHeight);
+    QRect rectText(mousePoint.x() + 5, 5, tipsWidth, tipsHeight);
     painter.drawText(rectText, mDataFile->kline[currentDayAtMouse].time);
 }

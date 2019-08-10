@@ -5,6 +5,7 @@
 #include <QMouseEvent>
 #include <QVector>
 #include <QWidget>
+#include <QLineEdit>
 #include <iostream>
 #include <iomanip>
 #include <sstream>
@@ -60,6 +61,23 @@ void CapitalLineGrid::paintEvent(QPaintEvent *event)
 {
     AutoGrid::paintEvent(event);
     drawLine();
+}
+
+void CapitalLineGrid::avgIntervalChanged()
+{
+    int avgIntervalUpdate = topBacktestingMenu->getAvgIntervalEdit()->text().toInt();
+    if (avgIntervalUpdate > 0 && avgIntervalUpdate != avgInterval) {
+        avgInterval = avgIntervalUpdate;
+        mDataFile->capitalAverageLinePeriod[0] = avgInterval;
+        mDataFile->calCapitalAverageLine();
+    }
+}
+
+void CapitalLineGrid::trackTopBacktestingMenu(TopBacktestingMenu* topBacktestingMenu)
+{
+    this->topBacktestingMenu = topBacktestingMenu;
+    // ugly, but working
+    connect(topBacktestingMenu->getAvgIntervalEdit(), &QLineEdit::editingFinished, this, &CapitalLineGrid::avgIntervalChanged);
 }
 
 void CapitalLineGrid::drawLine()
@@ -237,12 +255,12 @@ void CapitalLineGrid::updateTopAverageLineInfo()
     QPen     pen;
 
     int x = 5 + getMarginLeft();
-    for (int i = 0; i < mDataFile->averageLineCount; ++i) {
+    for (int i = 0; i < mDataFile->capitalAverageLineCount; ++i) {
         pen.setColor(mDataFile->averageLineColors[i]);
         painter.setPen(pen);
         std::stringstream stream;
-        stream << "MA" << std::fixed << std::setprecision(2) << mDataFile->averageLinePeriod[i]
-                  << " " << std::fixed << std::setprecision(2) << mDataFile->kline[currentDayAtMouse].averages[i];
+        stream << "MA" << std::fixed << std::setprecision(2) << mDataFile->capitalAverageLinePeriod[i]
+                  << " " << std::fixed << std::setprecision(2) << mDataFile->kline[currentDayAtMouse].capitalAvgs[i];
 
         QRect rectText(x, 3, x + 100, topAverageLineInfoHeight);
         painter.drawText(rectText, QString(stream.str().c_str()));

@@ -56,9 +56,9 @@ public:
     int averageLinePeriod[averageLineCount] = {6, 150, 250};
     Qt::GlobalColor averageLineColors[averageLineCount] = {Qt::white, Qt::yellow, Qt::magenta};
 
-    constexpr static int capitalAverageLineCount = 3;
-    int capitalAverageLinePeriod[capitalAverageLineCount] = {6, 150, 250};
-    Qt::GlobalColor capitalAverageLineColors[capitalAverageLineCount] = {Qt::white, Qt::yellow, Qt::magenta};
+    constexpr static int capitalAverageLineCount = 1;
+    int capitalAverageLinePeriod[capitalAverageLineCount] = {250};
+    Qt::GlobalColor capitalAverageLineColors[capitalAverageLineCount] = {Qt::magenta};
 
     std::map<QString, Qt::GlobalColor> tradingSignalColors = {
         {"BPK", Qt::yellow}, {"SPK", Qt::red} , {"BK", Qt::white},

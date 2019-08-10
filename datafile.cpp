@@ -135,10 +135,10 @@ void DataFile::calCapitalAverageLine()
     }
 
     for (int i = 0; i < kline.size(); ++i) {
-        if (i < capitalAverageLinePeriod[2]) {
+        if (i < capitalAverageLinePeriod[0]) {
             kline[i].capitalAvgDiff = 0.0;
         } else {
-            kline[i].capitalAvgDiff = kline[i].capital - kline[i].capitalAvgs[1];
+            kline[i].capitalAvgDiff = kline[i].capital - kline[i].capitalAvgs[0];
         }
     }
 }

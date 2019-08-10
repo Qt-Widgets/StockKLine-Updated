@@ -45,6 +45,7 @@ SOURCES += main.cpp\
     marketdatatab.cpp \
     showdetail.cpp \
     kvolumegrid.cpp \
+    topbacktestingmenu.cpp \
     topinstrumentsummary.cpp
 
 HEADERS  += mainwindow.h \
@@ -62,6 +63,7 @@ HEADERS  += mainwindow.h \
     marketdatatab.h \
     showdetail.h \
     kvolumegrid.h \
+    topbacktestingmenu.h \
     topinstrumentsummary.h
 
 FORMS    += mainwindow.ui

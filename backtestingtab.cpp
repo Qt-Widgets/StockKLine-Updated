@@ -7,7 +7,7 @@
 #include "marketdatasplitter.h"
 #include "datadetailbox.h"
 #include "bottomtimegrid.h"
-#include "topinstrumentsummary.h"
+#include "topbacktestingmenu.h"
 
 BacktestingTab::BacktestingTab(QWidget *parent)
     : QWidget(parent)
@@ -51,11 +51,12 @@ QWidget* BacktestingTab::createChartWidget(QWidget* parent)
 {
     MarketDataSplitter *splitterMain = new MarketDataSplitter(parent); //新建主分割窗口，水平分割
 
-    auto topInfo = new TopInstrumentSummary(splitterMain);
+    auto topInfo = new TopBacktestingMenu(splitterMain);
     topInfo->setFocusPolicy(Qt::StrongFocus);
 
     auto kline = new CapitalLineGrid(splitterMain, mDataFile);
     kline->setFocusPolicy(Qt::StrongFocus);
+    kline->trackTopBacktestingMenu(topInfo);
 
     auto volume = new CapitalAverageDiffGrid(splitterMain, mDataFile);
     volume->setObjectName(QStringLiteral("kline"));
@@ -68,6 +69,7 @@ QWidget* BacktestingTab::createChartWidget(QWidget* parent)
     splitterMain->setStyleSheet("QSplitter::handle { background-color: #000000; }");
     splitterMain->setStretchFactor(1, 2);
     splitterMain->setStretchFactor(2, 1);
+
     return splitterMain;
 }
 

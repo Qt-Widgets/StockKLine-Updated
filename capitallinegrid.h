@@ -4,6 +4,7 @@
 #include "datawidget.h"
 #include "datafile.h"
 #include "marketdatasplitter.h"
+#include "topbacktestingmenu.h"
 
 #include <QPoint>
 #include <QString>
@@ -19,7 +20,7 @@ public:
     void virtual mouseMoveEvent(QMouseEvent* event) override;
     void virtual mousePressEvent(QMouseEvent* event) override;
     void virtual mouseReleaseEvent(QMouseEvent* event) override;
-    ~CapitalLineGrid();
+    ~CapitalLineGrid() override;
 
     void initial();
     void drawLine();
@@ -43,6 +44,11 @@ public:
     void drawAverageLine();
     void drawCapitalLine();
 
+    void trackTopBacktestingMenu(TopBacktestingMenu* topBacktestingMenu);
+
+public slots:
+    void avgIntervalChanged();
+
 private:
     void updateTopAverageLineInfo();
 
@@ -65,6 +71,9 @@ private:
     bool isDrawAverageLine = true;
 
     int topAverageLineInfoHeight = 20;
+
+    TopBacktestingMenu* topBacktestingMenu;
+    int avgInterval = 250;
 
 signals:
 
