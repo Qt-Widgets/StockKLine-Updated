@@ -30,8 +30,8 @@ void AutoGrid::resizeEvent(QResizeEvent *event)
 
 void AutoGrid::initial()
 {
-    atomGridHeight = 60;
-    atomGridHeightMin = 60;
+    atomGridHeight = 30;
+    atomGridHeightMin = 30;
     atomGridWidth = 640;
     atomGridWidthMin = 640;
     drawBK();
@@ -46,6 +46,12 @@ void AutoGrid::calAtomGridHeight()
         ++hGridNum;
         height -= atomGridHeightMin;
     }
+
+    // make sure it's an even number
+    if (hGridNum % 2 == 1) {
+        hGridNum += 1;
+    }
+
     atomGridHeight = gridHeight / hGridNum;
 }
 

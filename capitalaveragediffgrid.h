@@ -28,6 +28,8 @@ private:
     void drawCrossVerLine();
     void drawCrossHorLine();
     void drawTopInfo();
+    void drawTips();
+    void drawYtick();
 
 private:
 

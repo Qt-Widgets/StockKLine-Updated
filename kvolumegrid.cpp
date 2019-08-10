@@ -14,7 +14,6 @@ kVolumeGrid::kVolumeGrid(MarketDataSplitter* parent, DataFile* dataFile)
     //开启鼠标追踪
     setMouseTracking(true);
 
-    setAtomGridHeightMin(40);
     initial();
 }
 

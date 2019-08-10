@@ -6,7 +6,8 @@
 #include <QString>
 #include <QMouseEvent>
 #include <iostream>
-
+#include <iomanip>
+#include <sstream>
 
 CapitalAverageDiffGrid::CapitalAverageDiffGrid(MarketDataSplitter* parent, DataFile* dataFile)
     : DataWidget( parent, dataFile)
@@ -14,7 +15,6 @@ CapitalAverageDiffGrid::CapitalAverageDiffGrid(MarketDataSplitter* parent, DataF
     //开启鼠标追踪
     setMouseTracking(true);
 
-    setAtomGridHeightMin(40);
     initial();
 }
 
@@ -44,6 +44,7 @@ void CapitalAverageDiffGrid::paintEvent(QPaintEvent *event)
     AutoGrid::paintEvent(event);
     //画y轴坐标轴
     getIndicator();
+    drawYtick();
     drawVolume();
 
     //画十字线
@@ -58,10 +59,83 @@ void CapitalAverageDiffGrid::paintEvent(QPaintEvent *event)
     }
 
     drawTopInfo();
+    drawTips();
+}
+
+void CapitalAverageDiffGrid::drawTips()
+{
+    if (!isUnderMouse)
+        return;
+
+    if(mousePoint.x() < getMarginLeft() || mousePoint.x() > getWidgetWidth() - getMarginRight())
+        return;
+
+    if(mousePoint.y() < getMarginTop() || mousePoint.y() > getWidgetHeight() - getMarginBottom())
+        return;
+
+    QPainter painter(this);
+    QPen     pen;
+    QBrush brush(QColor(64,0,128));
+    painter.setBrush(brush);
+    pen.setColor(QColor("#FFFFFF"));
+    pen.setWidth(1);
+    painter.setPen(pen);
+
+    double yval = std::fabs((mousePoint.y() - ypZeroLine)) * maxVolume / (getGridHeight() / 2);
+    double yPos = mousePoint.y();
+
+    int iTipsWidth = 60;
+    int iTipsHeight = 30;
+
+    QString str;
+
+    QRect rect( getWidgetWidth() - getMarginRight(),
+                yPos - iTipsHeight/2,iTipsWidth,iTipsHeight);
+    painter.drawRect(rect);
+
+
+    QRect rectText( getWidgetWidth() - getMarginRight() + iTipsWidth/4,
+                yPos - iTipsHeight/4,iTipsWidth,iTipsHeight);
+    painter.drawText(rectText, str.sprintf("%.2f", yval));
+}
+
+void CapitalAverageDiffGrid::drawYtick()
+{
+    QPainter painter(this);
+    QPen     pen;
+    pen.setColor(Qt::red);
+    painter.setPen(pen);
+    QString str;
+
+    double ystep = maxVolume / (getHGridNum() / 2);
+    for(int i = 0; i <= getHGridNum(); ++i)
+    {
+        str.sprintf("%d", (int)(i * ystep) );
+        painter.drawText( QPoint( getWidgetWidth() - getMarginRight() + 10,
+                                  ypZeroLine - i * getAtomGridHeight()), str);
+    }
+
+    for(int i = 1; i <= getHGridNum(); ++i)
+    {
+        str.sprintf("%d", (int)(i * ystep) );
+        painter.drawText( QPoint( getWidgetWidth() - getMarginRight() + 10,
+                                  ypZeroLine + i * getAtomGridHeight()), str);
+    }
 }
 
 void CapitalAverageDiffGrid::drawTopInfo()
 {
+    int currentDayAtMouse = (mousePoint.x() - getMarginLeft()) * totalDay / getGridWidth() + beginDay;
+    if( currentDayAtMouse >= endDay) {
+        currentDayAtMouse = endDay;
+    } else if (currentDayAtMouse <= beginDay) {
+        currentDayAtMouse = beginDay;
+    }
+    double diff = mDataFile->kline[currentDayAtMouse].capitalAvgDiff;
+
+    std::stringstream stream;
+    stream << "Diff: " << std::fixed << std::setprecision(2) << diff;
+
     QPainter painter(this);
     QFont font;
     font.setPointSize(11);
@@ -70,8 +144,8 @@ void CapitalAverageDiffGrid::drawTopInfo()
     pen.setColor(Qt::yellow);
     painter.setPen(pen);
 
-    QRect rectText(5 + getMarginLeft(), 3, 80, topInfoHeight);
-    painter.drawText(rectText, QStringLiteral("Diff"));
+    QRect rectText(5 + getMarginLeft(), 3, 150, topInfoHeight);
+    painter.drawText(rectText, QString(stream.str().c_str()));
 }
 
 void CapitalAverageDiffGrid::initial()
