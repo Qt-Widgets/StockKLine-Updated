@@ -75,7 +75,8 @@ void CapitalLineGrid::avgIntervalChanged()
 
 void CapitalLineGrid::backtestingConfigChanged()
 {
-
+    //backtestingDriver.test();
+    std::cout << "backtestingConfigChanged" << std::endl;
 }
 
 void CapitalLineGrid::trackTopBacktestingMenu(TopBacktestingMenu* topBacktestingMenu)

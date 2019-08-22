@@ -36,6 +36,7 @@ SOURCES += main.cpp\
     backtesting/StrategyTieKuangShiEx.cpp \
     backtesting/Utility.cpp \
     backtesting/backtestingconfig.cpp \
+    backtesting/backtestingdriver.cpp \
     backtestingtab.cpp \
     bottomtimegrid.cpp \
     capitalaveragediffgrid.cpp \
@@ -72,6 +73,7 @@ HEADERS  += mainwindow.h \
     backtesting/TradeGateway.h \
     backtesting/Utility.h \
     backtesting/backtestingconfig.h \
+    backtesting/backtestingdriver.h \
     backtesting/date.h \
     backtestingtab.h \
     bottomtimeGrid.h \

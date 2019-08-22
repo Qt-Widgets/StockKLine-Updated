@@ -5,6 +5,7 @@
 #include "datafile.h"
 #include "marketdatasplitter.h"
 #include "topbacktestingmenu.h"
+#include "backtesting/backtestingdriver.h"
 
 #include <QPoint>
 #include <QString>
@@ -75,6 +76,8 @@ private:
 
     TopBacktestingMenu* topBacktestingMenu;
     int avgInterval = 250;
+
+    BacktestingDriver backtestingDriver;
 
 signals:
 
