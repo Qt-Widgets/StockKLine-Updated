@@ -40,7 +40,7 @@ void MarketDataTab::loadData()
         return;
     }
 
-    file = QStringLiteral("E:\\cbm\\startup\\qihuoshuju_good\\TieKuangshi_15min_Backtesting_Stats.csv");
+    file = QStringLiteral("E:\\cbm\\startup\\qihuoshuju_good\\TieKuangshiEx_15min_Backtesting_Stats.csv");
     //file = QStringLiteral("TieKuangshi_15min_Backtesting_Stats.csv");
     if( !mDataFile->readBacktestingResult(file) )
     {

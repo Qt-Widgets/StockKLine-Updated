@@ -48,6 +48,7 @@ public:
 
 public slots:
     void avgIntervalChanged();
+    void backtestingConfigChanged();
 
 private:
     void updateTopAverageLineInfo();

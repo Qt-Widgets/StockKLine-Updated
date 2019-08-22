@@ -73,11 +73,26 @@ void CapitalLineGrid::avgIntervalChanged()
     }
 }
 
+void CapitalLineGrid::backtestingConfigChanged()
+{
+
+}
+
 void CapitalLineGrid::trackTopBacktestingMenu(TopBacktestingMenu* topBacktestingMenu)
 {
     this->topBacktestingMenu = topBacktestingMenu;
     // ugly, but working
     connect(topBacktestingMenu->getAvgIntervalEdit(), &QLineEdit::editingFinished, this, &CapitalLineGrid::avgIntervalChanged);
+
+    connect(topBacktestingMenu->getCapitalPeriodEdit(), &QLineEdit::editingFinished, this, &CapitalLineGrid::backtestingConfigChanged);
+    connect(topBacktestingMenu->getNegThreshold3Edit(), &QLineEdit::editingFinished, this, &CapitalLineGrid::backtestingConfigChanged);
+    connect(topBacktestingMenu->getNegThreshold2Edit(), &QLineEdit::editingFinished, this, &CapitalLineGrid::backtestingConfigChanged);
+    connect(topBacktestingMenu->getNegThreshold1Edit(), &QLineEdit::editingFinished, this, &CapitalLineGrid::backtestingConfigChanged);
+    connect(topBacktestingMenu->getPosThreshold1Edit(), &QLineEdit::editingFinished, this, &CapitalLineGrid::backtestingConfigChanged);
+    connect(topBacktestingMenu->getPosThreshold2Edit(), &QLineEdit::editingFinished, this, &CapitalLineGrid::backtestingConfigChanged);
+    connect(topBacktestingMenu->getPosThreshold3Edit(), &QLineEdit::editingFinished, this, &CapitalLineGrid::backtestingConfigChanged);
+    connect(topBacktestingMenu->getPosThreshold4Edit(), &QLineEdit::editingFinished, this, &CapitalLineGrid::backtestingConfigChanged);
+    connect(topBacktestingMenu->getPosThreshold5Edit(), &QLineEdit::editingFinished, this, &CapitalLineGrid::backtestingConfigChanged);
 }
 
 void CapitalLineGrid::drawLine()

@@ -30,6 +30,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += main.cpp\
+    backtesting/BacktestingTradeGateway.cpp \
+    backtesting/EventEngine.cpp \
+    backtesting/MA.cpp \
+    backtesting/StrategyTieKuangShiEx.cpp \
+    backtesting/Utility.cpp \
+    backtesting/backtestingconfig.cpp \
     backtestingtab.cpp \
     bottomtimegrid.cpp \
     capitalaveragediffgrid.cpp \
@@ -50,7 +56,25 @@ SOURCES += main.cpp\
 
 HEADERS  += mainwindow.h \
     autogrid.h \
+    backtesting/BacktestingEngine.h \
+    backtesting/BacktestingTradeGateway.h \
+    backtesting/BlockingQueue.h \
+    backtesting/Event.h \
+    backtesting/EventEngine.h \
+    backtesting/KlineData.h \
+    backtesting/MA.h \
+    backtesting/Strategy.h \
+    backtesting/StrategyTieKuangShiEx.h \
+    backtesting/ThostFtdcMdApi.h \
+    backtesting/ThostFtdcTraderApi.h \
+    backtesting/ThostFtdcUserApiDataType.h \
+    backtesting/ThostFtdcUserApiStruct.h \
+    backtesting/TradeGateway.h \
+    backtesting/Utility.h \
+    backtesting/backtestingconfig.h \
+    backtesting/date.h \
     backtestingtab.h \
+    bottomtimeGrid.h \
     bottomtimegrid.h \
     capitalaveragediffgrid.h \
     capitallinegrid.h \
