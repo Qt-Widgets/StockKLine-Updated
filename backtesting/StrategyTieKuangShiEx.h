@@ -4,11 +4,14 @@
 #include <vector>
 #include "Strategy.h"
 #include "MA.h"
+#include "backtesting/backtestingconfig.h"
 
 class StrategyTieKuangShiEx : public Strategy
 {
 public:
 	StrategyTieKuangShiEx();
+    virtual ~StrategyTieKuangShiEx() {}
+
 	virtual void init(TradeGatewayPtr pTradeGateway) override;
 	virtual void onTick(Tick &tick) override;
 	virtual void onBar(KLineDataType &bar) override;
@@ -49,4 +52,6 @@ private:
 
 	double maxPosCross_ = 0.0;
 	double minNegCross_ = 0.0;
+
+    BacktestingConfig* backtestingConfig;
 };

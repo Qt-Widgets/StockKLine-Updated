@@ -11,6 +11,11 @@ DataFile::~DataFile()
 
 }
 
+void DataFile::clear()
+{
+    kline.clear();
+}
+
 bool DataFile::readBacktestingResult(QString filestr)
 {
     QFile file(filestr);

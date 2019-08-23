@@ -13,7 +13,7 @@
 #include "capitallinegrid.h"
 
 CapitalLineGrid::CapitalLineGrid(MarketDataSplitter *parent, DataFile* dataFile)
-    : DataWidget(parent, dataFile)
+    : DataWidget(parent, dataFile), backtestingConfig(BacktestingConfig::instance())
 {
     //开启鼠标追踪
     setMouseTracking(true);
@@ -73,9 +73,26 @@ void CapitalLineGrid::avgIntervalChanged()
     }
 }
 
+void CapitalLineGrid::setBacktestingTab(BacktestingTab* tab)
+{
+    this->backtestingTab = tab;
+}
+
 void CapitalLineGrid::backtestingConfigChanged()
 {
-    //backtestingDriver.test();
+    backtestingConfig->capitalPeriod = topBacktestingMenu->getCapitalPeriodEdit()->text().toInt();
+    backtestingConfig->negThreshold1 = topBacktestingMenu->getNegThreshold1Edit()->text().toDouble();
+    backtestingConfig->negThreshold2 = topBacktestingMenu->getNegThreshold2Edit()->text().toDouble();
+    backtestingConfig->negThreshold3 = topBacktestingMenu->getNegThreshold3Edit()->text().toDouble();
+    backtestingConfig->posThreshold1 = topBacktestingMenu->getPosThreshold1Edit()->text().toDouble();
+    backtestingConfig->posThreshold2 = topBacktestingMenu->getPosThreshold2Edit()->text().toDouble();
+    backtestingConfig->posThreshold3 = topBacktestingMenu->getPosThreshold3Edit()->text().toDouble();
+    backtestingConfig->posThreshold4 = topBacktestingMenu->getPosThreshold4Edit()->text().toDouble();
+    backtestingConfig->posThreshold5 = topBacktestingMenu->getPosThreshold5Edit()->text().toDouble();
+
+    backtestingDriver.test();
+    backtestingTab->loadData(); // 重新加载数据
+
     std::cout << "backtestingConfigChanged" << std::endl;
 }
 

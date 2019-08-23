@@ -12,10 +12,11 @@ public:
     explicit BacktestingTab(QWidget *parent = nullptr);
     ~BacktestingTab();
 
+    void loadData();
+
 private:
     QWidget* createChartWidget(QWidget* parent);
     QWidget* createAdminWidget(QWidget* parent);
-    void loadData();
 
 private:
     DataFile* mDataFile;

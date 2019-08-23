@@ -44,6 +44,7 @@ public:
     ~DataFile();
     bool readData(QString filestr);
     bool readBacktestingResult(QString filestr);
+    void clear();
     std::vector<KLine> kline;
 
     void calAverageLine();

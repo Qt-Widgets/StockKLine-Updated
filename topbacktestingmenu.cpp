@@ -25,7 +25,7 @@ TopBacktestingMenu::TopBacktestingMenu(QWidget* parent)
     productLabel->setMinimumWidth(100);
     hbox->addWidget(productLabel);
 
-    QLabel* avgIntervalLabel = new QLabel(QStringLiteral("均线周期: "));
+    QLabel* avgIntervalLabel = new QLabel(QStringLiteral("图中均线周期: "));
     avgIntervalLabel->setPalette(palette);
     hbox->addWidget(avgIntervalLabel);
 
@@ -33,6 +33,7 @@ TopBacktestingMenu::TopBacktestingMenu(QWidget* parent)
     avgIntervalEdit->setStyleSheet("border: 1px solid red; background-color: black;");
     avgIntervalEdit->setMaximumWidth(50);
     avgIntervalEdit->setMaximumHeight(barHeight - 4);
+    avgIntervalEdit->setText(QString::number(250));
     palette.setColor(QPalette::Text, Qt::white);
     avgIntervalEdit->setPalette(palette);
     hbox->addWidget(avgIntervalEdit);

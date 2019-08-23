@@ -5,7 +5,9 @@
 #include "datafile.h"
 #include "marketdatasplitter.h"
 #include "topbacktestingmenu.h"
+#include "backtestingtab.h"
 #include "backtesting/backtestingdriver.h"
+#include "backtesting/backtestingconfig.h"
 
 #include <QPoint>
 #include <QString>
@@ -46,6 +48,7 @@ public:
     void drawCapitalLine();
 
     void trackTopBacktestingMenu(TopBacktestingMenu* topBacktestingMenu);
+    void setBacktestingTab(BacktestingTab* tab);
 
 public slots:
     void avgIntervalChanged();
@@ -75,6 +78,8 @@ private:
     int topAverageLineInfoHeight = 20;
 
     TopBacktestingMenu* topBacktestingMenu;
+    BacktestingTab* backtestingTab;
+    BacktestingConfig* backtestingConfig;
     int avgInterval = 250;
 
     BacktestingDriver backtestingDriver;

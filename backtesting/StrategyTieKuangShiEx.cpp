@@ -9,7 +9,8 @@ StrategyTieKuangShiEx::StrategyTieKuangShiEx()
 	maClose26Tracker(26, closeVecPtr_),
 	maClose10Tracker(10, closeVecPtr_),
 	maClose250Tracker(250, closeVecPtr_),
-	maCapital250Tracker_(250, captialVecPtr_)
+    maCapital250Tracker_(250, captialVecPtr_),
+    backtestingConfig(BacktestingConfig::instance())
 {
 
 }
@@ -46,7 +47,7 @@ void StrategyTieKuangShiEx::onBar(KLineDataType &bar)
 	double capitalDiff = capital - maCaptial250;
 
 	// 资金曲线250均线采集满，才开始应用均线调整策略
-	if (closeVecPtr_->size() > 250 + 250) {
+    if (closeVecPtr_->size() > 250 + backtestingConfig->capitalPeriod) {
 
 		if (capitalDiff <= 0.0) {
 			maxPosCross_ = 0.0;
@@ -56,67 +57,67 @@ void StrategyTieKuangShiEx::onBar(KLineDataType &bar)
 		}
 
 		int volumeToDecrease = 0;
-		if (maxPosCross_ < 3100.0 && capitalDiff > 3100.0) {
+        if (maxPosCross_ < backtestingConfig->posThreshold1 && capitalDiff > backtestingConfig->posThreshold1) {
 			if (adjVolume_ >= 1) {
 				volumeToDecrease++;
 				adjVolume_--;
-				maxPosCross_ = 3100.1;
+                maxPosCross_ = backtestingConfig->posThreshold1 + 0.1;
 			}
 		}
-		if (maxPosCross_ < 4200.0 && capitalDiff > 4200.0) {
+        if (maxPosCross_ < backtestingConfig->posThreshold2 && capitalDiff > backtestingConfig->posThreshold2) {
 			if (adjVolume_ >= 1) {
 				volumeToDecrease++;
 				adjVolume_--;
-				maxPosCross_ = 4200.1;
+                maxPosCross_ = backtestingConfig->posThreshold2 + 0.1;
 			}
 		}
-		if (maxPosCross_ < 5200.0 && capitalDiff > 5200.0) {
+        if (maxPosCross_ < backtestingConfig->posThreshold3 && capitalDiff > backtestingConfig->posThreshold3) {
 			if (adjVolume_ >= 1) {
 				volumeToDecrease++;
 				adjVolume_--;
-				maxPosCross_ = 5200.1;
+                maxPosCross_ = backtestingConfig->posThreshold3 + 0.1;
 			}
 		}
-		if (maxPosCross_ < 6500.0 && capitalDiff > 6500.0) {
+        if (maxPosCross_ < backtestingConfig->posThreshold4 && capitalDiff > backtestingConfig->posThreshold4) {
 			if (adjVolume_ >= 1) {
 				volumeToDecrease++;
 				adjVolume_--;
-				maxPosCross_ = 6500.1;
+                maxPosCross_ = backtestingConfig->posThreshold4 + 0.1;
 			}
 		}
-		if (maxPosCross_ < 9200.0 && capitalDiff > 9200.0) {
+        if (maxPosCross_ < backtestingConfig->posThreshold5 && capitalDiff > backtestingConfig->posThreshold5) {
 			closeAllPosition();
-			maxPosCross_ = 9200.1;
+            maxPosCross_ = backtestingConfig->posThreshold5 + 0.1;
 		}
 		if (volumeToDecrease > 0) {
 			closePosition(volumeToDecrease);
 		}
 
 		// 9200清仓后，停止开仓，直到diff回到0轴
-		if (maxPosCross_ >= 9200.0 && capitalDiff >= 0.0) {
+        if (maxPosCross_ >= backtestingConfig->posThreshold5 && capitalDiff >= 0.0) {
 			return;
 		}
 
 		int volumeToIncrease = 0;
-		if (minNegCross_ > -2000.0 && capitalDiff < -2000.0) {
+        if (minNegCross_ > backtestingConfig->negThreshold1 && capitalDiff < backtestingConfig->negThreshold1) {
 			if (adjVolume_ + 2 <= 4) {
 				volumeToIncrease += 2;
 				adjVolume_ += 2;
-				minNegCross_ = -2000.1;
+                minNegCross_ = backtestingConfig->negThreshold1 - 0.1;
 			}
 		}
-		if (minNegCross_ > -2700.0 && capitalDiff < -2700.0) {
+        if (minNegCross_ > backtestingConfig->negThreshold2 && capitalDiff < backtestingConfig->negThreshold2) {
 			if (adjVolume_ + 1 <= 4) {
 				volumeToIncrease++;
 				adjVolume_++;
-				minNegCross_ = -2700.1;
+                minNegCross_ = backtestingConfig->negThreshold2 - 0.1;
 			}
 		}
-		if (minNegCross_ > -3700.0 && capitalDiff < -3700.0) {
+        if (minNegCross_ > backtestingConfig->negThreshold3 && capitalDiff < backtestingConfig->negThreshold3) {
 			if (adjVolume_ + 1 <= 4) {
 				volumeToIncrease++;
 				adjVolume_++;
-				minNegCross_ = -3700.1;
+                minNegCross_ = backtestingConfig->negThreshold3 - 0.1;
 			}
 		}
 		openPosition(volumeToIncrease);

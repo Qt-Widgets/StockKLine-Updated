@@ -10,7 +10,7 @@
 #include "topbacktestingmenu.h"
 
 BacktestingTab::BacktestingTab(QWidget *parent)
-    : QWidget(parent)
+    : QWidget(parent), mDataFile(new DataFile())
 {
     loadData();
 
@@ -27,21 +27,21 @@ BacktestingTab::~BacktestingTab()
 
 void BacktestingTab::loadData()
 {
-    mDataFile = new DataFile();
+    mDataFile->clear();
 
     //读取数据
     //QString file = QStringLiteral("F:\\qt-projects\\StockKLine\\dataKLine.txt");
 
-    QString file = QStringLiteral("E:\\cbm\\startup\\qihuoshuju_good\\TieKuangShi_15min_I.csv");
-    //QString file = QStringLiteral("TieKuangShi_15min_I.csv");
+    //QString file = QStringLiteral("E:\\cbm\\startup\\qihuoshuju_good\\TieKuangShi_15min_I.csv");
+    QString file = QStringLiteral("TieKuangShi_15min_I.csv");
     if( !mDataFile->readData(file) )
     {
         QMessageBox::about(this, QStringLiteral("数据文件读取失败"), QStringLiteral("确定"));
         return;
     }
 
-    file = QStringLiteral("E:\\cbm\\startup\\qihuoshuju_good\\TieKuangshi_15min_Backtesting_Stats.csv");
-    //file = QStringLiteral("TieKuangshi_15min_Backtesting_Stats.csv");
+    //file = QStringLiteral("E:\\cbm\\startup\\qihuoshuju_good\\TieKuangshiEx_15min_Backtesting_Stats.csv");
+    file = QStringLiteral("TieKuangshiEx_15min_Backtesting_Stats.csv");
     if( !mDataFile->readBacktestingResult(file) )
     {
         QMessageBox::about(this, QStringLiteral("数据文件读取失败"), QStringLiteral("确定"));
@@ -59,6 +59,7 @@ QWidget* BacktestingTab::createChartWidget(QWidget* parent)
     auto kline = new CapitalLineGrid(splitterMain, mDataFile);
     kline->setFocusPolicy(Qt::StrongFocus);
     kline->trackTopBacktestingMenu(topInfo);
+    kline->setBacktestingTab(this);
 
     auto volume = new CapitalAverageDiffGrid(splitterMain, mDataFile);
     volume->setObjectName(QStringLiteral("kline"));
