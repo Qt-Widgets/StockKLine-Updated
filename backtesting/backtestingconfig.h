@@ -26,14 +26,14 @@ public:
 private:
     BacktestingConfig() {
         capitalPeriod = 250;
-        posThreshold1 = 3100.0;
-        posThreshold2 = 4200.0;
-        posThreshold3 = 5200.0;
-        posThreshold4 = 6500.0;
-        posThreshold5 = 9200.0;
-        negThreshold1 = -2000.0;
-        negThreshold2 = -2700.0;
-        negThreshold3 = -3700.0;
+        posThreshold1 = 31.0;
+        posThreshold2 = 42.0;
+        posThreshold3 = 52.0;
+        posThreshold4 = 65.0;
+        posThreshold5 = 92.0;
+        negThreshold1 = -40.0;
+        negThreshold2 = -54.0;
+        negThreshold3 = -84.0;
     }
     BacktestingConfig(BacktestingConfig& ) = delete;
     BacktestingConfig& operator=(const BacktestingConfig& ) = delete;

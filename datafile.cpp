@@ -143,7 +143,7 @@ void DataFile::calCapitalAverageLine()
         if (i < capitalAverageLinePeriod[0]) {
             kline[i].capitalAvgDiff = 0.0;
         } else {
-            kline[i].capitalAvgDiff = kline[i].capital - kline[i].capitalAvgs[0];
+            kline[i].capitalAvgDiff = (kline[i].capital - kline[i].capitalAvgs[0]) / kline[i].capitalAvgs[0] * 10000.0;
         }
     }
 }

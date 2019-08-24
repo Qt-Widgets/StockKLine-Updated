@@ -407,7 +407,7 @@ void KLineGrid::drawTips()
 
     yPos = getWidgetHeight()-getMarginBottom()-yPos;
 
-    int iTipsWidth = 60;
+    int iTipsWidth = 70;
     int iTipsHeight = 30;
 
     QString str;

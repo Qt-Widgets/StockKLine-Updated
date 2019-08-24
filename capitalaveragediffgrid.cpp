@@ -84,7 +84,7 @@ void CapitalAverageDiffGrid::drawTips()
     double yval = std::fabs((mousePoint.y() - ypZeroLine)) * maxVolume / (getGridHeight() / 2);
     double yPos = mousePoint.y();
 
-    int iTipsWidth = 60;
+    int iTipsWidth = 70;
     int iTipsHeight = 30;
 
     QString str;
@@ -96,7 +96,7 @@ void CapitalAverageDiffGrid::drawTips()
 
     QRect rectText( getWidgetWidth() - getMarginRight() + iTipsWidth/4,
                 yPos - iTipsHeight/4,iTipsWidth,iTipsHeight);
-    painter.drawText(rectText, str.sprintf("%.2f", yval));
+    painter.drawText(rectText, str.sprintf("%.2f%%%%", yval));
 }
 
 void CapitalAverageDiffGrid::drawYtick()
@@ -134,7 +134,7 @@ void CapitalAverageDiffGrid::drawTopInfo()
     double diff = mDataFile->kline[currentDayAtMouse].capitalAvgDiff;
 
     std::stringstream stream;
-    stream << "Diff: " << std::fixed << std::setprecision(2) << diff;
+    stream << "Diff %% (万分之一): " << std::fixed << std::setprecision(2) << diff;
 
     QPainter painter(this);
     QFont font;

@@ -40,21 +40,21 @@ TopBacktestingMenu::TopBacktestingMenu(QWidget* parent)
 
     capitalPeriodEdit = appendEdit(hbox, QStringLiteral("回测均线周期: "));
     capitalPeriodEdit->setText(QString::number(backTestConfig->capitalPeriod));
-    negThreshold3Edit = appendEdit(hbox, QStringLiteral("负值3: "));
+    negThreshold3Edit = appendEdit(hbox, QStringLiteral("负值3(%%): "));
     negThreshold3Edit->setText(QString::number(backTestConfig->negThreshold3));
-    negThreshold2Edit = appendEdit(hbox, QStringLiteral("负值2: "));
+    negThreshold2Edit = appendEdit(hbox, QStringLiteral("负值2(%%): "));
     negThreshold2Edit->setText(QString::number(backTestConfig->negThreshold2));
-    negThreshold1Edit = appendEdit(hbox, QStringLiteral("负值1: "));
+    negThreshold1Edit = appendEdit(hbox, QStringLiteral("负值1(%%): "));
     negThreshold1Edit->setText(QString::number(backTestConfig->negThreshold1));
-    posThreshold1Edit = appendEdit(hbox, QStringLiteral("正值1: "));
+    posThreshold1Edit = appendEdit(hbox, QStringLiteral("正值1(%%): "));
     posThreshold1Edit->setText(QString::number(backTestConfig->posThreshold1));
-    posThreshold2Edit = appendEdit(hbox, QStringLiteral("正值2: "));
+    posThreshold2Edit = appendEdit(hbox, QStringLiteral("正值2(%%): "));
     posThreshold2Edit->setText(QString::number(backTestConfig->posThreshold2));
-    posThreshold3Edit = appendEdit(hbox, QStringLiteral("正值3: "));
+    posThreshold3Edit = appendEdit(hbox, QStringLiteral("正值3(%%): "));
     posThreshold3Edit->setText(QString::number(backTestConfig->posThreshold3));
-    posThreshold4Edit = appendEdit(hbox, QStringLiteral("正值4: "));
+    posThreshold4Edit = appendEdit(hbox, QStringLiteral("正值4(%%): "));
     posThreshold4Edit->setText(QString::number(backTestConfig->posThreshold4));
-    posThreshold5Edit = appendEdit(hbox, QStringLiteral("正值5: "));
+    posThreshold5Edit = appendEdit(hbox, QStringLiteral("正值5(%%): "));
     posThreshold5Edit->setText(QString::number(backTestConfig->posThreshold5));
 
     hbox->addStretch(1);

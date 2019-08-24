@@ -81,14 +81,14 @@ void CapitalLineGrid::setBacktestingTab(BacktestingTab* tab)
 void CapitalLineGrid::backtestingConfigChanged()
 {
     backtestingConfig->capitalPeriod = topBacktestingMenu->getCapitalPeriodEdit()->text().toInt();
-    backtestingConfig->negThreshold1 = topBacktestingMenu->getNegThreshold1Edit()->text().toDouble();
-    backtestingConfig->negThreshold2 = topBacktestingMenu->getNegThreshold2Edit()->text().toDouble();
-    backtestingConfig->negThreshold3 = topBacktestingMenu->getNegThreshold3Edit()->text().toDouble();
-    backtestingConfig->posThreshold1 = topBacktestingMenu->getPosThreshold1Edit()->text().toDouble();
-    backtestingConfig->posThreshold2 = topBacktestingMenu->getPosThreshold2Edit()->text().toDouble();
-    backtestingConfig->posThreshold3 = topBacktestingMenu->getPosThreshold3Edit()->text().toDouble();
-    backtestingConfig->posThreshold4 = topBacktestingMenu->getPosThreshold4Edit()->text().toDouble();
-    backtestingConfig->posThreshold5 = topBacktestingMenu->getPosThreshold5Edit()->text().toDouble();
+    backtestingConfig->negThreshold1 = topBacktestingMenu->getNegThreshold1Edit()->text().toDouble() / 10000.0;
+    backtestingConfig->negThreshold2 = topBacktestingMenu->getNegThreshold2Edit()->text().toDouble() / 10000.0;
+    backtestingConfig->negThreshold3 = topBacktestingMenu->getNegThreshold3Edit()->text().toDouble() / 10000.0;
+    backtestingConfig->posThreshold1 = topBacktestingMenu->getPosThreshold1Edit()->text().toDouble() / 10000.0;
+    backtestingConfig->posThreshold2 = topBacktestingMenu->getPosThreshold2Edit()->text().toDouble() / 10000.0;
+    backtestingConfig->posThreshold3 = topBacktestingMenu->getPosThreshold3Edit()->text().toDouble() / 10000.0;
+    backtestingConfig->posThreshold4 = topBacktestingMenu->getPosThreshold4Edit()->text().toDouble() / 10000.0;
+    backtestingConfig->posThreshold5 = topBacktestingMenu->getPosThreshold5Edit()->text().toDouble() / 10000.0;
 
     backtestingDriver.test();
     backtestingTab->loadData(); // 重新加载数据
@@ -371,7 +371,7 @@ void CapitalLineGrid::drawTips2()
     double yval =  highestCapital - ( mousePoint.y() - getMarginTop() ) / yscale;
     double yPos = mousePoint.y();
 
-    int iTipsWidth = 60;
+    int iTipsWidth = 70;
     int iTipsHeight = 30;
 
     QString str;
