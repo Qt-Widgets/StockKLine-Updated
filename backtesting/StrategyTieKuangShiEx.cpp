@@ -41,88 +41,90 @@ void StrategyTieKuangShiEx::onBar(KLineDataType &bar)
 		return;
 	}
 
-	double capital = std::static_pointer_cast<BacktestingTradeGateway>(tradeGatewayPtr_)->getAssetVaue();
-	captialVecPtr_->push_back(capital);
-    double maCapital250 = maCapital250Tracker_.value();
-    double capitalDiff = capital - maCapital250;
-    double capitalDiffPercent = capitalDiff / maCapital250 * 100.0;
+    if (backtestingConfig->enableCapitalAjdustment) {
+        double capital = std::static_pointer_cast<BacktestingTradeGateway>(tradeGatewayPtr_)->getAssetVaue();
+        captialVecPtr_->push_back(capital);
+        double maCapital250 = maCapital250Tracker_.value();
+        double capitalDiff = capital - maCapital250;
+        double capitalDiffPercent = capitalDiff / maCapital250 * 100.0;
 
-	// 资金曲线250均线采集满，才开始应用均线调整策略
-    if (closeVecPtr_->size() > 250 + backtestingConfig->capitalPeriod) {
+        // 资金曲线250均线采集满，才开始应用均线调整策略
+        if (closeVecPtr_->size() > 250 + backtestingConfig->capitalPeriod) {
 
-		if (capitalDiff <= 0.0) {
-			maxPosCross_ = 0.0;
-		}
-		else {
-			minNegCross_ = 0.0;
-		}
+            if (capitalDiff <= 0.0) {
+                maxPosCross_ = 0.0;
+            }
+            else {
+                minNegCross_ = 0.0;
+            }
 
-		int volumeToDecrease = 0;
-        if (maxPosCross_ < backtestingConfig->posThreshold1 && capitalDiffPercent > backtestingConfig->posThreshold1) {
-			if (adjVolume_ >= 1) {
-				volumeToDecrease++;
-				adjVolume_--;
-                maxPosCross_ = backtestingConfig->posThreshold1 + 0.00000001;
-			}
-		}
-        if (maxPosCross_ < backtestingConfig->posThreshold2 && capitalDiffPercent > backtestingConfig->posThreshold2) {
-			if (adjVolume_ >= 1) {
-				volumeToDecrease++;
-				adjVolume_--;
-                maxPosCross_ = backtestingConfig->posThreshold2 + 0.00000001;
-			}
-		}
-        if (maxPosCross_ < backtestingConfig->posThreshold3 && capitalDiffPercent > backtestingConfig->posThreshold3) {
-			if (adjVolume_ >= 1) {
-				volumeToDecrease++;
-				adjVolume_--;
-                maxPosCross_ = backtestingConfig->posThreshold3 + 0.00000001;
-			}
-		}
-        if (maxPosCross_ < backtestingConfig->posThreshold4 && capitalDiffPercent > backtestingConfig->posThreshold4) {
-			if (adjVolume_ >= 1) {
-				volumeToDecrease++;
-				adjVolume_--;
-                maxPosCross_ = backtestingConfig->posThreshold4 + 0.00000001;
-			}
-		}
-        if (maxPosCross_ < backtestingConfig->posThreshold5 && capitalDiffPercent > backtestingConfig->posThreshold5) {
-			closeAllPosition();
-            maxPosCross_ = backtestingConfig->posThreshold5 + 0.00000001;
-		}
-		if (volumeToDecrease > 0) {
-			closePosition(volumeToDecrease);
-		}
+            int volumeToDecrease = 0;
+            if (maxPosCross_ < backtestingConfig->posThreshold1 && capitalDiffPercent > backtestingConfig->posThreshold1) {
+                if (adjVolume_ >= 1) {
+                    volumeToDecrease++;
+                    adjVolume_--;
+                    maxPosCross_ = backtestingConfig->posThreshold1 + 0.00000001;
+                }
+            }
+            if (maxPosCross_ < backtestingConfig->posThreshold2 && capitalDiffPercent > backtestingConfig->posThreshold2) {
+                if (adjVolume_ >= 1) {
+                    volumeToDecrease++;
+                    adjVolume_--;
+                    maxPosCross_ = backtestingConfig->posThreshold2 + 0.00000001;
+                }
+            }
+            if (maxPosCross_ < backtestingConfig->posThreshold3 && capitalDiffPercent > backtestingConfig->posThreshold3) {
+                if (adjVolume_ >= 1) {
+                    volumeToDecrease++;
+                    adjVolume_--;
+                    maxPosCross_ = backtestingConfig->posThreshold3 + 0.00000001;
+                }
+            }
+            if (maxPosCross_ < backtestingConfig->posThreshold4 && capitalDiffPercent > backtestingConfig->posThreshold4) {
+                if (adjVolume_ >= 1) {
+                    volumeToDecrease++;
+                    adjVolume_--;
+                    maxPosCross_ = backtestingConfig->posThreshold4 + 0.00000001;
+                }
+            }
+            if (maxPosCross_ < backtestingConfig->posThreshold5 && capitalDiffPercent > backtestingConfig->posThreshold5) {
+                closeAllPosition();
+                maxPosCross_ = backtestingConfig->posThreshold5 + 0.00000001;
+            }
+            if (volumeToDecrease > 0) {
+                closePosition(volumeToDecrease);
+            }
 
-        // 清仓后，停止开仓，直到diff回到0轴
-        if (maxPosCross_ >= backtestingConfig->posThreshold5 && capitalDiffPercent >= 0.0) {
-			return;
-		}
+            // 清仓后，停止开仓，直到diff回到0轴
+            if (maxPosCross_ >= backtestingConfig->posThreshold5 && capitalDiffPercent >= 0.0) {
+                return;
+            }
 
-		int volumeToIncrease = 0;
-        if (minNegCross_ > backtestingConfig->negThreshold1 && capitalDiffPercent < backtestingConfig->negThreshold1) {
-			if (adjVolume_ + 2 <= 4) {
-				volumeToIncrease += 2;
-				adjVolume_ += 2;
-                minNegCross_ = backtestingConfig->negThreshold1 - 0.00000001;
-			}
-		}
-        if (minNegCross_ > backtestingConfig->negThreshold2 && capitalDiffPercent < backtestingConfig->negThreshold2) {
-			if (adjVolume_ + 1 <= 4) {
-				volumeToIncrease++;
-				adjVolume_++;
-                minNegCross_ = backtestingConfig->negThreshold2 - 0.00000001;
-			}
-		}
-        if (minNegCross_ > backtestingConfig->negThreshold3 && capitalDiffPercent < backtestingConfig->negThreshold3) {
-			if (adjVolume_ + 1 <= 4) {
-				volumeToIncrease++;
-				adjVolume_++;
-                minNegCross_ = backtestingConfig->negThreshold3 - 0.00000001;
-			}
-		}
-		openPosition(volumeToIncrease);
-	}
+            int volumeToIncrease = 0;
+            if (minNegCross_ > backtestingConfig->negThreshold1 && capitalDiffPercent < backtestingConfig->negThreshold1) {
+                if (adjVolume_ + 2 <= 4) {
+                    volumeToIncrease += 2;
+                    adjVolume_ += 2;
+                    minNegCross_ = backtestingConfig->negThreshold1 - 0.00000001;
+                }
+            }
+            if (minNegCross_ > backtestingConfig->negThreshold2 && capitalDiffPercent < backtestingConfig->negThreshold2) {
+                if (adjVolume_ + 1 <= 4) {
+                    volumeToIncrease++;
+                    adjVolume_++;
+                    minNegCross_ = backtestingConfig->negThreshold2 - 0.00000001;
+                }
+            }
+            if (minNegCross_ > backtestingConfig->negThreshold3 && capitalDiffPercent < backtestingConfig->negThreshold3) {
+                if (adjVolume_ + 1 <= 4) {
+                    volumeToIncrease++;
+                    adjVolume_++;
+                    minNegCross_ = backtestingConfig->negThreshold3 - 0.00000001;
+                }
+            }
+            openPosition(volumeToIncrease);
+        }
+    }
 
 	if (close > maClose250 && diff > 0.0) {
 		BPK(baselVolume_ + adjVolume_);

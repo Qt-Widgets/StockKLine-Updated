@@ -34,6 +34,8 @@ public:
 
     int baseLot;
 
+    bool enableCapitalAjdustment;
+
 private:
     BacktestingConfig() {
         capitalPeriod = 250;
@@ -56,6 +58,8 @@ private:
         negLotThreshold3 = 1;
 
         baseLot = 5;
+
+        enableCapitalAjdustment = true;
     }
     BacktestingConfig(BacktestingConfig& ) = delete;
     BacktestingConfig& operator=(const BacktestingConfig& ) = delete;

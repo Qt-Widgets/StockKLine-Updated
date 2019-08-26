@@ -12,7 +12,7 @@ TopBacktestingMenu::TopBacktestingMenu(QWidget* parent)
     ft.setPointSize(10);
     this->setFont(ft);
 
-    QHBoxLayout* hbox = new QHBoxLayout();
+    QHBoxLayout* hbox = new QHBoxLayout(this);
     hbox->setContentsMargins(50, 0, 0, 0);
     hbox->setSpacing(1);
 
@@ -25,7 +25,15 @@ TopBacktestingMenu::TopBacktestingMenu(QWidget* parent)
     productLabel->setMinimumWidth(50);
     hbox->addWidget(productLabel);
 
-    QLabel* avgIntervalLabel = new QLabel(QStringLiteral("图中均线: "));
+    QLabel* enableCapitalAjdustmentLabel = new QLabel(QStringLiteral("调整: "));
+    enableCapitalAjdustmentLabel->setPalette(palette);
+    hbox->addWidget(enableCapitalAjdustmentLabel);
+    enableCapitalAjdustmentCheckBox = new QCheckBox();
+    enableCapitalAjdustmentCheckBox->setPalette(palette);
+    enableCapitalAjdustmentCheckBox->setChecked(backTestConfig->enableCapitalAjdustment);
+    hbox->addWidget(enableCapitalAjdustmentCheckBox);
+
+    QLabel* avgIntervalLabel = new QLabel(QStringLiteral("   图中均线: "));
     avgIntervalLabel->setPalette(palette);
     hbox->addWidget(avgIntervalLabel);
 
@@ -83,6 +91,9 @@ TopBacktestingMenu::TopBacktestingMenu(QWidget* parent)
     posLotThreshold5Edit = appendEdit(hbox, palette);
     posLotThreshold5Edit->setText(QString::number(backTestConfig->posLotThreshold5));
 
+    runTestButton = new QPushButton(QStringLiteral("运行回测"));
+    hbox->addWidget(runTestButton);
+
     hbox->addStretch(1);
     this->setLayout(hbox);
 }
@@ -109,6 +120,16 @@ QLineEdit* TopBacktestingMenu::appendEdit(QHBoxLayout* hbox, QPalette& palette)
     hbox->addWidget(edit);
 
     return edit;
+}
+
+QPushButton *TopBacktestingMenu::getRunTestButton() const
+{
+    return runTestButton;
+}
+
+QCheckBox *TopBacktestingMenu::getEnableCapitalAjdustmentCheckBox() const
+{
+    return enableCapitalAjdustmentCheckBox;
 }
 
 QLineEdit *TopBacktestingMenu::getBaseLotEdit() const

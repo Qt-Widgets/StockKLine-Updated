@@ -3,6 +3,8 @@
 
 #include <QLineEdit>
 #include <QHBoxLayout>
+#include <QCheckBox>
+#include <QPushButton>
 #include "autogrid.h"
 #include "backtesting/backtestingconfig.h"
 
@@ -53,6 +55,10 @@ public:
 
     QLineEdit *getBaseLotEdit() const;
 
+    QCheckBox *getEnableCapitalAjdustmentCheckBox() const;
+
+    QPushButton *getRunTestButton() const;
+
 private:
     void drawBottomLine();
     QLineEdit* appendLabelEdit(QHBoxLayout* hbox, QString label, QPalette& palette);
@@ -81,6 +87,9 @@ private:
     QLineEdit* negLotThreshold1Edit;
     QLineEdit* negLotThreshold2Edit;
     QLineEdit* negLotThreshold3Edit;
+
+    QCheckBox* enableCapitalAjdustmentCheckBox;
+    QPushButton* runTestButton;
 
     BacktestingConfig* backTestConfig;
 };
