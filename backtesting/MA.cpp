@@ -16,3 +16,8 @@ double MA::value()
 
 	return sum_ / period_;
 }
+
+void MA::setPeriod(int period)
+{
+    period_ = period;
+}

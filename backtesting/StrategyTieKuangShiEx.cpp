@@ -3,16 +3,16 @@
 #include "BacktestingTradeGateway.h"
 
 StrategyTieKuangShiEx::StrategyTieKuangShiEx()
-	: closeVecPtr_(std::make_shared<std::vector<double>>()),
+    : closeVecPtr_(std::make_shared<std::vector<double>>()),
 	captialVecPtr_(std::make_shared<std::vector<double>>()),
 	lastDiff_(0.0), currentDiff_(0.0),
 	maClose26Tracker(26, closeVecPtr_),
 	maClose10Tracker(10, closeVecPtr_),
 	maClose250Tracker(250, closeVecPtr_),
-    maCapital250Tracker_(250, captialVecPtr_),
+    maCapitalTracker_(250, captialVecPtr_),
     backtestingConfig(BacktestingConfig::instance())
 {
-
+    maCapitalTracker_.setPeriod(backtestingConfig->capitalPeriod);
 }
 
 void StrategyTieKuangShiEx::init(TradeGatewayPtr pTradeGateway)
@@ -42,9 +42,10 @@ void StrategyTieKuangShiEx::onBar(KLineDataType &bar)
 	}
 
     if (backtestingConfig->enableCapitalAjdustment) {
+
         double capital = std::static_pointer_cast<BacktestingTradeGateway>(tradeGatewayPtr_)->getAssetVaue();
         captialVecPtr_->push_back(capital);
-        double maCapital250 = maCapital250Tracker_.value();
+        double maCapital250 = maCapitalTracker_.value();
         double capitalDiff = capital - maCapital250;
         double capitalDiffPercent = capitalDiff / maCapital250 * 100.0;
 
@@ -60,30 +61,30 @@ void StrategyTieKuangShiEx::onBar(KLineDataType &bar)
 
             int volumeToDecrease = 0;
             if (maxPosCross_ < backtestingConfig->posThreshold1 && capitalDiffPercent > backtestingConfig->posThreshold1) {
-                if (adjVolume_ >= 1) {
-                    volumeToDecrease++;
-                    adjVolume_--;
+                if (adjVolume_ >= backtestingConfig->posLotThreshold1) {
+                    volumeToDecrease += backtestingConfig->posLotThreshold1;
+                    adjVolume_ -= backtestingConfig->posLotThreshold1;
                     maxPosCross_ = backtestingConfig->posThreshold1 + 0.00000001;
                 }
             }
             if (maxPosCross_ < backtestingConfig->posThreshold2 && capitalDiffPercent > backtestingConfig->posThreshold2) {
-                if (adjVolume_ >= 1) {
-                    volumeToDecrease++;
-                    adjVolume_--;
+                if (adjVolume_ >= backtestingConfig->posLotThreshold2) {
+                    volumeToDecrease += backtestingConfig->posLotThreshold2;
+                    adjVolume_ -= backtestingConfig->posLotThreshold2;
                     maxPosCross_ = backtestingConfig->posThreshold2 + 0.00000001;
                 }
             }
             if (maxPosCross_ < backtestingConfig->posThreshold3 && capitalDiffPercent > backtestingConfig->posThreshold3) {
-                if (adjVolume_ >= 1) {
-                    volumeToDecrease++;
-                    adjVolume_--;
+                if (adjVolume_ >= backtestingConfig->posLotThreshold3) {
+                    volumeToDecrease += backtestingConfig->posLotThreshold3;
+                    adjVolume_ -= backtestingConfig->posLotThreshold3;
                     maxPosCross_ = backtestingConfig->posThreshold3 + 0.00000001;
                 }
             }
             if (maxPosCross_ < backtestingConfig->posThreshold4 && capitalDiffPercent > backtestingConfig->posThreshold4) {
-                if (adjVolume_ >= 1) {
-                    volumeToDecrease++;
-                    adjVolume_--;
+                if (adjVolume_ >= backtestingConfig->posLotThreshold4) {
+                    volumeToDecrease += backtestingConfig->posLotThreshold4;
+                    adjVolume_ -= backtestingConfig->posLotThreshold4;
                     maxPosCross_ = backtestingConfig->posThreshold4 + 0.00000001;
                 }
             }
@@ -102,23 +103,23 @@ void StrategyTieKuangShiEx::onBar(KLineDataType &bar)
 
             int volumeToIncrease = 0;
             if (minNegCross_ > backtestingConfig->negThreshold1 && capitalDiffPercent < backtestingConfig->negThreshold1) {
-                if (adjVolume_ + 2 <= 4) {
-                    volumeToIncrease += 2;
-                    adjVolume_ += 2;
+                if (adjVolume_ + backtestingConfig->negLotThreshold1 <= backtestingConfig->totalAdjLot) {
+                    volumeToIncrease += backtestingConfig->negLotThreshold1;
+                    adjVolume_ += backtestingConfig->negLotThreshold1;
                     minNegCross_ = backtestingConfig->negThreshold1 - 0.00000001;
                 }
             }
             if (minNegCross_ > backtestingConfig->negThreshold2 && capitalDiffPercent < backtestingConfig->negThreshold2) {
-                if (adjVolume_ + 1 <= 4) {
-                    volumeToIncrease++;
-                    adjVolume_++;
+                if (adjVolume_ + backtestingConfig->negLotThreshold2 <= backtestingConfig->totalAdjLot) {
+                    volumeToIncrease += backtestingConfig->negLotThreshold2;
+                    adjVolume_ += backtestingConfig->negLotThreshold2;
                     minNegCross_ = backtestingConfig->negThreshold2 - 0.00000001;
                 }
             }
             if (minNegCross_ > backtestingConfig->negThreshold3 && capitalDiffPercent < backtestingConfig->negThreshold3) {
-                if (adjVolume_ + 1 <= 4) {
-                    volumeToIncrease++;
-                    adjVolume_++;
+                if (adjVolume_ + backtestingConfig->negLotThreshold3 <= backtestingConfig->totalAdjLot) {
+                    volumeToIncrease += backtestingConfig->negLotThreshold3;
+                    adjVolume_ += backtestingConfig->negLotThreshold3;
                     minNegCross_ = backtestingConfig->negThreshold3 - 0.00000001;
                 }
             }
@@ -127,16 +128,16 @@ void StrategyTieKuangShiEx::onBar(KLineDataType &bar)
     }
 
 	if (close > maClose250 && diff > 0.0) {
-		BPK(baselVolume_ + adjVolume_);
+        BPK(backtestingConfig->baseLot + adjVolume_);
 	}
 	else if (lastDiff_ > 0.0 && currentDiff_ < 0.0) {
-		SP(baselVolume_ + adjVolume_);
+        SP(backtestingConfig->baseLot + adjVolume_);
 	}
 	else if (close < maClose250 && diff < 0.0) {
-		SPK(baselVolume_ + adjVolume_);
+        SPK(backtestingConfig->baseLot + adjVolume_);
 	}
 	else if (lastDiff_ < 0.0 && currentDiff_ > 0.0) {
-		BP(baselVolume_ + adjVolume_);
+        BP(backtestingConfig->baseLot + adjVolume_);
 	}
 }
 

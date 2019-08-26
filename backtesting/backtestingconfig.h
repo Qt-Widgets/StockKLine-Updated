@@ -33,6 +33,7 @@ public:
     int negLotThreshold3;
 
     int baseLot;
+    int totalAdjLot;
 
     bool enableCapitalAjdustment;
 
@@ -57,7 +58,7 @@ private:
         negLotThreshold2 = 1;
         negLotThreshold3 = 1;
 
-        baseLot = 5;
+        baseLot = 1;
 
         enableCapitalAjdustment = true;
     }

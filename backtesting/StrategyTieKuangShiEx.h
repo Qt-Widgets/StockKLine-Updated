@@ -45,7 +45,7 @@ private:
 	MA maClose250Tracker;
 
 	VecPtr captialVecPtr_;
-	MA maCapital250Tracker_;
+    MA maCapitalTracker_;
 
 	int baselVolume_ = 1;
 	int adjVolume_ = 0;

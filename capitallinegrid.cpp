@@ -93,11 +93,17 @@ void CapitalLineGrid::backtestingConfigChanged()
     backtestingConfig->negLotThreshold1 = topBacktestingMenu->getNegLotThreshold1Edit()->text().toInt();
     backtestingConfig->negLotThreshold2 = topBacktestingMenu->getNegLotThreshold2Edit()->text().toInt();
     backtestingConfig->negLotThreshold3 = topBacktestingMenu->getNegLotThreshold3Edit()->text().toInt();
+
+    backtestingConfig->totalAdjLot =
+            backtestingConfig->negLotThreshold1 +
+            backtestingConfig->negLotThreshold2 +
+            backtestingConfig->negLotThreshold3;
+
     backtestingConfig->posLotThreshold1 = topBacktestingMenu->getPosLotThreshold1Edit()->text().toInt();
     backtestingConfig->posLotThreshold2 = topBacktestingMenu->getPosLotThreshold2Edit()->text().toInt();
     backtestingConfig->posLotThreshold3 = topBacktestingMenu->getPosLotThreshold3Edit()->text().toInt();
     backtestingConfig->posLotThreshold4 = topBacktestingMenu->getPosLotThreshold4Edit()->text().toInt();
-    backtestingConfig->posLotThreshold5 = topBacktestingMenu->getPosLotThreshold5Edit()->text().toInt();
+    //backtestingConfig->posLotThreshold5 = topBacktestingMenu->getPosLotThreshold5Edit()->text().toInt();
 
     backtestingConfig->baseLot = topBacktestingMenu->getBaseLotEdit()->text().toInt();
     backtestingConfig->enableCapitalAjdustment = topBacktestingMenu->getEnableCapitalAjdustmentCheckBox()->isChecked();

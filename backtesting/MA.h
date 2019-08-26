@@ -11,8 +11,10 @@ public:
 	MA(int period, VecPtr vecPtr);
 	double value();
 
+    void setPeriod(int period);
+
 private:
-	VecPtr vecPtr_;
-	int period_;
+    VecPtr vecPtr_;
+    int period_;
 	double sum_;
 };

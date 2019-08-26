@@ -88,8 +88,8 @@ TopBacktestingMenu::TopBacktestingMenu(QWidget* parent)
 
     posThreshold5Edit = appendLabelEdit(hbox, QStringLiteral("正值5(%%): "), palette);
     posThreshold5Edit->setText(QString::number(backTestConfig->posThreshold5));
-    posLotThreshold5Edit = appendEdit(hbox, palette);
-    posLotThreshold5Edit->setText(QString::number(backTestConfig->posLotThreshold5));
+//    posLotThreshold5Edit = appendEdit(hbox, palette);
+//    posLotThreshold5Edit->setText(QString::number(backTestConfig->posLotThreshold5));
 
     runTestButton = new QPushButton(QStringLiteral("运行回测"));
     hbox->addWidget(runTestButton);
