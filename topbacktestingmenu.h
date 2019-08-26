@@ -35,14 +35,35 @@ public:
 
     QLineEdit *getNegThreshold3Edit() const;
 
+    QLineEdit *getPosLotThreshold1Edit() const;
+
+    QLineEdit *getPosLotThreshold2Edit() const;
+
+    QLineEdit *getPosLotThreshold3Edit() const;
+
+    QLineEdit *getPosLotThreshold4Edit() const;
+
+    QLineEdit *getPosLotThreshold5Edit() const;
+
+    QLineEdit *getNegLotThreshold1Edit() const;
+
+    QLineEdit *getNegLotThreshold2Edit() const;
+
+    QLineEdit *getNegLotThreshold3Edit() const;
+
+    QLineEdit *getBaseLotEdit() const;
+
 private:
     void drawBottomLine();
-    QLineEdit* appendEdit(QHBoxLayout* hbox, QString label);
+    QLineEdit* appendLabelEdit(QHBoxLayout* hbox, QString label, QPalette& palette);
+    QLineEdit* appendEdit(QHBoxLayout* hbox, QPalette& palette);
 
 private:
     int barHeight = 20;
     QLineEdit* avgIntervalEdit;
+    QLineEdit* baseLotEdit;
     QLineEdit* capitalPeriodEdit;
+
     QLineEdit* posThreshold1Edit;
     QLineEdit* posThreshold2Edit;
     QLineEdit* posThreshold3Edit;
@@ -51,6 +72,15 @@ private:
     QLineEdit* negThreshold1Edit;
     QLineEdit* negThreshold2Edit;
     QLineEdit* negThreshold3Edit;
+
+    QLineEdit* posLotThreshold1Edit;
+    QLineEdit* posLotThreshold2Edit;
+    QLineEdit* posLotThreshold3Edit;
+    QLineEdit* posLotThreshold4Edit;
+    QLineEdit* posLotThreshold5Edit;
+    QLineEdit* negLotThreshold1Edit;
+    QLineEdit* negLotThreshold2Edit;
+    QLineEdit* negLotThreshold3Edit;
 
     BacktestingConfig* backTestConfig;
 };

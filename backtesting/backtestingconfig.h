@@ -23,6 +23,17 @@ public:
     double negThreshold2;
     double negThreshold3;
 
+    int posLotThreshold1;
+    int posLotThreshold2;
+    int posLotThreshold3;
+    int posLotThreshold4;
+    int posLotThreshold5;
+    int negLotThreshold1;
+    int negLotThreshold2;
+    int negLotThreshold3;
+
+    int baseLot;
+
 private:
     BacktestingConfig() {
         capitalPeriod = 250;
@@ -34,6 +45,17 @@ private:
         negThreshold1 = -40.0;
         negThreshold2 = -54.0;
         negThreshold3 = -84.0;
+
+        posLotThreshold1 = 1;
+        posLotThreshold2 = 1;
+        posLotThreshold3 = 1;
+        posLotThreshold4 = 1;
+        posLotThreshold5 = 1;
+        negLotThreshold1 = 2;
+        negLotThreshold2 = 1;
+        negLotThreshold3 = 1;
+
+        baseLot = 5;
     }
     BacktestingConfig(BacktestingConfig& ) = delete;
     BacktestingConfig& operator=(const BacktestingConfig& ) = delete;

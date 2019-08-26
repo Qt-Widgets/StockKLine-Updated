@@ -90,6 +90,17 @@ void CapitalLineGrid::backtestingConfigChanged()
     backtestingConfig->posThreshold4 = topBacktestingMenu->getPosThreshold4Edit()->text().toDouble() / 10000.0;
     backtestingConfig->posThreshold5 = topBacktestingMenu->getPosThreshold5Edit()->text().toDouble() / 10000.0;
 
+    backtestingConfig->negLotThreshold1 = topBacktestingMenu->getNegLotThreshold1Edit()->text().toInt();
+    backtestingConfig->negLotThreshold2 = topBacktestingMenu->getNegLotThreshold2Edit()->text().toInt();
+    backtestingConfig->negLotThreshold3 = topBacktestingMenu->getNegLotThreshold3Edit()->text().toInt();
+    backtestingConfig->posLotThreshold1 = topBacktestingMenu->getPosLotThreshold1Edit()->text().toInt();
+    backtestingConfig->posLotThreshold2 = topBacktestingMenu->getPosLotThreshold2Edit()->text().toInt();
+    backtestingConfig->posLotThreshold3 = topBacktestingMenu->getPosLotThreshold3Edit()->text().toInt();
+    backtestingConfig->posLotThreshold4 = topBacktestingMenu->getPosLotThreshold4Edit()->text().toInt();
+    backtestingConfig->posLotThreshold5 = topBacktestingMenu->getPosLotThreshold5Edit()->text().toInt();
+
+    backtestingConfig->baseLot = topBacktestingMenu->getBaseLotEdit()->text().toInt();
+
     backtestingDriver.test();
     backtestingTab->loadData(); // 重新加载数据
 

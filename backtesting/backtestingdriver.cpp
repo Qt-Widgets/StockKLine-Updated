@@ -7,11 +7,11 @@ void BacktestingDriver::test()
 {
     EventEnginePtr eventEnginePtr = std::make_shared<EventEngine>();
 
-//    BacktestingTradeGatewayPtr 	backtestingTradeGatewayPtr =
-//        std::make_shared<BacktestingTradeGateway>(eventEnginePtr, "E:\\cbm\\startup\\qihuoshuju_good\\TieKuangShiEx_15min_Backtesting_Stats.csv");
-
     BacktestingTradeGatewayPtr 	backtestingTradeGatewayPtr =
-        std::make_shared<BacktestingTradeGateway>(eventEnginePtr, "TieKuangShiEx_15min_Backtesting_Stats.csv");
+        std::make_shared<BacktestingTradeGateway>(eventEnginePtr, "E:\\cbm\\startup\\qihuoshuju_good\\TieKuangShiEx_15min_Backtesting_Stats.csv");
+
+//    BacktestingTradeGatewayPtr 	backtestingTradeGatewayPtr =
+//        std::make_shared<BacktestingTradeGateway>(eventEnginePtr, "TieKuangShiEx_15min_Backtesting_Stats.csv");
 
     backtestingTradeGatewayPtr->init();
     TradeGatewayPtr tradeGatewayPtr = backtestingTradeGatewayPtr;
@@ -20,8 +20,8 @@ void BacktestingDriver::test()
     strategyPtr->init(tradeGatewayPtr);
 
     std::cout << "loading market data ..." << std::endl;
-//    KLineVecPtr klines = loadKline("JI", "E:\\cbm\\startup\\qihuoshuju_good\\TieKuangShi_15min_I.csv");
-    KLineVecPtr klines = loadKline("JI", "TieKuangShi_15min_I.csv");
+    KLineVecPtr klines = loadKline("JI", "E:\\cbm\\startup\\qihuoshuju_good\\TieKuangShi_15min_I.csv");
+//    KLineVecPtr klines = loadKline("JI", "TieKuangShi_15min_I.csv");
 
     Event event;
     for (auto& bar : *klines) {
