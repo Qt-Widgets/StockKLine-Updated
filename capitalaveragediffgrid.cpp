@@ -97,7 +97,7 @@ void CapitalAverageDiffGrid::drawTips()
 
     QRect rectText( getWidgetWidth() - getMarginRight() + iTipsWidth/4,
                 yPos - iTipsHeight/4,iTipsWidth,iTipsHeight);
-    painter.drawText(rectText, str.sprintf("%.2f%%%%", yval));
+    painter.drawText(rectText, str.sprintf("%.2f", yval));
 }
 
 void CapitalAverageDiffGrid::drawYtick()
@@ -133,9 +133,11 @@ void CapitalAverageDiffGrid::drawTopInfo()
         currentDayAtMouse = beginDay;
     }
     double diff = mDataFile->kline[currentDayAtMouse].capitalAvgDiffForSimpleStrategy;
+    double backtack = mDataFile->kline[currentDayAtMouse].capitalBacktrackForSimpleStrategy;
 
     std::stringstream stream;
-    stream << "Diff %%: " << std::fixed << std::setprecision(2) << diff;
+    stream << "Diff: " << std::fixed << std::setprecision(2) << diff;
+    stream << "\t Backtrack: " << std::fixed << std::setprecision(2) << backtack;
 
     QPainter painter(this);
     QFont font;
@@ -145,7 +147,7 @@ void CapitalAverageDiffGrid::drawTopInfo()
     pen.setColor(Qt::yellow);
     painter.setPen(pen);
 
-    QRect rectText(5 + getMarginLeft(), 3, 250, topInfoHeight);
+    QRect rectText(5 + getMarginLeft(), 3, 450, topInfoHeight);
     painter.drawText(rectText, QString(stream.str().c_str()));
 }
 

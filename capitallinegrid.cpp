@@ -119,13 +119,11 @@ void CapitalLineGrid::backtestingConfigChanged()
     backtestingConfig->capitalPeriod = topBacktestingMenu->getCapitalPeriodEdit()->text().toInt();
 
     // converted to percentage values
-    backtestingConfig->addLotDiffThreshold2 = topBacktestingMenu->getAddLotDiffThreshold2Edit()->text().toDouble() / 100.0;
-    backtestingConfig->addLotBacktrackThreshold2 = topBacktestingMenu->getAddLotBacktrackThreshold2Edit()->text().toDouble() / 100.0;
-    backtestingConfig->addLotDiffThreshold1 = topBacktestingMenu->getAddLotDiffThreshold1Edit()->text().toDouble() / 100.0;
-    backtestingConfig->addLotBacktrackThreshold1 = topBacktestingMenu->getAddLotBacktrackThreshold1Edit()->text().toDouble() / 100.0;
+    backtestingConfig->addLotDiffThreshold1 = topBacktestingMenu->getAddLotDiffThreshold1Edit()->text().toDouble();
+    backtestingConfig->addLotBacktrackThreshold1 = topBacktestingMenu->getAddLotBacktrackThreshold1Edit()->text().toDouble();
 
-    backtestingConfig->decLotDiffThreshold1 = topBacktestingMenu->getDecLotDiffThreshold1Edit()->text().toDouble() / 100.0;
-    backtestingConfig->decLotDiffThreshold2 = topBacktestingMenu->getDecLotDiffThreshold2Edit()->text().toDouble() / 100.0;
+    backtestingConfig->decLotDiffThreshold1 = topBacktestingMenu->getDecLotDiffThreshold1Edit()->text().toDouble();
+    backtestingConfig->decLotDiffThreshold2 = topBacktestingMenu->getDecLotDiffThreshold2Edit()->text().toDouble();
 
     backtestingConfig->baseLot = topBacktestingMenu->getBaseLotEdit()->text().toInt();
 

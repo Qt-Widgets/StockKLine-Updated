@@ -44,20 +44,20 @@ TopBacktestingSimpleExMenu::TopBacktestingSimpleExMenu(QWidget* parent)
     baseLotEdit = appendLabelEdit(hbox, QStringLiteral("基础单: "), palette);
     baseLotEdit->setText(QString::number(backTestConfig->baseLot));
 
-    addLotDiffThreshold2Edit = appendLabelEdit(hbox, QStringLiteral("加仓偏离值2(%%): "), palette);
-    addLotDiffThreshold2Edit->setText(QString::number(backTestConfig->addLotDiffThreshold2));
-    addLotBacktrackThreshold2Edit = appendLabelEdit(hbox, QStringLiteral("加仓回撤值2(%%): "), palette);
-    addLotBacktrackThreshold2Edit->setText(QString::number(backTestConfig->addLotBacktrackThreshold2));
+//    addLotDiffThreshold2Edit = appendLabelEdit(hbox, QStringLiteral("加仓偏离值2(%%): "), palette);
+//    addLotDiffThreshold2Edit->setText(QString::number(backTestConfig->addLotDiffThreshold2));
+//    addLotBacktrackThreshold2Edit = appendLabelEdit(hbox, QStringLiteral("加仓回撤值2(%%): "), palette);
+//    addLotBacktrackThreshold2Edit->setText(QString::number(backTestConfig->addLotBacktrackThreshold2));
 
-    addLotDiffThreshold1Edit = appendLabelEdit(hbox, QStringLiteral("加仓偏离值1(%%): "), palette);
+    addLotDiffThreshold1Edit = appendLabelEdit(hbox, QStringLiteral("加仓偏离值: "), palette);
     addLotDiffThreshold1Edit->setText(QString::number(backTestConfig->addLotDiffThreshold1));
-    addLotBacktrackThreshold1Edit = appendLabelEdit(hbox, QStringLiteral("加仓回撤值1(%%): "), palette);
+    addLotBacktrackThreshold1Edit = appendLabelEdit(hbox, QStringLiteral("加仓回撤值: "), palette);
     addLotBacktrackThreshold1Edit->setText(QString::number(backTestConfig->addLotBacktrackThreshold1));
 
-    decLotDiffThreshold1Edit = appendLabelEdit(hbox, QStringLiteral("减仓偏离值1(%%): "), palette);
+    decLotDiffThreshold1Edit = appendLabelEdit(hbox, QStringLiteral("中位减仓偏离值: "), palette);
     decLotDiffThreshold1Edit->setText(QString::number(backTestConfig->decLotDiffThreshold1));
 
-    decLotDiffThreshold2Edit = appendLabelEdit(hbox, QStringLiteral("减仓偏离值2(%%): "), palette);
+    decLotDiffThreshold2Edit = appendLabelEdit(hbox, QStringLiteral("高位减仓偏离值: "), palette);
     decLotDiffThreshold2Edit->setText(QString::number(backTestConfig->decLotDiffThreshold2));
 
     runTestButton = new QPushButton(QStringLiteral("运行回测"));

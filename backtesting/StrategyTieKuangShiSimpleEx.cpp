@@ -65,9 +65,9 @@ void StrategyTieKuangShiSimpleEx::onBar(KLineDataType &bar)
 
         // note: the benchmark is all about the simple strategy. it has nothing to do with the adjustment based strategy.
         double capitalDiff = simpleStrategyCapital - maSimpleStrategyCapital250;
-        double capitalDiffPercent = capitalDiff / maSimpleStrategyCapital250 * 100.0;
+        //double capitalDiffPercent = capitalDiff / maSimpleStrategyCapital250 * 100.0;
         double backtrack = simpleStrategyCapital - maxSimpleStrategyCapital_;
-        double backtrackPercent = backtrack / maxSimpleStrategyCapital_ * 100.0;
+        //double backtrackPercent = backtrack / maxSimpleStrategyCapital_ * 100.0;
 
         // 资金曲线250均线采集满，才开始应用均线调整策略
         if (closeVecPtr_->size() > 250 + backtestingConfig->capitalPeriod) {
@@ -84,13 +84,13 @@ void StrategyTieKuangShiSimpleEx::onBar(KLineDataType &bar)
             }
 
             int volumeToDecrease = 0;
-            if (maxPosCross_ < backtestingConfig->decLotDiffThreshold1 && capitalDiffPercent > backtestingConfig->decLotDiffThreshold1) {
+            if (maxPosCross_ < backtestingConfig->decLotDiffThreshold1 && capitalDiff > backtestingConfig->decLotDiffThreshold1) {
                 int volumeToCut = min(adjVolume_, backtestingConfig->baseLot);
                 volumeToDecrease += volumeToCut;
                 adjVolume_ -= volumeToCut;
                 maxPosCross_ = backtestingConfig->decLotDiffThreshold1 + 0.00000001;
             }
-            if (maxPosCross_ < backtestingConfig->decLotDiffThreshold2 && capitalDiffPercent > backtestingConfig->decLotDiffThreshold2) {
+            else if (maxPosCross_ < backtestingConfig->decLotDiffThreshold2 && capitalDiff > backtestingConfig->decLotDiffThreshold2) {
                 closeAllPosition();
                 maxPosCross_ = backtestingConfig->decLotDiffThreshold2 + 0.00000001;
             }
@@ -99,28 +99,28 @@ void StrategyTieKuangShiSimpleEx::onBar(KLineDataType &bar)
             }
 
             // 清仓后，停止开仓，直到diff回到0轴
-            if (maxPosCross_ >= backtestingConfig->decLotDiffThreshold2 && capitalDiffPercent >= 0.0) {
+            if (maxPosCross_ >= backtestingConfig->decLotDiffThreshold2 && capitalDiff >= 0.0) {
                 return;
             }
 
             int volumeToIncrease = 0;
             if (
-                    (minNegCross_ > backtestingConfig->addLotDiffThreshold1 && capitalDiffPercent < backtestingConfig->addLotDiffThreshold1)
-                    || (minBacktrackCross_ > backtestingConfig->addLotBacktrackThreshold1 && backtrackPercent < backtestingConfig->addLotBacktrackThreshold1)
-               ) {
-                volumeToIncrease += backtestingConfig->baseLot * 2;
-                adjVolume_ += backtestingConfig->baseLot * 2;
-                minNegCross_ = backtestingConfig->addLotDiffThreshold1 - 0.00000001;
-                minBacktrackCross_ = backtestingConfig->addLotBacktrackThreshold1 - 0.00000001;
-            }
-            if (
-                    (minNegCross_ > backtestingConfig->addLotDiffThreshold2 && capitalDiffPercent < backtestingConfig->addLotDiffThreshold2)
-                    && (minBacktrackCross_ > backtestingConfig->addLotBacktrackThreshold2 && backtrackPercent < backtestingConfig->addLotBacktrackThreshold2)
+                    (minNegCross_ > backtestingConfig->addLotDiffThreshold1 && capitalDiff < backtestingConfig->addLotDiffThreshold1)
+                    && (minBacktrackCross_ > backtestingConfig->addLotBacktrackThreshold1 && backtrack < backtestingConfig->addLotBacktrackThreshold1)
                ) {
                 volumeToIncrease += backtestingConfig->baseLot * 3;
                 adjVolume_ += backtestingConfig->baseLot * 3;
                 minNegCross_ = backtestingConfig->addLotDiffThreshold2 - 0.00000001;
                 minBacktrackCross_ = backtestingConfig->addLotBacktrackThreshold2 - 0.00000001;
+            }
+            else if (
+                    (minNegCross_ > backtestingConfig->addLotDiffThreshold1 && capitalDiff < backtestingConfig->addLotDiffThreshold1)
+                    || (minBacktrackCross_ > backtestingConfig->addLotBacktrackThreshold1 && backtrack < backtestingConfig->addLotBacktrackThreshold1)
+               ) {
+                volumeToIncrease += backtestingConfig->baseLot * 2;
+                adjVolume_ += backtestingConfig->baseLot * 2;
+                minNegCross_ = backtestingConfig->addLotDiffThreshold1 - 0.00000001;
+                minBacktrackCross_ = backtestingConfig->addLotBacktrackThreshold1 - 0.00000001;
             }
             openPosition(volumeToIncrease);
         }

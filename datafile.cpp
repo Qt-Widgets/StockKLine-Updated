@@ -167,12 +167,12 @@ void DataFile::calCapitalSimpleAverageLine()
             kline[i].capitalAvgDiffForSimpleStrategy = 0.0;
         } else {
             kline[i].capitalAvgDiffForSimpleStrategy =
-                    (kline[i].capitalForSimpleStrategy - kline[i].capitalAvgsForSimpleStrategy[0]) / kline[i].capitalAvgsForSimpleStrategy[0] * 10000.0;
+                    (kline[i].capitalForSimpleStrategy - kline[i].capitalAvgsForSimpleStrategy[0]);
         }
         if (kline[i].capitalForSimpleStrategy > maxCapital) {
             maxCapital = kline[i].capitalForSimpleStrategy;
         }
-        kline[i].capitalBacktrackForSimpleStrategy = std::fmax(0.0, maxCapital - kline[i].capitalForSimpleStrategy) / maxCapital * 10000.0;
+        kline[i].capitalBacktrackForSimpleStrategy = std::fmax(0.0, maxCapital - kline[i].capitalForSimpleStrategy);
     }
 }
 
@@ -198,7 +198,7 @@ void DataFile::calCapitalAverageLine()
         if (i < capitalAverageLinePeriod[0]) {
             kline[i].capitalAvgDiff = 0.0;
         } else {
-            kline[i].capitalAvgDiff = (kline[i].capital - kline[i].capitalAvgs[0]) / kline[i].capitalAvgs[0] * 10000.0;
+            kline[i].capitalAvgDiff = (kline[i].capital - kline[i].capitalAvgs[0]);
         }
     }
 }
