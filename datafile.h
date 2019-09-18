@@ -35,6 +35,12 @@ struct KLine
     double capital;
     double capitalAvgs[6];
     double capitalAvgDiff;
+
+    double capitalForSimpleStrategy;
+    double capitalAvgsForSimpleStrategy[6];
+    double capitalAvgDiffForSimpleStrategy;
+    double capitalBacktrackForSimpleStrategy;
+    QString tradingSignalForSimpleStrategy;
 };
 
 class DataFile
@@ -44,11 +50,13 @@ public:
     ~DataFile();
     bool readData(QString filestr);
     bool readBacktestingResult(QString filestr);
+    bool readBacktestingSimpleResult(QString filestr);
     void clear();
     std::vector<KLine> kline;
 
     void calAverageLine();
     void calCapitalAverageLine();
+    void calCapitalSimpleAverageLine();
 
     void calvolumeAverage5();
     void calvolumeAverage10();

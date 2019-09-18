@@ -78,35 +78,56 @@ void CapitalLineGrid::setBacktestingTab(BacktestingTab* tab)
     this->backtestingTab = tab;
 }
 
+//void CapitalLineGrid::backtestingConfigChanged()
+//{
+//    backtestingConfig->capitalPeriod = topBacktestingMenu->getCapitalPeriodEdit()->text().toInt();
+//    backtestingConfig->negThreshold1 = topBacktestingMenu->getNegThreshold1Edit()->text().toDouble() / 10000.0;
+//    backtestingConfig->negThreshold2 = topBacktestingMenu->getNegThreshold2Edit()->text().toDouble() / 10000.0;
+//    backtestingConfig->negThreshold3 = topBacktestingMenu->getNegThreshold3Edit()->text().toDouble() / 10000.0;
+//    backtestingConfig->posThreshold1 = topBacktestingMenu->getPosThreshold1Edit()->text().toDouble() / 10000.0;
+//    backtestingConfig->posThreshold2 = topBacktestingMenu->getPosThreshold2Edit()->text().toDouble() / 10000.0;
+//    backtestingConfig->posThreshold3 = topBacktestingMenu->getPosThreshold3Edit()->text().toDouble() / 10000.0;
+//    backtestingConfig->posThreshold4 = topBacktestingMenu->getPosThreshold4Edit()->text().toDouble() / 10000.0;
+//    backtestingConfig->posThreshold5 = topBacktestingMenu->getPosThreshold5Edit()->text().toDouble() / 10000.0;
+
+//    backtestingConfig->negLotThreshold1 = topBacktestingMenu->getNegLotThreshold1Edit()->text().toInt();
+//    backtestingConfig->negLotThreshold2 = topBacktestingMenu->getNegLotThreshold2Edit()->text().toInt();
+//    backtestingConfig->negLotThreshold3 = topBacktestingMenu->getNegLotThreshold3Edit()->text().toInt();
+
+//    backtestingConfig->totalAdjLot =
+//            backtestingConfig->negLotThreshold1 +
+//            backtestingConfig->negLotThreshold2 +
+//            backtestingConfig->negLotThreshold3;
+
+//    backtestingConfig->posLotThreshold1 = topBacktestingMenu->getPosLotThreshold1Edit()->text().toInt();
+//    backtestingConfig->posLotThreshold2 = topBacktestingMenu->getPosLotThreshold2Edit()->text().toInt();
+//    backtestingConfig->posLotThreshold3 = topBacktestingMenu->getPosLotThreshold3Edit()->text().toInt();
+//    backtestingConfig->posLotThreshold4 = topBacktestingMenu->getPosLotThreshold4Edit()->text().toInt();
+//    //backtestingConfig->posLotThreshold5 = topBacktestingMenu->getPosLotThreshold5Edit()->text().toInt();
+
+//    backtestingConfig->baseLot = topBacktestingMenu->getBaseLotEdit()->text().toInt();
+//    backtestingConfig->enableCapitalAjdustment = topBacktestingMenu->getEnableCapitalAjdustmentCheckBox()->isChecked();
+
+//    backtestingDriver.test();
+//    backtestingTab->loadData(); // 重新加载数据
+
+//    std::cout << "backtestingConfigChanged" << std::endl;
+//}
+
 void CapitalLineGrid::backtestingConfigChanged()
 {
     backtestingConfig->capitalPeriod = topBacktestingMenu->getCapitalPeriodEdit()->text().toInt();
-    backtestingConfig->negThreshold1 = topBacktestingMenu->getNegThreshold1Edit()->text().toDouble() / 10000.0;
-    backtestingConfig->negThreshold2 = topBacktestingMenu->getNegThreshold2Edit()->text().toDouble() / 10000.0;
-    backtestingConfig->negThreshold3 = topBacktestingMenu->getNegThreshold3Edit()->text().toDouble() / 10000.0;
-    backtestingConfig->posThreshold1 = topBacktestingMenu->getPosThreshold1Edit()->text().toDouble() / 10000.0;
-    backtestingConfig->posThreshold2 = topBacktestingMenu->getPosThreshold2Edit()->text().toDouble() / 10000.0;
-    backtestingConfig->posThreshold3 = topBacktestingMenu->getPosThreshold3Edit()->text().toDouble() / 10000.0;
-    backtestingConfig->posThreshold4 = topBacktestingMenu->getPosThreshold4Edit()->text().toDouble() / 10000.0;
-    backtestingConfig->posThreshold5 = topBacktestingMenu->getPosThreshold5Edit()->text().toDouble() / 10000.0;
 
-    backtestingConfig->negLotThreshold1 = topBacktestingMenu->getNegLotThreshold1Edit()->text().toInt();
-    backtestingConfig->negLotThreshold2 = topBacktestingMenu->getNegLotThreshold2Edit()->text().toInt();
-    backtestingConfig->negLotThreshold3 = topBacktestingMenu->getNegLotThreshold3Edit()->text().toInt();
+    // converted to percentage values
+    backtestingConfig->addLotDiffThreshold2 = topBacktestingMenu->getAddLotDiffThreshold2Edit()->text().toDouble() / 100.0;
+    backtestingConfig->addLotBacktrackThreshold2 = topBacktestingMenu->getAddLotBacktrackThreshold2Edit()->text().toDouble() / 100.0;
+    backtestingConfig->addLotDiffThreshold1 = topBacktestingMenu->getAddLotDiffThreshold1Edit()->text().toDouble() / 100.0;
+    backtestingConfig->addLotBacktrackThreshold1 = topBacktestingMenu->getAddLotBacktrackThreshold1Edit()->text().toDouble() / 100.0;
 
-    backtestingConfig->totalAdjLot =
-            backtestingConfig->negLotThreshold1 +
-            backtestingConfig->negLotThreshold2 +
-            backtestingConfig->negLotThreshold3;
-
-    backtestingConfig->posLotThreshold1 = topBacktestingMenu->getPosLotThreshold1Edit()->text().toInt();
-    backtestingConfig->posLotThreshold2 = topBacktestingMenu->getPosLotThreshold2Edit()->text().toInt();
-    backtestingConfig->posLotThreshold3 = topBacktestingMenu->getPosLotThreshold3Edit()->text().toInt();
-    backtestingConfig->posLotThreshold4 = topBacktestingMenu->getPosLotThreshold4Edit()->text().toInt();
-    //backtestingConfig->posLotThreshold5 = topBacktestingMenu->getPosLotThreshold5Edit()->text().toInt();
+    backtestingConfig->decLotDiffThreshold1 = topBacktestingMenu->getDecLotDiffThreshold1Edit()->text().toDouble() / 100.0;
+    backtestingConfig->decLotDiffThreshold2 = topBacktestingMenu->getDecLotDiffThreshold2Edit()->text().toDouble() / 100.0;
 
     backtestingConfig->baseLot = topBacktestingMenu->getBaseLotEdit()->text().toInt();
-    backtestingConfig->enableCapitalAjdustment = topBacktestingMenu->getEnableCapitalAjdustmentCheckBox()->isChecked();
 
     backtestingDriver.test();
     backtestingTab->loadData(); // 重新加载数据
@@ -114,7 +135,7 @@ void CapitalLineGrid::backtestingConfigChanged()
     std::cout << "backtestingConfigChanged" << std::endl;
 }
 
-void CapitalLineGrid::trackTopBacktestingMenu(TopBacktestingMenu* topBacktestingMenu)
+void CapitalLineGrid::trackTopBacktestingMenu(TopBacktestingSimpleExMenu* topBacktestingMenu)
 {
     this->topBacktestingMenu = topBacktestingMenu;
     // ugly, but working
@@ -155,7 +176,9 @@ void CapitalLineGrid::drawLine()
     updateTopAverageLineInfo();
 
     drawAverageLine();
+    drawAverageSimpleLine();
     drawCapitalLine();
+    drawCapitalSimpleLine();
 }
 
 
@@ -169,6 +192,8 @@ void CapitalLineGrid::getIndicator()
 
     highestCapital = 0.0;
     lowestCapital = std::numeric_limits<double>::max();
+    highestCapitalSimple = 0.0;
+    lowestCapitalSimple = std::numeric_limits<double>::max();
 
     for( int i= beginDay;i<endDay;++i)
     {
@@ -177,6 +202,13 @@ void CapitalLineGrid::getIndicator()
         }
         if (mDataFile->kline[i].capital < lowestCapital) {
             lowestCapital = mDataFile->kline[i].capital;
+        }
+
+        if (mDataFile->kline[i].capitalForSimpleStrategy > highestCapitalSimple) {
+            highestCapitalSimple = mDataFile->kline[i].capitalForSimpleStrategy;
+        }
+        if (mDataFile->kline[i].capitalForSimpleStrategy < lowestCapitalSimple) {
+            lowestCapitalSimple = mDataFile->kline[i].capitalForSimpleStrategy;
         }
     }
 }
@@ -429,6 +461,30 @@ void CapitalLineGrid::drawCapitalLine()
     painter.drawPolyline(polykline);
 }
 
+void CapitalLineGrid::drawCapitalSimpleLine()
+{
+    if( beginDay < 0)
+        return;
+
+    double capitalYScale = getGridHeight() / (highestCapitalSimple - lowestCapitalSimple);
+    QVector<QPoint> point;
+    QPoint temp;
+    double xstep = getGridWidth() / totalDay;
+
+    for(int i = beginDay; i < endDay; ++i) {
+        temp.setX(getMarginLeft() + xstep *(i - beginDay) + 0.5*lineWidth);
+        temp.setY(getWidgetHeight() - (mDataFile->kline[i].capitalForSimpleStrategy - lowestCapitalSimple) * capitalYScale - getMarginBottom());
+        point.push_back(temp);
+    }
+
+    QPainter painter(this);
+    QPen pen;
+    pen.setColor(Qt::yellow);
+    painter.setPen(pen);
+    QPolygon polykline(point);
+    painter.drawPolyline(polykline);
+}
+
 void CapitalLineGrid::drawAverageLine()
 {
 
@@ -462,6 +518,45 @@ void CapitalLineGrid::drawAverageLine()
         QPen     pen;
 
         pen.setColor(mDataFile->capitalAverageLineColors[i]);
+        painter.setPen(pen);
+        QPolygon polykline(point);
+        painter.drawPolyline(polykline);
+    }
+}
+
+void CapitalLineGrid::drawAverageSimpleLine()
+{
+
+    //y轴缩放
+    double yscale = getGridHeight() / (highestCapitalSimple - lowestCapitalSimple) ;
+    //画笔的线宽
+    lineWidth;
+    //画线要连接的点
+    QVector<QPoint> point;
+
+    //临时点
+    QPoint temp;
+
+    //x轴步进
+    double xstep = getGridWidth() / totalDay;
+
+    if( beginDay < 0)
+        return;
+
+    for (int i = 0; i < mDataFile->capitalAverageLineCount; i++) {
+        point.clear();
+        for (int j = beginDay; j < endDay; j++) {
+            if (mDataFile->kline[j].capitalAvgsForSimpleStrategy[i] <= 0.0)
+                continue;
+            temp.setX(getMarginLeft() + xstep * (j - beginDay) + 0.5 * lineWidth);
+            temp.setY(getWidgetHeight() - (mDataFile->kline[j].capitalAvgsForSimpleStrategy[i] - lowestCapitalSimple) * yscale - getMarginBottom());
+            point.push_back(temp);
+        }
+
+        QPainter painter(this);
+        QPen     pen;
+
+        pen.setColor(Qt::red);
         painter.setPen(pen);
         QPolygon polykline(point);
         painter.drawPolyline(polykline);

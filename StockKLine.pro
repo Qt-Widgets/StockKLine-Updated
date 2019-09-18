@@ -34,9 +34,12 @@ SOURCES += main.cpp\
     backtesting/EventEngine.cpp \
     backtesting/MA.cpp \
     backtesting/StrategyTieKuangShiEx.cpp \
+    backtesting/StrategyTieKuangShiSimple.cpp \
+    backtesting/StrategyTieKuangShiSimpleEx.cpp \
     backtesting/Utility.cpp \
     backtesting/backtestingconfig.cpp \
     backtesting/backtestingdriver.cpp \
+    backtesting/backtestingdriverforsimpleex.cpp \
     backtestingtab.cpp \
     bottomtimegrid.cpp \
     capitalaveragediffgrid.cpp \
@@ -53,6 +56,7 @@ SOURCES += main.cpp\
     showdetail.cpp \
     kvolumegrid.cpp \
     topbacktestingmenu.cpp \
+    topbacktestingsimpleexmenu.cpp \
     topinstrumentsummary.cpp
 
 HEADERS  += mainwindow.h \
@@ -66,6 +70,8 @@ HEADERS  += mainwindow.h \
     backtesting/MA.h \
     backtesting/Strategy.h \
     backtesting/StrategyTieKuangShiEx.h \
+    backtesting/StrategyTieKuangShiSimple.h \
+    backtesting/StrategyTieKuangShiSimpleEx.h \
     backtesting/ThostFtdcMdApi.h \
     backtesting/ThostFtdcTraderApi.h \
     backtesting/ThostFtdcUserApiDataType.h \
@@ -74,6 +80,7 @@ HEADERS  += mainwindow.h \
     backtesting/Utility.h \
     backtesting/backtestingconfig.h \
     backtesting/backtestingdriver.h \
+    backtesting/backtestingdriverforsimpleex.h \
     backtesting/date.h \
     backtestingtab.h \
     bottomtimeGrid.h \
@@ -90,6 +97,7 @@ HEADERS  += mainwindow.h \
     showdetail.h \
     kvolumegrid.h \
     topbacktestingmenu.h \
+    topbacktestingsimpleexmenu.h \
     topinstrumentsummary.h
 
 FORMS    += mainwindow.ui
@@ -99,4 +107,6 @@ FORMS    += mainwindow.ui
 TRANSLATIONS = myI18N_zh_CN.ts
 
 DISTFILES += \
-    dataKLine.txt
+    dataKLine.txt \
+    scripts/Kline_Generator.py \
+    scripts/Kline_Generator2.py

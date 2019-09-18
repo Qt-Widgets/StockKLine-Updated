@@ -30,11 +30,15 @@ private:
     void drawTopInfo();
     void drawTips();
     void drawYtick();
+    void drawCapitalSimpleLine();
 
 private:
 
     //当前要画的成交量线中的最大成交量
     double maxVolume;
+
+    double highestCapitalBacktrack;
+    double lowestCapitalBacktrack;
 
     int ypZeroLine;
 

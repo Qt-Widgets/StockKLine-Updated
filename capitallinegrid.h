@@ -4,9 +4,9 @@
 #include "datawidget.h"
 #include "datafile.h"
 #include "marketdatasplitter.h"
-#include "topbacktestingmenu.h"
+#include "topbacktestingsimpleexmenu.h"
 #include "backtestingtab.h"
-#include "backtesting/backtestingdriver.h"
+#include "backtesting/backtestingdriverforsimpleex.h"
 #include "backtesting/backtestingconfig.h"
 
 #include <QPoint>
@@ -45,9 +45,11 @@ public:
 
     //画均线
     void drawAverageLine();
+    void drawAverageSimpleLine();
     void drawCapitalLine();
+    void drawCapitalSimpleLine();
 
-    void trackTopBacktestingMenu(TopBacktestingMenu* topBacktestingMenu);
+    void trackTopBacktestingMenu(TopBacktestingSimpleExMenu* topBacktestingMenu);
     void setBacktestingTab(BacktestingTab* tab);
 
 public slots:
@@ -65,6 +67,9 @@ private:
     double highestCapital;
     double lowestCapital;
 
+    double highestCapitalSimple;
+    double lowestCapitalSimple;
+
     //x轴和y轴的缩放比
     double xscale;
     double yscale;
@@ -77,12 +82,12 @@ private:
 
     int topAverageLineInfoHeight = 20;
 
-    TopBacktestingMenu* topBacktestingMenu;
+    TopBacktestingSimpleExMenu* topBacktestingMenu;
     BacktestingTab* backtestingTab;
     BacktestingConfig* backtestingConfig;
     int avgInterval = 250;
 
-    BacktestingDriver backtestingDriver;
+    BacktestingDriverForSimpleEx backtestingDriver;
 
 signals:
 

@@ -42,6 +42,28 @@ bool DataFile::readBacktestingResult(QString filestr)
     calCapitalAverageLine();
 }
 
+bool DataFile::readBacktestingSimpleResult(QString filestr)
+{
+    QFile file(filestr);
+    if( !file.open(QFile::ReadOnly) )
+        return false;
+
+    char    line[1024];
+    int klineIndex = 0;
+    std::vector<std::string> columns;
+
+    while( file.readLine(line,1024)  > 0 ) {
+        columns.clear();
+        split(line, ',', columns);
+
+        kline[klineIndex].tradingSignalForSimpleStrategy = columns[1].c_str();
+        kline[klineIndex].capitalForSimpleStrategy = std::atof(columns[2].c_str());
+        klineIndex++;
+    }
+
+    calCapitalSimpleAverageLine();
+}
+
 void DataFile::split(const std::string& s, char c, std::vector<std::string>& v)
 {
     std::string::size_type i = 0;
@@ -118,6 +140,39 @@ void DataFile::calAverageLine()
             sum -= kline[j - period].closeingPrice;
             kline[j].averages[i] = sum / period;
         }
+    }
+}
+
+void DataFile::calCapitalSimpleAverageLine()
+{
+    for (int i = 0; i < capitalAverageLineCount; i++) {
+        double sum = 0.0;
+        int period = capitalAverageLinePeriod[i];
+        for (int j = 0; j < period - 1; j++) {
+            sum += kline[j].capitalForSimpleStrategy;
+            kline[j].capitalAvgsForSimpleStrategy[i] = 0.0;
+        }
+        sum += kline[period - 1].capitalForSimpleStrategy;
+        kline[period - 1].capitalAvgsForSimpleStrategy[i] = sum / period;
+        for (int j = period; j < kline.size(); j++) {
+            sum += kline[j].capitalForSimpleStrategy;
+            sum -= kline[j - period].capitalForSimpleStrategy;
+            kline[j].capitalAvgsForSimpleStrategy[i] = sum / period;
+        }
+    }
+
+    double maxCapital = 0.0;
+    for (int i = 0; i < kline.size(); ++i) {
+        if (i < capitalAverageLinePeriod[0]) {
+            kline[i].capitalAvgDiffForSimpleStrategy = 0.0;
+        } else {
+            kline[i].capitalAvgDiffForSimpleStrategy =
+                    (kline[i].capitalForSimpleStrategy - kline[i].capitalAvgsForSimpleStrategy[0]) / kline[i].capitalAvgsForSimpleStrategy[0] * 10000.0;
+        }
+        if (kline[i].capitalForSimpleStrategy > maxCapital) {
+            maxCapital = kline[i].capitalForSimpleStrategy;
+        }
+        kline[i].capitalBacktrackForSimpleStrategy = std::fmax(0.0, maxCapital - kline[i].capitalForSimpleStrategy) / maxCapital * 10000.0;
     }
 }
 

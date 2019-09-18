@@ -7,7 +7,7 @@
 #include "marketdatasplitter.h"
 #include "datadetailbox.h"
 #include "bottomtimegrid.h"
-#include "topbacktestingmenu.h"
+#include "topbacktestingsimpleexmenu.h"
 
 BacktestingTab::BacktestingTab(QWidget *parent)
     : QWidget(parent), mDataFile(new DataFile())
@@ -40,6 +40,14 @@ void BacktestingTab::loadData()
         return;
     }
 
+    //file = QStringLiteral("E:\\cbm\\startup\\qihuoshuju_good\\TieKuangshiEx_15min_Backtesting_Stats_Simple.csv");
+    file = QStringLiteral("TieKuangshiEx_15min_Backtesting_Stats_Simple.csv");
+    if( !mDataFile->readBacktestingSimpleResult(file) )
+    {
+        QMessageBox::about(this, QStringLiteral("数据文件读取失败"), QStringLiteral("确定"));
+        //return;
+    }
+
     //file = QStringLiteral("E:\\cbm\\startup\\qihuoshuju_good\\TieKuangshiEx_15min_Backtesting_Stats.csv");
     file = QStringLiteral("TieKuangshiEx_15min_Backtesting_Stats.csv");
     if( !mDataFile->readBacktestingResult(file) )
@@ -53,7 +61,7 @@ QWidget* BacktestingTab::createChartWidget(QWidget* parent)
 {
     MarketDataSplitter *splitterMain = new MarketDataSplitter(parent); //新建主分割窗口，水平分割
 
-    auto topInfo = new TopBacktestingMenu(splitterMain);
+    auto topInfo = new TopBacktestingSimpleExMenu(splitterMain);
     topInfo->setFocusPolicy(Qt::StrongFocus);
 
     auto kline = new CapitalLineGrid(splitterMain, mDataFile);

@@ -46,6 +46,7 @@ void CapitalAverageDiffGrid::paintEvent(QPaintEvent *event)
     getIndicator();
     drawYtick();
     drawVolume();
+    drawCapitalSimpleLine();
 
     //画十字线
     if( !isKeyDown && bCross)
@@ -131,10 +132,10 @@ void CapitalAverageDiffGrid::drawTopInfo()
     } else if (currentDayAtMouse <= beginDay) {
         currentDayAtMouse = beginDay;
     }
-    double diff = mDataFile->kline[currentDayAtMouse].capitalAvgDiff;
+    double diff = mDataFile->kline[currentDayAtMouse].capitalAvgDiffForSimpleStrategy;
 
     std::stringstream stream;
-    stream << "Diff %% (万分之一): " << std::fixed << std::setprecision(2) << diff;
+    stream << "Diff %%: " << std::fixed << std::setprecision(2) << diff;
 
     QPainter painter(this);
     QFont font;
@@ -144,7 +145,7 @@ void CapitalAverageDiffGrid::drawTopInfo()
     pen.setColor(Qt::yellow);
     painter.setPen(pen);
 
-    QRect rectText(5 + getMarginLeft(), 3, 150, topInfoHeight);
+    QRect rectText(5 + getMarginLeft(), 3, 250, topInfoHeight);
     painter.drawText(rectText, QString(stream.str().c_str()));
 }
 
@@ -157,11 +158,18 @@ void CapitalAverageDiffGrid::initial()
 void CapitalAverageDiffGrid::getIndicator()
 {
     maxVolume = 0.0;
+    highestCapitalBacktrack = 0.0;
+    lowestCapitalBacktrack = std::numeric_limits<double>::max();
     for(int i=beginDay;i<endDay;++i)
     {
-        double volume = std::fabs(mDataFile->kline[i].capitalAvgDiff);
+        double volume = std::fabs(mDataFile->kline[i].capitalAvgDiffForSimpleStrategy);
         if (volume > maxVolume)
             maxVolume = volume;
+        if (mDataFile->kline[i].capitalBacktrackForSimpleStrategy > highestCapitalBacktrack) {
+            highestCapitalBacktrack = mDataFile->kline[i].capitalBacktrackForSimpleStrategy;
+        } else if (mDataFile->kline[i].capitalBacktrackForSimpleStrategy < lowestCapitalBacktrack) {
+            lowestCapitalBacktrack = mDataFile->kline[i].capitalBacktrackForSimpleStrategy;
+        }
     }
     ypZeroLine = getWidgetHeight() - (getGridHeight() / 2);
 }
@@ -176,7 +184,7 @@ void CapitalAverageDiffGrid::drawVolume()
 
     for( int i= beginDay;i<endDay;++i)
     {
-        if(mDataFile->kline[i].capitalAvgDiff > 0.0)
+        if(mDataFile->kline[i].capitalAvgDiffForSimpleStrategy > 0.0)
             pen.setColor(QColor(85,252,252));
         else
             pen.setColor(Qt::red);
@@ -197,7 +205,7 @@ void CapitalAverageDiffGrid::drawVolume()
         QPoint p3;
         QPoint p4;
 
-        double temp = mDataFile->kline[i].capitalAvgDiff;
+        double temp = mDataFile->kline[i].capitalAvgDiffForSimpleStrategy;
 
         pen.setWidth(1);
         painter.setPen(pen);
@@ -306,4 +314,28 @@ void CapitalAverageDiffGrid::drawMouseMoveCrossHorLine()
     painter.drawLine(getMarginLeft(),mousePoint.y(),
                      getWidgetWidth()-getMarginRight(),mousePoint.y());
 
+}
+
+void CapitalAverageDiffGrid::drawCapitalSimpleLine()
+{
+    if( beginDay < 0)
+        return;
+
+    double capitalBackTrackYScale = getGridHeight() / (highestCapitalBacktrack - lowestCapitalBacktrack);
+    QVector<QPoint> point;
+    QPoint temp;
+    double xstep = getGridWidth() / totalDay;
+
+    for(int i = beginDay; i < endDay; ++i) {
+        temp.setX(getMarginLeft() + xstep *(i - beginDay) + 0.5*lineWidth);
+        temp.setY(getWidgetHeight() - (mDataFile->kline[i].capitalBacktrackForSimpleStrategy - lowestCapitalBacktrack) * capitalBackTrackYScale - getMarginBottom());
+        point.push_back(temp);
+    }
+
+    QPainter painter(this);
+    QPen pen;
+    pen.setColor(Qt::yellow);
+    painter.setPen(pen);
+    QPolygon polykline(point);
+    painter.drawPolyline(polykline);
 }

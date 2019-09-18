@@ -37,6 +37,14 @@ public:
 
     bool enableCapitalAjdustment;
 
+    // for SimpleEx
+    double addLotDiffThreshold1;
+    double addLotBacktrackThreshold1;
+    double addLotDiffThreshold2;
+    double addLotBacktrackThreshold2;
+    double decLotDiffThreshold1;
+    double decLotDiffThreshold2;
+
 private:
     BacktestingConfig() {
         capitalPeriod = 250;
@@ -61,6 +69,13 @@ private:
         baseLot = 1;
 
         enableCapitalAjdustment = true;
+
+        addLotDiffThreshold1 = -30.0;
+        addLotBacktrackThreshold1 = -10.0;
+        addLotDiffThreshold2 = -50.0;
+        addLotBacktrackThreshold2 = -20.0;
+        decLotDiffThreshold1 = 50.0;
+        decLotDiffThreshold2 = 65.0;
     }
     BacktestingConfig(BacktestingConfig& ) = delete;
     BacktestingConfig& operator=(const BacktestingConfig& ) = delete;
