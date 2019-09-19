@@ -52,6 +52,7 @@ void BacktestingTradeGateway::recordStatus()
 	(*statFilePtr_) << bar_.update_time << "," 
 		<< lastTradingSignal_ << ","
 		<< capital_ + positionValue_ << ","
+        << adjustmentSignal_ << ","
 		<< longTrades_.size() << ","
 		<< shortTrades_.size()
 		<< std::endl;
@@ -149,6 +150,11 @@ void BacktestingTradeGateway::newTick(Tick& tick)
 	strategyPtr_->onTick(tick);
 }
 */
+
+void BacktestingTradeGateway::recordAdjustmentSignal(std::string signal)
+{
+    adjustmentSignal_ = signal;
+}
 
 void BacktestingTradeGateway::newMarketDataEvent(Event& event)
 {

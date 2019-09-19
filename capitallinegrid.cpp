@@ -457,6 +457,25 @@ void CapitalLineGrid::drawCapitalLine()
     painter.setPen(pen);
     QPolygon polykline(point);
     painter.drawPolyline(polykline);
+
+    QPen tradingSignalPen;
+    for (int i = beginDay; i < endDay; i++) {
+        drawTradingSignal(i, getMarginLeft() + xstep * (i - beginDay) + 0.5 * lineWidth, painter, tradingSignalPen);
+    }
+}
+
+void CapitalLineGrid::drawTradingSignal(int index, int x, QPainter& painter, QPen& pen)
+{
+    QPen originalPen = painter.pen();
+    QString signal = mDataFile->kline[index].adjustmentSignal;
+    if (signal.size() == 0) {
+        return;
+    }
+    pen.setColor(Qt::white);
+    painter.setPen(pen);
+    painter.drawText(QPoint( x - 2, getMarginTop() + 35), signal);
+
+    painter.setPen(originalPen);
 }
 
 void CapitalLineGrid::drawCapitalSimpleLine()

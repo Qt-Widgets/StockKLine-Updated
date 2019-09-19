@@ -36,6 +36,7 @@ bool DataFile::readBacktestingResult(QString filestr)
 
         kline[klineIndex].tradingSignal = columns[1].c_str();
         kline[klineIndex].capital = std::atof(columns[2].c_str());
+        kline[klineIndex].adjustmentSignal = columns[3].c_str();
         klineIndex++;
     }
 

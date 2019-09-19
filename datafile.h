@@ -31,6 +31,7 @@ struct KLine
 
     double averages[6];
     QString tradingSignal;
+    QString adjustmentSignal;
 
     double capital;
     double capitalAvgs[6];

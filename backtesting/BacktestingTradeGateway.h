@@ -36,6 +36,8 @@ public:
 	int getLongTradeCount();
 	void reset();
 
+    void recordAdjustmentSignal(std::string signal);
+
 private:
 	void crossLimitOrder(Event& event);
 	void crossStopOrder(Event& event);
@@ -83,6 +85,8 @@ private:
 
 	std::string statFileName_;
 	std::unique_ptr<std::ofstream> statFilePtr_;
+
+    std::string adjustmentSignal_;
 };
 
 using BacktestingTradeGatewayPtr = std::shared_ptr<BacktestingTradeGateway>;

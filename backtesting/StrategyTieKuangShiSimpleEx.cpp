@@ -51,6 +51,10 @@ void StrategyTieKuangShiSimpleEx::onBar(KLineDataType &bar)
 
     if (backtestingConfig->enableCapitalAjdustment) {
 
+        auto gateWay = std::static_pointer_cast<BacktestingTradeGateway>(tradeGatewayPtr_);
+        // clear the signal each time
+        gateWay->recordAdjustmentSignal("");
+
         // start calculate the MA capital line for the simple strategy
         double simpleStrategyCapital = std::static_pointer_cast<BacktestingTradeGateway>(tradeGatewayForSimplePtr_)->getAssetVaue();
         simpleStrategyCaptialVecPtr_->push_back(simpleStrategyCapital);
@@ -89,10 +93,12 @@ void StrategyTieKuangShiSimpleEx::onBar(KLineDataType &bar)
                 volumeToDecrease += volumeToCut;
                 adjVolume_ -= volumeToCut;
                 maxPosCross_ = backtestingConfig->decLotDiffThreshold1 + 0.00000001;
+                gateWay->recordAdjustmentSignal("J");
             }
             else if (maxPosCross_ < backtestingConfig->decLotDiffThreshold2 && capitalDiff > backtestingConfig->decLotDiffThreshold2) {
                 closeAllPosition();
                 maxPosCross_ = backtestingConfig->decLotDiffThreshold2 + 0.00000001;
+                gateWay->recordAdjustmentSignal("Q");
             }
             if (volumeToDecrease > 0) {
                 closePosition(volumeToDecrease);
@@ -112,6 +118,7 @@ void StrategyTieKuangShiSimpleEx::onBar(KLineDataType &bar)
                 adjVolume_ += backtestingConfig->baseLot * 3;
                 minNegCross_ = backtestingConfig->addLotDiffThreshold2 - 0.00000001;
                 minBacktrackCross_ = backtestingConfig->addLotBacktrackThreshold2 - 0.00000001;
+                gateWay->recordAdjustmentSignal("3");
             }
             else if (
                     (minNegCross_ > backtestingConfig->addLotDiffThreshold1 && capitalDiff < backtestingConfig->addLotDiffThreshold1)
@@ -121,6 +128,7 @@ void StrategyTieKuangShiSimpleEx::onBar(KLineDataType &bar)
                 adjVolume_ += backtestingConfig->baseLot * 2;
                 minNegCross_ = backtestingConfig->addLotDiffThreshold1 - 0.00000001;
                 minBacktrackCross_ = backtestingConfig->addLotBacktrackThreshold1 - 0.00000001;
+                gateWay->recordAdjustmentSignal("2");
             }
             openPosition(volumeToIncrease);
         }

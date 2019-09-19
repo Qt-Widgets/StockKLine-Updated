@@ -52,6 +52,9 @@ public:
     void trackTopBacktestingMenu(TopBacktestingSimpleExMenu* topBacktestingMenu);
     void setBacktestingTab(BacktestingTab* tab);
 
+private:
+    void drawTradingSignal(int index, int x, QPainter& painter, QPen& pen);
+
 public slots:
     void avgIntervalChanged();
     void backtestingConfigChanged();
