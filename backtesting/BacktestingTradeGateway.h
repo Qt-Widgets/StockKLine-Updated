@@ -44,6 +44,8 @@ private:
 	void calculatePositionValue(double currentPrice);
 
 	void createOrderRsp(Order &order, OrderRsp &orderRsp);
+    int getLongTradeVolume();
+    int getShortTradeVolume();
 
 private:
 	StrategyPtr strategyPtr_;

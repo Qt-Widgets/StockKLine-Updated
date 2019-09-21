@@ -349,6 +349,9 @@ void CapitalLineGrid::updateTopAverageLineInfo()
         painter.drawText(rectText, QString(stream.str().c_str()));
         x += 100 + 20;
     }
+
+    QRect rectText(x + 50, 3, x + 100, topAverageLineInfoHeight);
+    painter.drawText(rectText, "tradingSignal: " + mDataFile->kline[currentDayAtMouse].tradingSignal);
 }
 
 void CapitalLineGrid::drawMouseMoveCrossVerLine()
@@ -467,15 +470,28 @@ void CapitalLineGrid::drawCapitalLine()
 void CapitalLineGrid::drawTradingSignal(int index, int x, QPainter& painter, QPen& pen)
 {
     QPen originalPen = painter.pen();
-    QString signal = mDataFile->kline[index].adjustmentSignal;
-    if (signal.size() == 0) {
-        return;
-    }
-    pen.setColor(Qt::white);
-    painter.setPen(pen);
-    painter.drawText(QPoint( x - 2, getMarginTop() + 35), signal);
+    QString adjustmentSignal = mDataFile->kline[index].adjustmentSignal;
+    if (adjustmentSignal.size() != 0) {
+        pen.setColor(Qt::white);
+        painter.setPen(pen);
+        painter.drawText(QPoint( x - 2, getMarginTop() + 35), adjustmentSignal);
 
-    painter.setPen(originalPen);
+        painter.setPen(originalPen);
+    }
+
+    QString tradingSignal = mDataFile->kline[index].tradingSignal;
+    if (tradingSignal.size() != 0) {
+        auto it = mDataFile->tradingSignalColors.find(mDataFile->kline[index].tradingSignal);
+        if (it == mDataFile->tradingSignalColors.end()) {
+            return;
+        }
+        Qt::GlobalColor color = it->second;
+        pen.setColor(color);
+        painter.setPen(pen);
+        painter.drawText(QPoint( x - 2, getMarginTop() + 50), "*");
+
+        painter.setPen(originalPen);
+    }
 }
 
 void CapitalLineGrid::drawCapitalSimpleLine()

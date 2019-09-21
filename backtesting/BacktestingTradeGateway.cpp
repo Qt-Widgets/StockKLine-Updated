@@ -58,6 +58,22 @@ void BacktestingTradeGateway::recordStatus()
 		<< std::endl;
 }
 
+int BacktestingTradeGateway::getLongTradeVolume() {
+    int volume = 0;
+    for (auto& trade : longTrades_) {
+        volume += trade->Volume;
+    }
+    return volume;
+}
+
+int BacktestingTradeGateway::getShortTradeVolume() {
+    int volume = 0;
+    for (auto& trade : shortTrades_) {
+        volume += trade->Volume;
+    }
+    return volume;
+}
+
 // BK
 void BacktestingTradeGateway::openLong(const char *instrumentID, int volume)
 {
@@ -87,7 +103,8 @@ void BacktestingTradeGateway::closeLong(const char *instrumentID, int volume)
 		std::cout << "多头持仓为 0，SP不执行" << std::endl;
 		return;
 	}
-	sendOrder(instrumentID, std::numeric_limits<double>::min(), 100 * volume, THOST_FTDC_D_Sell, THOST_FTDC_OF_Close);
+    //sendOrder(instrumentID, std::numeric_limits<double>::min(), 100 * volume, THOST_FTDC_D_Sell, THOST_FTDC_OF_Close);
+    sendOrder(instrumentID, std::numeric_limits<double>::min(), getLongTradeVolume(), THOST_FTDC_D_Sell, THOST_FTDC_OF_Close);
 	lastTradingSignal_ = "SP";
 }
 
@@ -98,7 +115,8 @@ void BacktestingTradeGateway::closeShort(const char *instrumentID, int volume)
 		std::cout << "空头持仓为 0，BP不执行" << std::endl;
 		return;
 	}
-	sendOrder(instrumentID, std::numeric_limits<double>::max(), 100 * volume, THOST_FTDC_D_Buy, THOST_FTDC_OF_Close);
+    //sendOrder(instrumentID, std::numeric_limits<double>::max(), 100 * volume, THOST_FTDC_D_Buy, THOST_FTDC_OF_Close);
+    sendOrder(instrumentID, std::numeric_limits<double>::max(), getShortTradeVolume(), THOST_FTDC_D_Buy, THOST_FTDC_OF_Close);
 	lastTradingSignal_ = "BP";
 }
 
@@ -107,7 +125,7 @@ void BacktestingTradeGateway::closeShortAndOpenLong(const char *instrumentID, in
 {
 	int shortPositions = shortTrades_.size();
 	if (shortPositions != 0) {
-		sendOrder(instrumentID, std::numeric_limits<double>::max(), shortPositions, THOST_FTDC_D_Buy, THOST_FTDC_OF_Close);
+        sendOrder(instrumentID, std::numeric_limits<double>::max(), getShortTradeVolume(), THOST_FTDC_D_Buy, THOST_FTDC_OF_Close);
 	}
 	if (longTrades_.size() == 0) {
 		sendOrder(instrumentID, std::numeric_limits<double>::max(), 100 * volume, THOST_FTDC_D_Buy, THOST_FTDC_OF_Open);
@@ -120,7 +138,7 @@ void BacktestingTradeGateway::closeLongAndOpenShort(const char *instrumentID, in
 {
 	int longPositions = longTrades_.size();
 	if (longPositions != 0) {
-		sendOrder(instrumentID, std::numeric_limits<double>::min(), longPositions, THOST_FTDC_D_Sell, THOST_FTDC_OF_Close);
+        sendOrder(instrumentID, std::numeric_limits<double>::min(), getLongTradeVolume(), THOST_FTDC_D_Sell, THOST_FTDC_OF_Close);
 	}
 	if (shortTrades_.size() == 0) {
 		sendOrder(instrumentID, std::numeric_limits<double>::min(), 100 * volume, THOST_FTDC_D_Sell, THOST_FTDC_OF_Open);

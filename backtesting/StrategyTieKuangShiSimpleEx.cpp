@@ -81,10 +81,12 @@ void StrategyTieKuangShiSimpleEx::onBar(KLineDataType &bar)
             }
             else {
                 minNegCross_ = 0.0;
+                addLot2Trigerred = false;
             }
             if (backtrack >= 0.0) {
                 // so, there is no backtrack (only when the value is negtive)
                 minBacktrackCross_ = 0.0;
+                addLot2Trigerred = false;
             }
 
             int volumeToDecrease = 0;
@@ -100,9 +102,9 @@ void StrategyTieKuangShiSimpleEx::onBar(KLineDataType &bar)
                 maxPosCross_ = backtestingConfig->decLotDiffThreshold2 + 0.00000001;
                 gateWay->recordAdjustmentSignal("Q");
             }
-            if (volumeToDecrease > 0) {
-                closePosition(volumeToDecrease);
-            }
+//            if (volumeToDecrease > 0) {
+//                closePosition(volumeToDecrease);
+//            }
 
             // 清仓后，停止开仓，直到diff回到0轴
             if (maxPosCross_ >= backtestingConfig->decLotDiffThreshold2 && capitalDiff >= 0.0) {
@@ -112,25 +114,31 @@ void StrategyTieKuangShiSimpleEx::onBar(KLineDataType &bar)
             int volumeToIncrease = 0;
             if (
                     (minNegCross_ > backtestingConfig->addLotDiffThreshold1 && capitalDiff < backtestingConfig->addLotDiffThreshold1)
-                    && (minBacktrackCross_ > backtestingConfig->addLotBacktrackThreshold1 && backtrack < backtestingConfig->addLotBacktrackThreshold1)
-               ) {
-                volumeToIncrease += backtestingConfig->baseLot * 3;
-                adjVolume_ += backtestingConfig->baseLot * 3;
-                minNegCross_ = backtestingConfig->addLotDiffThreshold2 - 0.00000001;
-                minBacktrackCross_ = backtestingConfig->addLotBacktrackThreshold2 - 0.00000001;
-                gateWay->recordAdjustmentSignal("3");
-            }
-            else if (
-                    (minNegCross_ > backtestingConfig->addLotDiffThreshold1 && capitalDiff < backtestingConfig->addLotDiffThreshold1)
                     || (minBacktrackCross_ > backtestingConfig->addLotBacktrackThreshold1 && backtrack < backtestingConfig->addLotBacktrackThreshold1)
                ) {
-                volumeToIncrease += backtestingConfig->baseLot * 2;
-                adjVolume_ += backtestingConfig->baseLot * 2;
+                volumeToIncrease += backtestingConfig->baseLot;
+                adjVolume_ += backtestingConfig->baseLot;
                 minNegCross_ = backtestingConfig->addLotDiffThreshold1 - 0.00000001;
                 minBacktrackCross_ = backtestingConfig->addLotBacktrackThreshold1 - 0.00000001;
                 gateWay->recordAdjustmentSignal("2");
             }
-            openPosition(volumeToIncrease);
+//            if (
+//                    (minNegCross_ > backtestingConfig->addLotDiffThreshold1 && capitalDiff < backtestingConfig->addLotDiffThreshold1)
+//                    && (minBacktrackCross_ > backtestingConfig->addLotBacktrackThreshold1 && backtrack < backtestingConfig->addLotBacktrackThreshold1)
+//               ) {
+            if (
+                    ! addLot2Trigerred &&
+                    //(minNegCross_ < backtestingConfig->addLotDiffThreshold1 || minBacktrackCross_ < backtestingConfig->addLotBacktrackThreshold1) &&
+                    (capitalDiff < backtestingConfig->addLotDiffThreshold1 && backtrack < backtestingConfig->addLotBacktrackThreshold1)
+               ) {
+                volumeToIncrease += backtestingConfig->baseLot;
+                adjVolume_ += backtestingConfig->baseLot;
+//                minNegCross_ = backtestingConfig->addLotDiffThreshold2 - 0.00000001;
+//                minBacktrackCross_ = backtestingConfig->addLotBacktrackThreshold2 - 0.00000001;
+                gateWay->recordAdjustmentSignal("3");
+                addLot2Trigerred = true;
+            }
+//            openPosition(volumeToIncrease);
         }
     }
 

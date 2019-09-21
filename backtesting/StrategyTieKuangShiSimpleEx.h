@@ -63,6 +63,7 @@ private:
     MA maSimpleStrategyCapital250Tracker_;
     double maxSimpleStrategyCapital_;
     double minBacktrackCross_ = 0.0;
+    bool addLot2Trigerred = false;
 };
 
 #endif // STRATEGYTIEKUANGSHISIMPLEEX_H
