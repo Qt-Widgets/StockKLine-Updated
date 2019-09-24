@@ -147,13 +147,19 @@ void StrategyTieKuangShiSimpleEx::onBar(KLineDataType &bar)
     if (close > maClose250 && diff > 0.0) {
         BPK(backtestingConfig->baseLot + adjVolume_);
     }
-    else if (lastDiff_ > 0.0 && currentDiff_ < 0.0) {
+    else if ( (lastDiff_ > 0.0 && currentDiff_ < 0.0) ||
+              (lastDiff_ > 0.0 && currentDiff_ == 0.0) ||
+              (lastDiff_ == 0.0 && currentDiff_ < 0.0)
+            ) {
         SP(backtestingConfig->baseLot + adjVolume_);
     }
     else if (close < maClose250 && diff < 0.0) {
         SPK(backtestingConfig->baseLot + adjVolume_);
     }
-    else if (lastDiff_ < 0.0 && currentDiff_ > 0.0) {
+    else if ( (lastDiff_ < 0.0 && currentDiff_ > 0.0) ||
+              (lastDiff_ < 0.0 && currentDiff_ == 0.0) ||
+              (lastDiff_ == 0.0 && currentDiff_ > 0.0)
+            ) {
         BP(backtestingConfig->baseLot + adjVolume_);
     }
 }
