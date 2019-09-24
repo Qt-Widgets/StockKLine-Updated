@@ -118,8 +118,10 @@ void StrategyTieKuangShiSimpleEx::onBar(KLineDataType &bar)
                ) {
                 volumeToIncrease += backtestingConfig->baseLot;
                 adjVolume_ += backtestingConfig->baseLot;
-                minNegCross_ = backtestingConfig->addLotDiffThreshold1 - 0.00000001;
-                minBacktrackCross_ = backtestingConfig->addLotBacktrackThreshold1 - 0.00000001;
+                if (minNegCross_ > backtestingConfig->addLotDiffThreshold1 && capitalDiff < backtestingConfig->addLotDiffThreshold1)
+                    minNegCross_ = backtestingConfig->addLotDiffThreshold1 - 0.00000001;
+                if (minBacktrackCross_ > backtestingConfig->addLotBacktrackThreshold1 && backtrack < backtestingConfig->addLotBacktrackThreshold1)
+                    minBacktrackCross_ = backtestingConfig->addLotBacktrackThreshold1 - 0.00000001;
                 gateWay->recordAdjustmentSignal("2");
             }
 //            if (

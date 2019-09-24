@@ -77,7 +77,7 @@ int BacktestingTradeGateway::getShortTradeVolume() {
 // BK
 void BacktestingTradeGateway::openLong(const char *instrumentID, int volume)
 {
-	if (longTrades_.size() != 0) {
+    if (longTrades_.size() != 0 || shortTrades_.size() != 0) {
 		std::cout << "多头持仓为 " << shortTrades_.size() << "，BK不执行" << std::endl;
 		return;
 	}
@@ -88,7 +88,7 @@ void BacktestingTradeGateway::openLong(const char *instrumentID, int volume)
 // SK
 void BacktestingTradeGateway::openShort(const char *instrumentID, int volume)
 {
-	if (shortTrades_.size() != 0) {
+    if (shortTrades_.size() != 0 || longTrades_.size() != 0) {
 		std::cout << "空头持仓为 " << longTrades_.size() << "，SK不执行" << std::endl;
 		return;
 	}
@@ -125,10 +125,11 @@ void BacktestingTradeGateway::closeShortAndOpenLong(const char *instrumentID, in
 {
 	int shortPositions = shortTrades_.size();
 	if (shortPositions != 0) {
+        //sendOrder(instrumentID, std::numeric_limits<double>::max(), shortTrades_.size(), THOST_FTDC_D_Buy, THOST_FTDC_OF_Close);
         sendOrder(instrumentID, std::numeric_limits<double>::max(), getShortTradeVolume(), THOST_FTDC_D_Buy, THOST_FTDC_OF_Close);
 	}
 	if (longTrades_.size() == 0) {
-		sendOrder(instrumentID, std::numeric_limits<double>::max(), 100 * volume, THOST_FTDC_D_Buy, THOST_FTDC_OF_Open);
+        sendOrder(instrumentID, std::numeric_limits<double>::max(), 100 * volume, THOST_FTDC_D_Buy, THOST_FTDC_OF_Open);
 		lastTradingSignal_ = "BPK";
 	}
 }
@@ -138,6 +139,7 @@ void BacktestingTradeGateway::closeLongAndOpenShort(const char *instrumentID, in
 {
 	int longPositions = longTrades_.size();
 	if (longPositions != 0) {
+        //sendOrder(instrumentID, std::numeric_limits<double>::min(), longTrades_.size(), THOST_FTDC_D_Sell, THOST_FTDC_OF_Close);
         sendOrder(instrumentID, std::numeric_limits<double>::min(), getLongTradeVolume(), THOST_FTDC_D_Sell, THOST_FTDC_OF_Close);
 	}
 	if (shortTrades_.size() == 0) {
@@ -439,14 +441,14 @@ void BacktestingTradeGateway::calculateBacktestingResult(Trade &trade)
 					capital_ += (*it)->Price * (*it)->Volume + ((*it)->Price - trade.Price) * (*it)->Volume;
 					it = shortTrades_.erase(it);
 				}
-				else if (tradeVolume < (*it)->Volume) {
+                else if (tradeVolume < (*it)->Volume) {
 					(*it)->Volume -= tradeVolume;
 					capital_ += (*it)->Price * tradeVolume + ((*it)->Price - trade.Price) * tradeVolume;
 					break;
 				}
 				else {
-					capital_ += (*it)->Price * tradeVolume + ((*it)->Price - trade.Price) * tradeVolume;
-					shortTrades_.erase(it);
+                    capital_ += (*it)->Price * tradeVolume + ((*it)->Price - trade.Price) * tradeVolume;
+                    shortTrades_.erase(it);
 					break;
 				}
 			}
