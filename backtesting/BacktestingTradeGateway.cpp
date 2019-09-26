@@ -53,8 +53,8 @@ void BacktestingTradeGateway::recordStatus()
 		<< lastTradingSignal_ << ","
 		<< capital_ + positionValue_ << ","
         << adjustmentSignal_ << ","
-		<< longTrades_.size() << ","
-		<< shortTrades_.size()
+        << getLongTradeVolume() << ","
+        << getShortTradeVolume()
 		<< std::endl;
 }
 

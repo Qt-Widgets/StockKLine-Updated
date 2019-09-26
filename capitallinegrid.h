@@ -6,7 +6,7 @@
 #include "marketdatasplitter.h"
 #include "topbacktestingsimpleexmenu.h"
 #include "backtestingtab.h"
-#include "backtesting/backtestingdriverforsimpleex.h"
+#include "backtesting/backtestingdriverforsimpleex2.h"
 #include "backtesting/backtestingconfig.h"
 
 #include <QPoint>
@@ -90,7 +90,7 @@ private:
     BacktestingConfig* backtestingConfig;
     int avgInterval = 250;
 
-    BacktestingDriverForSimpleEx backtestingDriver;
+    BacktestingDriverForSimpleEx2 backtestingDriver;
 
 signals:
 

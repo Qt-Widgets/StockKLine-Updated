@@ -31,7 +31,7 @@ TopBacktestingSimpleExMenu::TopBacktestingSimpleExMenu(QWidget* parent)
 
     avgIntervalEdit = new QLineEdit();
     avgIntervalEdit->setStyleSheet("border: 1px solid red; background-color: black;");
-    avgIntervalEdit->setMaximumWidth(50);
+    avgIntervalEdit->setMaximumWidth(70);
     avgIntervalEdit->setMaximumHeight(barHeight - 4);
     avgIntervalEdit->setText(QString::number(250));
     palette.setColor(QPalette::Text, Qt::white);
@@ -46,8 +46,8 @@ TopBacktestingSimpleExMenu::TopBacktestingSimpleExMenu(QWidget* parent)
 
 //    addLotDiffThreshold2Edit = appendLabelEdit(hbox, QStringLiteral("加仓偏离值2(%%): "), palette);
 //    addLotDiffThreshold2Edit->setText(QString::number(backTestConfig->addLotDiffThreshold2));
-//    addLotBacktrackThreshold2Edit = appendLabelEdit(hbox, QStringLiteral("加仓回撤值2(%%): "), palette);
-//    addLotBacktrackThreshold2Edit->setText(QString::number(backTestConfig->addLotBacktrackThreshold2));
+    addLotBacktrackThreshold2Edit = appendLabelEdit(hbox, QStringLiteral("加仓回撤值2: "), palette);
+    addLotBacktrackThreshold2Edit->setText(QString::number(backTestConfig->addLotBacktrackThreshold2));
 
     addLotDiffThreshold1Edit = appendLabelEdit(hbox, QStringLiteral("加仓偏离值: "), palette);
     addLotDiffThreshold1Edit->setText(QString::number(backTestConfig->addLotDiffThreshold1));

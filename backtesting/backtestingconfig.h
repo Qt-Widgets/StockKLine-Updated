@@ -71,9 +71,9 @@ private:
         enableCapitalAjdustment = true;
 
         addLotDiffThreshold1 = -3000.0;
-        addLotBacktrackThreshold1 = -10000.0;
+        addLotBacktrackThreshold1 = -7000.0;
         addLotDiffThreshold2 = -50.0;
-        addLotBacktrackThreshold2 = -20.0;
+        addLotBacktrackThreshold2 = -10000.0;
         decLotDiffThreshold1 = 3900.0;
         decLotDiffThreshold2 = 9200.0;
     }

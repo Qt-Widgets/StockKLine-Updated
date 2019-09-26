@@ -37,9 +37,13 @@ SOURCES += main.cpp\
     backtesting/StrategyTieKuangShiSimple.cpp \
     backtesting/StrategyTieKuangShiSimpleEx.cpp \
     backtesting/Utility.cpp \
+    backtesting/WindowedMaxMin.cpp \
     backtesting/backtestingconfig.cpp \
     backtesting/backtestingdriver.cpp \
     backtesting/backtestingdriverforsimpleex.cpp \
+    backtesting/backtestingdriverforsimpleex2.cpp \
+    backtesting/strategytiekuangshisimple2.cpp \
+    backtesting/strategytiekuangshisimpleex2.cpp \
     backtestingtab.cpp \
     bottomtimegrid.cpp \
     capitalaveragediffgrid.cpp \
@@ -78,10 +82,14 @@ HEADERS  += mainwindow.h \
     backtesting/ThostFtdcUserApiStruct.h \
     backtesting/TradeGateway.h \
     backtesting/Utility.h \
+    backtesting/WindowedMaxMin.h \
     backtesting/backtestingconfig.h \
     backtesting/backtestingdriver.h \
     backtesting/backtestingdriverforsimpleex.h \
+    backtesting/backtestingdriverforsimpleex2.h \
     backtesting/date.h \
+    backtesting/strategytiekuangshisimple2.h \
+    backtesting/strategytiekuangshisimpleex2.h \
     backtestingtab.h \
     bottomtimeGrid.h \
     bottomtimegrid.h \

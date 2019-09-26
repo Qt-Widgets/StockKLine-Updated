@@ -119,6 +119,7 @@ void CapitalLineGrid::backtestingConfigChanged()
     backtestingConfig->capitalPeriod = topBacktestingMenu->getCapitalPeriodEdit()->text().toInt();
 
     // converted to percentage values
+    backtestingConfig->addLotBacktrackThreshold2 = topBacktestingMenu->getAddLotBacktrackThreshold2Edit()->text().toDouble();
     backtestingConfig->addLotDiffThreshold1 = topBacktestingMenu->getAddLotDiffThreshold1Edit()->text().toDouble();
     backtestingConfig->addLotBacktrackThreshold1 = topBacktestingMenu->getAddLotBacktrackThreshold1Edit()->text().toDouble();
 
