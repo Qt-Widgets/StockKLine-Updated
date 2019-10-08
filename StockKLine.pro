@@ -40,8 +40,11 @@ SOURCES += main.cpp\
     backtesting/WindowedMaxMin.cpp \
     backtesting/backtestingconfig.cpp \
     backtesting/backtestingdriver.cpp \
+    backtesting/backtestingdriverforjiaotansimpleex.cpp \
     backtesting/backtestingdriverforsimpleex.cpp \
     backtesting/backtestingdriverforsimpleex2.cpp \
+    backtesting/strategyjiaotansimple.cpp \
+    backtesting/strategyjiaotansimpleex.cpp \
     backtesting/strategytiekuangshisimple2.cpp \
     backtesting/strategytiekuangshisimpleex2.cpp \
     backtestingtab.cpp \
@@ -85,9 +88,12 @@ HEADERS  += mainwindow.h \
     backtesting/WindowedMaxMin.h \
     backtesting/backtestingconfig.h \
     backtesting/backtestingdriver.h \
+    backtesting/backtestingdriverforjiaotansimpleex.h \
     backtesting/backtestingdriverforsimpleex.h \
     backtesting/backtestingdriverforsimpleex2.h \
     backtesting/date.h \
+    backtesting/strategyjiaotansimple.h \
+    backtesting/strategyjiaotansimpleex.h \
     backtesting/strategytiekuangshisimple2.h \
     backtesting/strategytiekuangshisimpleex2.h \
     backtestingtab.h \

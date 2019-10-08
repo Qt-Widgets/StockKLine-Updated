@@ -33,7 +33,8 @@ void BacktestingTab::loadData()
     //QString file = QStringLiteral("F:\\qt-projects\\StockKLine\\dataKLine.txt");
 
     //QString file = QStringLiteral("E:\\cbm\\startup\\qihuoshuju_good\\TieKuangShi_15min_I.csv");
-    QString file = QStringLiteral("TieKuangShi_15min_I.csv");
+    //QString file = QStringLiteral("TieKuangShi_15min_I.csv");
+    QString file = QStringLiteral("JiaoTan_15min_JL9.csv");
     if( !mDataFile->readData(file) )
     {
         QMessageBox::about(this, QStringLiteral("数据文件读取失败"), QStringLiteral("确定"));
@@ -41,7 +42,8 @@ void BacktestingTab::loadData()
     }
 
     //file = QStringLiteral("E:\\cbm\\startup\\qihuoshuju_good\\TieKuangshiEx_15min_Backtesting_Stats_Simple.csv");
-    file = QStringLiteral("TieKuangshiEx_15min_Backtesting_Stats_Simple.csv");
+    //file = QStringLiteral("TieKuangshiEx_15min_Backtesting_Stats_Simple.csv");
+    file = QStringLiteral("JiaoTan_15min_Backtesting_Stats_Simple.csv");
     if( !mDataFile->readBacktestingSimpleResult(file) )
     {
         QMessageBox::about(this, QStringLiteral("数据文件读取失败"), QStringLiteral("确定"));
@@ -49,7 +51,8 @@ void BacktestingTab::loadData()
     }
 
     //file = QStringLiteral("E:\\cbm\\startup\\qihuoshuju_good\\TieKuangshiEx_15min_Backtesting_Stats.csv");
-    file = QStringLiteral("TieKuangshiEx_15min_Backtesting_Stats.csv");
+    //file = QStringLiteral("TieKuangshiEx_15min_Backtesting_Stats.csv");
+    file = QStringLiteral("JiaoTan_15min_Backtesting_Stats.csv");
     if( !mDataFile->readBacktestingResult(file) )
     {
         QMessageBox::about(this, QStringLiteral("数据文件读取失败"), QStringLiteral("确定"));

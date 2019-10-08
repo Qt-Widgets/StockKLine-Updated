@@ -1,0 +1,17 @@
+﻿#ifndef LLV_H
+#define LLV_H
+
+#include <vector>
+
+class WindowedMaxMin
+{
+public:
+    void update(double value);
+    double getMax();
+    
+private:
+    std::vector<double> values_;
+    double max;
+};
+
+#endif // LLV_H
