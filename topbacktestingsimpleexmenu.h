@@ -37,6 +37,8 @@ public:
 
     QPushButton *getRunTestButton() const;
 
+    QLineEdit *getTieKuangShiNEdit() const;
+
 private:
     void drawBottomLine();
     QLineEdit* appendLabelEdit(QHBoxLayout* hbox, QString label, QPalette& palette);
@@ -46,6 +48,7 @@ private:
     int barHeight = 20;
     QLineEdit* avgIntervalEdit;
     QLineEdit* baseLotEdit;
+    QLineEdit* tieKuangShiNEdit;
     QLineEdit* capitalPeriodEdit;
 
     QLineEdit* addLotDiffThreshold1Edit;

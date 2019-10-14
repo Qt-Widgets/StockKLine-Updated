@@ -45,6 +45,8 @@ public:
     double decLotDiffThreshold1;
     double decLotDiffThreshold2;
 
+    double tieKuangShiN = 40.0;
+
 private:
     BacktestingConfig() {
         capitalPeriod = 250;

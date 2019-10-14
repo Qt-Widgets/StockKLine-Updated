@@ -8,6 +8,7 @@ StrategyTieKuangShiSimple::StrategyTieKuangShiSimple()
     maClose26Tracker(26, closeVecPtr_),
     maClose10Tracker(10, closeVecPtr_),
     maClose250Tracker(250, closeVecPtr_),
+    maClose5Tracker(5, closeVecPtr_),
     backtestingConfig(BacktestingConfig::instance())
 {
 
@@ -30,16 +31,18 @@ void StrategyTieKuangShiSimple::onBar(KLineDataType &bar)
     double maClose250 = maClose250Tracker.value();
     double maClose26 = maClose26Tracker.value();
     double maClose10 = maClose10Tracker.value();
+    double maClose5 = maClose5Tracker.value();
     int closeMinute = getCloseMinute(bar);
     double diff = maClose10 - maClose26;
     lastDiff_ = currentDiff_;
     currentDiff_ = diff;
+    double diff1 = maClose5 - maClose250;
 
     if (closeVecPtr_->size() <= 250) {
         return;
     }
 
-    if (close > maClose250 && diff > 0.0) {
+    if (diff1 < backtestingConfig->tieKuangShiN && close > maClose250 && diff > 0.0) {
         BPK(backtestingConfig->baseLot);
     }
     else if ( (lastDiff_ > 0.0 && currentDiff_ < 0.0) ||
@@ -48,7 +51,7 @@ void StrategyTieKuangShiSimple::onBar(KLineDataType &bar)
             ) {
         SP(backtestingConfig->baseLot);
     }
-    else if (close < maClose250 && diff < 0.0) {
+    else if (diff1 > -1.0 * backtestingConfig->tieKuangShiN && close < maClose250 && diff < 0.0) {
         SPK(backtestingConfig->baseLot);
     }
     else if ( (lastDiff_ < 0.0 && currentDiff_ > 0.0) ||

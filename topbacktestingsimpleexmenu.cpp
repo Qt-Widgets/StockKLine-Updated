@@ -31,7 +31,7 @@ TopBacktestingSimpleExMenu::TopBacktestingSimpleExMenu(QWidget* parent)
 
     avgIntervalEdit = new QLineEdit();
     avgIntervalEdit->setStyleSheet("border: 1px solid red; background-color: black;");
-    avgIntervalEdit->setMaximumWidth(70);
+    avgIntervalEdit->setMaximumWidth(50);
     avgIntervalEdit->setMaximumHeight(barHeight - 4);
     avgIntervalEdit->setText(QString::number(250));
     palette.setColor(QPalette::Text, Qt::white);
@@ -44,10 +44,13 @@ TopBacktestingSimpleExMenu::TopBacktestingSimpleExMenu(QWidget* parent)
     baseLotEdit = appendLabelEdit(hbox, QStringLiteral("基础单: "), palette);
     baseLotEdit->setText(QString::number(backTestConfig->baseLot));
 
+    tieKuangShiNEdit = appendLabelEdit(hbox, QStringLiteral("N: "), palette);
+    tieKuangShiNEdit->setText(QString::number(backTestConfig->tieKuangShiN));
+
 //    addLotDiffThreshold2Edit = appendLabelEdit(hbox, QStringLiteral("加仓偏离值2(%%): "), palette);
 //    addLotDiffThreshold2Edit->setText(QString::number(backTestConfig->addLotDiffThreshold2));
-    addLotBacktrackThreshold2Edit = appendLabelEdit(hbox, QStringLiteral("加仓回撤值2: "), palette);
-    addLotBacktrackThreshold2Edit->setText(QString::number(backTestConfig->addLotBacktrackThreshold2));
+//    addLotBacktrackThreshold2Edit = appendLabelEdit(hbox, QStringLiteral("加仓回撤值2: "), palette);
+//    addLotBacktrackThreshold2Edit->setText(QString::number(backTestConfig->addLotBacktrackThreshold2));
 
     addLotDiffThreshold1Edit = appendLabelEdit(hbox, QStringLiteral("加仓偏离值: "), palette);
     addLotDiffThreshold1Edit->setText(QString::number(backTestConfig->addLotDiffThreshold1));
@@ -82,13 +85,18 @@ QLineEdit* TopBacktestingSimpleExMenu::appendEdit(QHBoxLayout* hbox, QPalette& p
 {
     QLineEdit* edit = new QLineEdit();
     edit->setStyleSheet("border: 1px solid red; background-color: black;");
-    edit->setMaximumWidth(30);
+    edit->setMaximumWidth(50);
     edit->setMaximumHeight(barHeight - 4);
     palette.setColor(QPalette::Text, Qt::white);
     edit->setPalette(palette);
     hbox->addWidget(edit);
 
     return edit;
+}
+
+QLineEdit *TopBacktestingSimpleExMenu::getTieKuangShiNEdit() const
+{
+    return tieKuangShiNEdit;
 }
 
 QPushButton *TopBacktestingSimpleExMenu::getRunTestButton() const

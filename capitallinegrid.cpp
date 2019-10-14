@@ -119,7 +119,7 @@ void CapitalLineGrid::backtestingConfigChanged()
     backtestingConfig->capitalPeriod = topBacktestingMenu->getCapitalPeriodEdit()->text().toInt();
 
     // converted to percentage values
-    backtestingConfig->addLotBacktrackThreshold2 = topBacktestingMenu->getAddLotBacktrackThreshold2Edit()->text().toDouble();
+    //backtestingConfig->addLotBacktrackThreshold2 = topBacktestingMenu->getAddLotBacktrackThreshold2Edit()->text().toDouble();
     backtestingConfig->addLotDiffThreshold1 = topBacktestingMenu->getAddLotDiffThreshold1Edit()->text().toDouble();
     backtestingConfig->addLotBacktrackThreshold1 = topBacktestingMenu->getAddLotBacktrackThreshold1Edit()->text().toDouble();
 
@@ -127,6 +127,7 @@ void CapitalLineGrid::backtestingConfigChanged()
     backtestingConfig->decLotDiffThreshold2 = topBacktestingMenu->getDecLotDiffThreshold2Edit()->text().toDouble();
 
     backtestingConfig->baseLot = topBacktestingMenu->getBaseLotEdit()->text().toInt();
+    backtestingConfig->tieKuangShiN = topBacktestingMenu->getTieKuangShiNEdit()->text().toDouble();
 
     backtestingDriver.test();
     backtestingTab->loadData(); // 重新加载数据

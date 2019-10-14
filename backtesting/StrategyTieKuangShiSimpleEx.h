@@ -46,6 +46,7 @@ private:
     MA maClose26Tracker;
     MA maClose10Tracker;
     MA maClose250Tracker;
+    MA maClose5Tracker;
 
     VecPtr captialVecPtr_;
     MA maCapitalTracker_;
