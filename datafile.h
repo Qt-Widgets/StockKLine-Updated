@@ -62,8 +62,8 @@ public:
     void calvolumeAverage5();
     void calvolumeAverage10();
 
-    constexpr static int averageLineCount = 3;
-    int averageLinePeriod[averageLineCount] = {10, 26, 250};
+    constexpr static int averageLineCount = 4;
+    int averageLinePeriod[averageLineCount] = {15, 50, 170, 190};
     Qt::GlobalColor averageLineColors[averageLineCount] = {Qt::white, Qt::yellow, Qt::magenta};
 
     constexpr static int capitalAverageLineCount = 1;

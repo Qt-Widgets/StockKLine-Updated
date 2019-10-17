@@ -60,7 +60,7 @@ TopBacktestingSimpleExMenu::TopBacktestingSimpleExMenu(QWidget* parent)
     decLotDiffThreshold1Edit = appendLabelEdit(hbox, QStringLiteral("中位减仓偏离值: "), palette);
     decLotDiffThreshold1Edit->setText(QString::number(backTestConfig->decLotDiffThreshold1));
 
-    decLotDiffThreshold2Edit = appendLabelEdit(hbox, QStringLiteral("高位减仓偏离值: "), palette);
+    decLotDiffThreshold2Edit = appendLabelEdit(hbox, QStringLiteral("高位清仓偏离值: "), palette);
     decLotDiffThreshold2Edit->setText(QString::number(backTestConfig->decLotDiffThreshold2));
 
     runTestButton = new QPushButton(QStringLiteral("运行回测"));

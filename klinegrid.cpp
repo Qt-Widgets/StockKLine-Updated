@@ -138,11 +138,11 @@ void KLineGrid::getIndicator()
             lowestBid = mDataFile->kline[i].lowestBid;
 //        if( mDataFile->kline[i].totalVolume.toFloat() > maxVolume )
 //            maxVolume = mDataFile->kline[i].totalVolume.toFloat();
-        if (mDataFile->kline[i].capital > highestCapital) {
-            highestCapital = mDataFile->kline[i].capital;
+        if (mDataFile->kline[i].capitalForSimpleStrategy > highestCapital) {
+            highestCapital = mDataFile->kline[i].capitalForSimpleStrategy;
         }
-        if (mDataFile->kline[i].capital < lowestCapital) {
-            lowestCapital = mDataFile->kline[i].capital;
+        if (mDataFile->kline[i].capitalForSimpleStrategy < lowestCapital) {
+            lowestCapital = mDataFile->kline[i].capitalForSimpleStrategy;
         }
     }
 }
@@ -589,7 +589,7 @@ void KLineGrid::drawCapitalLine()
 
     for(int i = beginDay; i < endDay; ++i) {
         temp.setX(getMarginLeft() + xstep *(i - beginDay) + 0.5*lineWidth);
-        temp.setY(getWidgetHeight() - (mDataFile->kline[i].capital - lowestCapital) * capitalYScale - getMarginBottom());
+        temp.setY(getWidgetHeight() - (mDataFile->kline[i].capitalForSimpleStrategy - lowestCapital) * capitalYScale - getMarginBottom());
         point.push_back(temp);
     }
 
