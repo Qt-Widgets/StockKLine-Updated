@@ -1,8 +1,8 @@
-﻿#include "strategytiekuangshisimpleex3.h"
+﻿#include "strategyluowengangsimpleex.h"
 #include "Utility.h"
 #include "BacktestingTradeGateway.h"
 
-StrategyTieKuangShiSimpleEx3::StrategyTieKuangShiSimpleEx3(TradeGatewayPtr pTradeGatewayforSimple)
+StrategyLuoWenGangSimpleEx::StrategyLuoWenGangSimpleEx(TradeGatewayPtr pTradeGatewayforSimple)
     : closeVecPtr_(std::make_shared<std::vector<double>>()),
     captialVecPtr_(std::make_shared<std::vector<double>>()),
     simpleStrategyCaptialVecPtr_(std::make_shared<std::vector<double>>()),
@@ -21,22 +21,22 @@ StrategyTieKuangShiSimpleEx3::StrategyTieKuangShiSimpleEx3(TradeGatewayPtr pTrad
     maCapitalTracker_.setPeriod(backtestingConfig->capitalPeriod);
 }
 
-void StrategyTieKuangShiSimpleEx3::init(TradeGatewayPtr pTradeGateway)
+void StrategyLuoWenGangSimpleEx::init(TradeGatewayPtr pTradeGateway)
 {
     this->tradeGatewayPtr_ = pTradeGateway;
 }
 
-void StrategyTieKuangShiSimpleEx3::onTick(Tick &tick)
+void StrategyLuoWenGangSimpleEx::onTick(Tick &tick)
 {
 
 }
 
-int StrategyTieKuangShiSimpleEx3::min(int a, int b)
+int StrategyLuoWenGangSimpleEx::min(int a, int b)
 {
     return a < b ? a : b;
 }
 
-void StrategyTieKuangShiSimpleEx3::onBar(KLineDataType &bar)
+void StrategyLuoWenGangSimpleEx::onBar(KLineDataType &bar)
 {
     double close = bar.close_price;
     closeVecPtr_->push_back(close);
@@ -166,7 +166,7 @@ void StrategyTieKuangShiSimpleEx3::onBar(KLineDataType &bar)
     }
 }
 
-void StrategyTieKuangShiSimpleEx3::openPosition(int volume)
+void StrategyLuoWenGangSimpleEx::openPosition(int volume)
 {
     auto gateWay = std::static_pointer_cast<BacktestingTradeGateway>(tradeGatewayPtr_);
     int longTradeCount = gateWay->getLongTradeCount();
@@ -179,7 +179,7 @@ void StrategyTieKuangShiSimpleEx3::openPosition(int volume)
     }
 }
 
-void StrategyTieKuangShiSimpleEx3::closePosition(int volume)
+void StrategyLuoWenGangSimpleEx::closePosition(int volume)
 {
     auto gateWay = std::static_pointer_cast<BacktestingTradeGateway>(tradeGatewayPtr_);
     int longTradeCount = gateWay->getLongTradeCount();
@@ -202,42 +202,42 @@ void StrategyTieKuangShiSimpleEx3::closePosition(int volume)
     }
 }
 
-void StrategyTieKuangShiSimpleEx3::closeAllPosition()
+void StrategyLuoWenGangSimpleEx::closeAllPosition()
 {
     closePosition(std::numeric_limits<int>::max());
 }
 
-void StrategyTieKuangShiSimpleEx3::BPK(int volume)
+void StrategyLuoWenGangSimpleEx::BPK(int volume)
 {
     tradeGatewayPtr_->closeShortAndOpenLong("instrumentID", volume);
 }
 
-void StrategyTieKuangShiSimpleEx3::SPK(int volume)
+void StrategyLuoWenGangSimpleEx::SPK(int volume)
 {
     tradeGatewayPtr_->closeLongAndOpenShort("instrumentID", volume);
 }
 
-void StrategyTieKuangShiSimpleEx3::SP(int volume)
+void StrategyLuoWenGangSimpleEx::SP(int volume)
 {
     tradeGatewayPtr_->closeLong("instrumentID", volume);
 }
 
-void StrategyTieKuangShiSimpleEx3::BP(int volume)
+void StrategyLuoWenGangSimpleEx::BP(int volume)
 {
     tradeGatewayPtr_->closeShort("instrumentID", volume);
 }
 
-void StrategyTieKuangShiSimpleEx3::SK(int volume)
+void StrategyLuoWenGangSimpleEx::SK(int volume)
 {
     tradeGatewayPtr_->openShort("instrumentID", volume);
 }
 
-void StrategyTieKuangShiSimpleEx3::BK(int volume)
+void StrategyLuoWenGangSimpleEx::BK(int volume)
 {
     tradeGatewayPtr_->openLong("instrumentID", volume);
 }
 
-int StrategyTieKuangShiSimpleEx3::getCloseMinute(KLineDataType &bar)
+int StrategyLuoWenGangSimpleEx::getCloseMinute(KLineDataType &bar)
 {
     int minutesOfDay = getMinutesOfDay(bar.update_time);
 
@@ -256,22 +256,22 @@ int StrategyTieKuangShiSimpleEx3::getCloseMinute(KLineDataType &bar)
     return minutesToClose;
 }
 
-void StrategyTieKuangShiSimpleEx3::onTrade(Trade &trade)
+void StrategyLuoWenGangSimpleEx::onTrade(Trade &trade)
 {
 
 }
 
-void StrategyTieKuangShiSimpleEx3::onOrder(OrderRsp &order)
+void StrategyLuoWenGangSimpleEx::onOrder(OrderRsp &order)
 {
 
 }
 
-std::string StrategyTieKuangShiSimpleEx3::name()
+std::string StrategyLuoWenGangSimpleEx::name()
 {
     return "TieKuangShi Extended Strategy";
 }
 
-std::string StrategyTieKuangShiSimpleEx3::instrumentType()
+std::string StrategyLuoWenGangSimpleEx::instrumentType()
 {
     return "i";
 }

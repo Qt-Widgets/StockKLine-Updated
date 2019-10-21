@@ -1,4 +1,4 @@
-﻿#include "strategytiekuangshisimple3.h"
+﻿#include "strategyluowengangsimple.h"
 #include "Utility.h"
 #include "BacktestingTradeGateway.h"
 

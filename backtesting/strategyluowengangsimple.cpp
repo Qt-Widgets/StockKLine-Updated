@@ -1,8 +1,8 @@
-﻿#include "strategyjiaotansimple2.h"
+﻿#include "strategyluowengangsimple.h"
 #include "Utility.h"
 #include "BacktestingTradeGateway.h"
 
-StrategyJiaoTanSimple2::StrategyJiaoTanSimple2()
+StrategyLuoWenGangSimple::StrategyLuoWenGangSimple()
     : closeVecPtr_(std::make_shared<std::vector<double>>()),
     lastDiff_(0.0), currentDiff_(0.0),
     lastDiff1_(0.0), currentDiff1_(0.0),
@@ -17,17 +17,17 @@ StrategyJiaoTanSimple2::StrategyJiaoTanSimple2()
 
 }
 
-void StrategyJiaoTanSimple2::init(TradeGatewayPtr pTradeGateway)
+void StrategyLuoWenGangSimple::init(TradeGatewayPtr pTradeGateway)
 {
     this->tradeGatewayPtr_ = pTradeGateway;
 }
 
-void StrategyJiaoTanSimple2::onTick(Tick &tick)
+void StrategyLuoWenGangSimple::onTick(Tick &tick)
 {
 
 }
 
-void StrategyJiaoTanSimple2::onBar(KLineDataType &bar)
+void StrategyLuoWenGangSimple::onBar(KLineDataType &bar)
 {
     double close = bar.close_price;
     closeVecPtr_->push_back(close);
@@ -69,7 +69,7 @@ void StrategyJiaoTanSimple2::onBar(KLineDataType &bar)
              ) {
         SP(backtestingConfig->baseLot);
     }
-    else if (diff1 > 700.0) {
+    else if (diff1 > 330.0) {
         SP(backtestingConfig->baseLot);
     }
     else if (diff1 > -50.0 && close < maClose190 && diff < 0.0) {
@@ -89,12 +89,12 @@ void StrategyJiaoTanSimple2::onBar(KLineDataType &bar)
              ) {
         BP(backtestingConfig->baseLot);
     }
-    else if (diff1 < -700.0) {
+    else if (diff1 < -330.0) {
         BP(backtestingConfig->baseLot);
     }
 }
 
-void StrategyJiaoTanSimple2::openPosition(int volume)
+void StrategyLuoWenGangSimple::openPosition(int volume)
 {
     auto gateWay = std::static_pointer_cast<BacktestingTradeGateway>(tradeGatewayPtr_);
     int longTradeCount = gateWay->getLongTradeCount();
@@ -107,7 +107,7 @@ void StrategyJiaoTanSimple2::openPosition(int volume)
     }
 }
 
-void StrategyJiaoTanSimple2::closePosition(int volume)
+void StrategyLuoWenGangSimple::closePosition(int volume)
 {
     auto gateWay = std::static_pointer_cast<BacktestingTradeGateway>(tradeGatewayPtr_);
     int longTradeCount = gateWay->getLongTradeCount();
@@ -130,42 +130,42 @@ void StrategyJiaoTanSimple2::closePosition(int volume)
     }
 }
 
-void StrategyJiaoTanSimple2::closeAllPosition()
+void StrategyLuoWenGangSimple::closeAllPosition()
 {
     closePosition(std::numeric_limits<int>::max());
 }
 
-void StrategyJiaoTanSimple2::BPK(int volume)
+void StrategyLuoWenGangSimple::BPK(int volume)
 {
     tradeGatewayPtr_->closeShortAndOpenLong("instrumentID", volume);
 }
 
-void StrategyJiaoTanSimple2::SPK(int volume)
+void StrategyLuoWenGangSimple::SPK(int volume)
 {
     tradeGatewayPtr_->closeLongAndOpenShort("instrumentID", volume);
 }
 
-void StrategyJiaoTanSimple2::SP(int volume)
+void StrategyLuoWenGangSimple::SP(int volume)
 {
     tradeGatewayPtr_->closeLong("instrumentID", volume);
 }
 
-void StrategyJiaoTanSimple2::BP(int volume)
+void StrategyLuoWenGangSimple::BP(int volume)
 {
     tradeGatewayPtr_->closeShort("instrumentID", volume);
 }
 
-void StrategyJiaoTanSimple2::SK(int volume)
+void StrategyLuoWenGangSimple::SK(int volume)
 {
     tradeGatewayPtr_->openShort("instrumentID", volume);
 }
 
-void StrategyJiaoTanSimple2::BK(int volume)
+void StrategyLuoWenGangSimple::BK(int volume)
 {
     tradeGatewayPtr_->openLong("instrumentID", volume);
 }
 
-int StrategyJiaoTanSimple2::getCloseMinute(KLineDataType &bar)
+int StrategyLuoWenGangSimple::getCloseMinute(KLineDataType &bar)
 {
     int minutesOfDay = getMinutesOfDay(bar.update_time);
 
@@ -184,22 +184,22 @@ int StrategyJiaoTanSimple2::getCloseMinute(KLineDataType &bar)
     return minutesToClose;
 }
 
-void StrategyJiaoTanSimple2::onTrade(Trade &trade)
+void StrategyLuoWenGangSimple::onTrade(Trade &trade)
 {
 
 }
 
-void StrategyJiaoTanSimple2::onOrder(OrderRsp &order)
+void StrategyLuoWenGangSimple::onOrder(OrderRsp &order)
 {
 
 }
 
-std::string StrategyJiaoTanSimple2::name()
+std::string StrategyLuoWenGangSimple::name()
 {
     return "TieKuangShi Extended Strategy";
 }
 
-std::string StrategyJiaoTanSimple2::instrumentType()
+std::string StrategyLuoWenGangSimple::instrumentType()
 {
     return "i";
 }

@@ -1,5 +1,5 @@
-﻿#ifndef STRATEGYJIAOTANSIMPLE2_H
-#define STRATEGYJIAOTANSIMPLE2_H
+﻿#ifndef STRATEGYLUOWENGANGSIMPLE_H
+#define STRATEGYLUOWENGANGSIMPLE_H
 
 #include <string>
 #include <vector>
@@ -7,11 +7,11 @@
 #include "MA.h"
 #include "backtesting/backtestingconfig.h"
 
-class StrategyTieKuangShiSimple3 : public Strategy
+class StrategyLuoWenGangSimple : public Strategy
 {
 public:
-    StrategyTieKuangShiSimple3();
-    virtual ~StrategyTieKuangShiSimple3() {}
+    StrategyLuoWenGangSimple();
+    virtual ~StrategyLuoWenGangSimple() {}
 
     virtual void init(TradeGatewayPtr pTradeGateway) override;
     virtual void onTick(Tick &tick) override;
@@ -54,4 +54,4 @@ private:
     BacktestingConfig* backtestingConfig;
 };
 
-#endif // STRATEGYJIAOTANSIMPLE2_H
+#endif // STRATEGYLUOWENGANGSIMPLE_H

@@ -1,11 +1,11 @@
-﻿#ifndef BACKTESTINGDRIVERFORJIAOTANSIMPLEEX2_H
-#define BACKTESTINGDRIVERFORJIAOTANSIMPLEEX2_H
+﻿#ifndef BACKTESTINGDRIVERFORLUOWENGANGSIMPLEEX_H
+#define BACKTESTINGDRIVERFORLUOWENGANGSIMPLEEX_H
 
 #include <vector>
 #include <memory>
 #include "KlineData.h"
 
-class BacktestingDriverForTieKuangShiSimpleEx3
+class BacktestingDriverForLuoWenGangSimpleEx
 {
 public:
     void test();
@@ -18,4 +18,4 @@ private:
 
 using KLineVecPtr = std::unique_ptr<std::vector<std::shared_ptr<KLineDataType>>>;
 
-#endif // BACKTESTINGDRIVERFORJIAOTANSIMPLEEX2_H
+#endif // BACKTESTINGDRIVERFORLUOWENGANGSIMPLEEX_H

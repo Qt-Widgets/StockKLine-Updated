@@ -315,7 +315,7 @@ void KLineGrid::drawKline()
 void KLineGrid::drawTradingSignal(int index, int x, QPainter& painter, QPen& pen)
 {
     QPen originalPen = painter.pen();
-    auto it = mDataFile->tradingSignalColors.find(mDataFile->kline[index].tradingSignal);
+    auto it = mDataFile->tradingSignalColors.find(mDataFile->kline[index].tradingSignalForSimpleStrategy);
     if (it == mDataFile->tradingSignalColors.end()) {
         return;
     }
@@ -486,7 +486,7 @@ void KLineGrid::updateDataDetailBox()
                                      mDataFile->kline[currentDayAtMouse].totalVolume,QColor("#02E2F4"),
                                      mDataFile->kline[currentDayAtMouse].totalAmount,QColor("#02E2F4"),
                                      mDataFile->kline[currentDayAtMouse].turnoverRate,QColor("#02E2F4"),
-                                     mDataFile->kline[currentDayAtMouse].tradingSignal, QColor("#FFFFFF")
+                                     mDataFile->kline[currentDayAtMouse].tradingSignalForSimpleStrategy, QColor("#FFFFFF")
                                      );
 }
 

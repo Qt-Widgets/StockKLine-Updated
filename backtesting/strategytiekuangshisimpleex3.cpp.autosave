@@ -1,8 +1,8 @@
-﻿#include "strategyjiaotansimpleex2.h"
+﻿#include "strategyluowengangsimpleex.h"
 #include "Utility.h"
 #include "BacktestingTradeGateway.h"
 
-StrategyJiaoTanSimpleEx2::StrategyJiaoTanSimpleEx2(TradeGatewayPtr pTradeGatewayforSimple)
+StrategyTieKuangShiSimpleEx3::StrategyTieKuangShiSimpleEx3(TradeGatewayPtr pTradeGatewayforSimple)
     : closeVecPtr_(std::make_shared<std::vector<double>>()),
     captialVecPtr_(std::make_shared<std::vector<double>>()),
     simpleStrategyCaptialVecPtr_(std::make_shared<std::vector<double>>()),
@@ -21,22 +21,22 @@ StrategyJiaoTanSimpleEx2::StrategyJiaoTanSimpleEx2(TradeGatewayPtr pTradeGateway
     maCapitalTracker_.setPeriod(backtestingConfig->capitalPeriod);
 }
 
-void StrategyJiaoTanSimpleEx2::init(TradeGatewayPtr pTradeGateway)
+void StrategyTieKuangShiSimpleEx3::init(TradeGatewayPtr pTradeGateway)
 {
     this->tradeGatewayPtr_ = pTradeGateway;
 }
 
-void StrategyJiaoTanSimpleEx2::onTick(Tick &tick)
+void StrategyTieKuangShiSimpleEx3::onTick(Tick &tick)
 {
 
 }
 
-int StrategyJiaoTanSimpleEx2::min(int a, int b)
+int StrategyTieKuangShiSimpleEx3::min(int a, int b)
 {
     return a < b ? a : b;
 }
 
-void StrategyJiaoTanSimpleEx2::onBar(KLineDataType &bar)
+void StrategyTieKuangShiSimpleEx3::onBar(KLineDataType &bar)
 {
     double close = bar.close_price;
     closeVecPtr_->push_back(close);
@@ -141,7 +141,7 @@ void StrategyJiaoTanSimpleEx2::onBar(KLineDataType &bar)
              ) {
         SP(backtestingConfig->baseLot + adjVolume_);
     }
-    else if (diff1 > 700.0) {
+    else if (diff1 > 330.0) {
         SP(backtestingConfig->baseLot + adjVolume_);
     }
     else if (diff1 > -50.0 && close < maClose190 && diff < 0.0) {
@@ -161,12 +161,12 @@ void StrategyJiaoTanSimpleEx2::onBar(KLineDataType &bar)
              ) {
         BP(backtestingConfig->baseLot + adjVolume_);
     }
-    else if (diff1 < -700.0) {
+    else if (diff1 < -330.0) {
         BP(backtestingConfig->baseLot + adjVolume_);
     }
 }
 
-void StrategyJiaoTanSimpleEx2::openPosition(int volume)
+void StrategyTieKuangShiSimpleEx3::openPosition(int volume)
 {
     auto gateWay = std::static_pointer_cast<BacktestingTradeGateway>(tradeGatewayPtr_);
     int longTradeCount = gateWay->getLongTradeCount();
@@ -179,7 +179,7 @@ void StrategyJiaoTanSimpleEx2::openPosition(int volume)
     }
 }
 
-void StrategyJiaoTanSimpleEx2::closePosition(int volume)
+void StrategyTieKuangShiSimpleEx3::closePosition(int volume)
 {
     auto gateWay = std::static_pointer_cast<BacktestingTradeGateway>(tradeGatewayPtr_);
     int longTradeCount = gateWay->getLongTradeCount();
@@ -202,42 +202,42 @@ void StrategyJiaoTanSimpleEx2::closePosition(int volume)
     }
 }
 
-void StrategyJiaoTanSimpleEx2::closeAllPosition()
+void StrategyTieKuangShiSimpleEx3::closeAllPosition()
 {
     closePosition(std::numeric_limits<int>::max());
 }
 
-void StrategyJiaoTanSimpleEx2::BPK(int volume)
+void StrategyTieKuangShiSimpleEx3::BPK(int volume)
 {
     tradeGatewayPtr_->closeShortAndOpenLong("instrumentID", volume);
 }
 
-void StrategyJiaoTanSimpleEx2::SPK(int volume)
+void StrategyTieKuangShiSimpleEx3::SPK(int volume)
 {
     tradeGatewayPtr_->closeLongAndOpenShort("instrumentID", volume);
 }
 
-void StrategyJiaoTanSimpleEx2::SP(int volume)
+void StrategyTieKuangShiSimpleEx3::SP(int volume)
 {
     tradeGatewayPtr_->closeLong("instrumentID", volume);
 }
 
-void StrategyJiaoTanSimpleEx2::BP(int volume)
+void StrategyTieKuangShiSimpleEx3::BP(int volume)
 {
     tradeGatewayPtr_->closeShort("instrumentID", volume);
 }
 
-void StrategyJiaoTanSimpleEx2::SK(int volume)
+void StrategyTieKuangShiSimpleEx3::SK(int volume)
 {
     tradeGatewayPtr_->openShort("instrumentID", volume);
 }
 
-void StrategyJiaoTanSimpleEx2::BK(int volume)
+void StrategyTieKuangShiSimpleEx3::BK(int volume)
 {
     tradeGatewayPtr_->openLong("instrumentID", volume);
 }
 
-int StrategyJiaoTanSimpleEx2::getCloseMinute(KLineDataType &bar)
+int StrategyTieKuangShiSimpleEx3::getCloseMinute(KLineDataType &bar)
 {
     int minutesOfDay = getMinutesOfDay(bar.update_time);
 
@@ -256,22 +256,22 @@ int StrategyJiaoTanSimpleEx2::getCloseMinute(KLineDataType &bar)
     return minutesToClose;
 }
 
-void StrategyJiaoTanSimpleEx2::onTrade(Trade &trade)
+void StrategyTieKuangShiSimpleEx3::onTrade(Trade &trade)
 {
 
 }
 
-void StrategyJiaoTanSimpleEx2::onOrder(OrderRsp &order)
+void StrategyTieKuangShiSimpleEx3::onOrder(OrderRsp &order)
 {
 
 }
 
-std::string StrategyJiaoTanSimpleEx2::name()
+std::string StrategyTieKuangShiSimpleEx3::name()
 {
     return "TieKuangShi Extended Strategy";
 }
 
-std::string StrategyJiaoTanSimpleEx2::instrumentType()
+std::string StrategyTieKuangShiSimpleEx3::instrumentType()
 {
     return "i";
 }

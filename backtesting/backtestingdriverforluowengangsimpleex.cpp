@@ -1,10 +1,10 @@
 ﻿#include <iostream>
 #include "BacktestingTradeGateway.h"
-#include "backtestingdriverfortiekuangshisimpleex3.h"
-#include "strategytiekuangshisimple3.h"
-#include "strategytiekuangshisimpleex3.h"
+#include "backtestingdriverforluowengangsimpleex.h"
+#include "strategyluowengangsimple.h"
+#include "strategyluowengangsimpleex.h"
 
-void BacktestingDriverForTieKuangShiSimpleEx3::test()
+void BacktestingDriverForLuoWenGangSimpleEx::test()
 {
     //
     // create the test strategy for simple
@@ -15,12 +15,12 @@ void BacktestingDriverForTieKuangShiSimpleEx3::test()
 //        std::make_shared<BacktestingTradeGateway>(eventEngineForSimplePtr, "E:\\cbm\\startup\\qihuoshuju_good\\TieKuangShiEx_15min_Backtesting_Stats_Simple.csv");
 
     BacktestingTradeGatewayPtr 	backtestingTradeGatewayForSimplePtr =
-        std::make_shared<BacktestingTradeGateway>(eventEngineForSimplePtr, "JiaoTan_15min_Backtesting_Stats_Simple.csv");
+        std::make_shared<BacktestingTradeGateway>(eventEngineForSimplePtr, "LuoWenGang_15min_Backtesting_Stats_Simple.csv");
 
     backtestingTradeGatewayForSimplePtr->init();
     TradeGatewayPtr tradeGatewayForSimplePtr = backtestingTradeGatewayForSimplePtr;
 
-    StrategyPtr strategyForSimplePtr = std::make_shared<StrategyTieKuangShiSimple3>();
+    StrategyPtr strategyForSimplePtr = std::make_shared<StrategyLuoWenGangSimple>();
     strategyForSimplePtr->init(tradeGatewayForSimplePtr);
 
 
@@ -34,17 +34,17 @@ void BacktestingDriverForTieKuangShiSimpleEx3::test()
 //        std::make_shared<BacktestingTradeGateway>(eventEnginePtr, "E:\\cbm\\startup\\qihuoshuju_good\\TieKuangShiEx_15min_Backtesting_Stats.csv");
 
     BacktestingTradeGatewayPtr 	backtestingTradeGatewayPtr =
-        std::make_shared<BacktestingTradeGateway>(eventEnginePtr, "JiaoTan_15min_Backtesting_Stats.csv");
+        std::make_shared<BacktestingTradeGateway>(eventEnginePtr, "LuoWenGang_15min_Backtesting_Stats.csv");
 
     backtestingTradeGatewayPtr->init();
     TradeGatewayPtr tradeGatewayPtr = backtestingTradeGatewayPtr;
 
-    StrategyPtr strategyPtr = std::make_shared<StrategyTieKuangShiSimpleEx3>(backtestingTradeGatewayForSimplePtr);
+    StrategyPtr strategyPtr = std::make_shared<StrategyLuoWenGangSimpleEx>(backtestingTradeGatewayForSimplePtr);
     strategyPtr->init(tradeGatewayPtr);
 
     std::cout << "loading market data ..." << std::endl;
 //    KLineVecPtr klines = loadKline("JI", "E:\\cbm\\startup\\qihuoshuju_good\\TieKuangShi_15min_I.csv");
-    KLineVecPtr klines = loadKline("JI", "JiaoTan_15min_JL9.csv");
+    KLineVecPtr klines = loadKline("JI", "LuoWenGang_15min_RB.csv");
 
     Event event;
     for (auto& bar : *klines) {
@@ -61,7 +61,7 @@ void BacktestingDriverForTieKuangShiSimpleEx3::test()
     }
 }
 
-std::unique_ptr<std::vector<std::shared_ptr<KLineDataType>>> BacktestingDriverForTieKuangShiSimpleEx3::loadKline(const std::string &instrumentID, std::string filePath)
+std::unique_ptr<std::vector<std::shared_ptr<KLineDataType>>> BacktestingDriverForLuoWenGangSimpleEx::loadKline(const std::string &instrumentID, std::string filePath)
 {
     std::ifstream ins = std::ifstream(filePath, std::ios::in);
     if (!ins) {
@@ -80,7 +80,7 @@ std::unique_ptr<std::vector<std::shared_ptr<KLineDataType>>> BacktestingDriverFo
     return std::move(loadKline(files));
 }
 
-std::unique_ptr<std::vector<std::shared_ptr<KLineDataType>>> BacktestingDriverForTieKuangShiSimpleEx3::loadKline(std::vector<std::string>& files)
+std::unique_ptr<std::vector<std::shared_ptr<KLineDataType>>> BacktestingDriverForLuoWenGangSimpleEx::loadKline(std::vector<std::string>& files)
 {
     std::unique_ptr<std::vector<std::shared_ptr<KLineDataType>>> data = std::make_unique<std::vector<std::shared_ptr<KLineDataType>>>();
     for (auto iter = files.rbegin(); iter != files.rend(); ++iter) {
@@ -113,7 +113,7 @@ std::unique_ptr<std::vector<std::shared_ptr<KLineDataType>>> BacktestingDriverFo
     return std::move(data);
 }
 
-void BacktestingDriverForTieKuangShiSimpleEx3::split(const std::string& s, char c, std::vector<std::string>& v)
+void BacktestingDriverForLuoWenGangSimpleEx::split(const std::string& s, char c, std::vector<std::string>& v)
 {
     std::string::size_type i = 0;
     std::string::size_type j = s.find(c);

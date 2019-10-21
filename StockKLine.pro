@@ -42,17 +42,17 @@ SOURCES += main.cpp\
     backtesting/backtestingdriver.cpp \
     backtesting/backtestingdriverforjiaotansimpleex.cpp \
     backtesting/backtestingdriverforjiaotansimpleex2.cpp \
+    backtesting/backtestingdriverforluowengangsimpleex.cpp \
     backtesting/backtestingdriverforsimpleex.cpp \
     backtesting/backtestingdriverforsimpleex2.cpp \
-    backtesting/backtestingdriverfortiekuangshisimpleex3.cpp \
     backtesting/strategyjiaotansimple.cpp \
     backtesting/strategyjiaotansimple2.cpp \
     backtesting/strategyjiaotansimpleex.cpp \
     backtesting/strategyjiaotansimpleex2.cpp \
+    backtesting/strategyluowengangsimple.cpp \
+    backtesting/strategyluowengangsimpleex.cpp \
     backtesting/strategytiekuangshisimple2.cpp \
-    backtesting/strategytiekuangshisimple3.cpp \
     backtesting/strategytiekuangshisimpleex2.cpp \
-    backtesting/strategytiekuangshisimpleex3.cpp \
     backtestingtab.cpp \
     bottomtimegrid.cpp \
     capitalaveragediffgrid.cpp \
@@ -96,18 +96,18 @@ HEADERS  += mainwindow.h \
     backtesting/backtestingdriver.h \
     backtesting/backtestingdriverforjiaotansimpleex.h \
     backtesting/backtestingdriverforjiaotansimpleex2.h \
+    backtesting/backtestingdriverforluowengangsimpleex.h \
     backtesting/backtestingdriverforsimpleex.h \
     backtesting/backtestingdriverforsimpleex2.h \
-    backtesting/backtestingdriverfortiekuangshisimpleex3.h \
     backtesting/date.h \
     backtesting/strategyjiaotansimple.h \
     backtesting/strategyjiaotansimple2.h \
     backtesting/strategyjiaotansimpleex.h \
     backtesting/strategyjiaotansimpleex2.h \
+    backtesting/strategyluowengangsimple.h \
+    backtesting/strategyluowengangsimpleex.h \
     backtesting/strategytiekuangshisimple2.h \
-    backtesting/strategytiekuangshisimple3.h \
     backtesting/strategytiekuangshisimpleex2.h \
-    backtesting/strategytiekuangshisimpleex3.h \
     backtestingtab.h \
     bottomtimeGrid.h \
     bottomtimegrid.h \

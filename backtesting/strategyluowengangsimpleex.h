@@ -1,5 +1,5 @@
-﻿#ifndef STRATEGYJIAOTANSIMPLEEX2_H
-#define STRATEGYJIAOTANSIMPLEEX2_H
+﻿#ifndef STRATEGYLUOWENGANGSIMPLEEX_H
+#define STRATEGYLUOWENGANGSIMPLEEX_H
 
 #include <string>
 #include <vector>
@@ -8,11 +8,11 @@
 #include "backtesting/backtestingconfig.h"
 #include "WindowedMaxMin.h"
 
-class StrategyTieKuangShiSimpleEx3 : public Strategy
+class StrategyLuoWenGangSimpleEx : public Strategy
 {
 public:
-    StrategyTieKuangShiSimpleEx3(TradeGatewayPtr pTradeGatewayforSimple);
-    virtual ~StrategyTieKuangShiSimpleEx3() {}
+    StrategyLuoWenGangSimpleEx(TradeGatewayPtr pTradeGatewayforSimple);
+    virtual ~StrategyLuoWenGangSimpleEx() {}
 
     virtual void init(TradeGatewayPtr pTradeGateway) override;
     virtual void onTick(Tick &tick) override;
@@ -73,4 +73,4 @@ private:
 
 };
 
-#endif // STRATEGYJIAOTANSIMPLEEX2_H
+#endif // STRATEGYLUOWENGANGSIMPLEEX_H
