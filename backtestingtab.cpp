@@ -10,7 +10,7 @@
 #include "topbacktestingsimpleexmenu.h"
 
 BacktestingTab::BacktestingTab(QWidget *parent)
-    : QWidget(parent), mDataFile(new DataFile())
+    : QWidget(parent), mDataFile(new DataFile()), backtestingConfig(BacktestingConfig::instance())
 {
     loadData();
 
@@ -35,7 +35,8 @@ void BacktestingTab::loadData()
     //QString file = QStringLiteral("E:\\cbm\\startup\\qihuoshuju_good\\TieKuangShi_15min_I.csv");
     //QString file = QStringLiteral("TieKuangShi_15min_I.csv");
     //QString file = QStringLiteral("JiaoTan_15min_JL9.csv");
-    QString file = QStringLiteral("LuoWenGang_15min_RB.csv");
+    //QString file = QStringLiteral("LuoWenGang_15min_RB.csv");
+    QString file = backtestingConfig->marketDataFiles[backtestingConfig->testEngineIndex];
     if( !mDataFile->readData(file) )
     {
         QMessageBox::about(this, QStringLiteral("数据文件读取失败"), QStringLiteral("确定"));
@@ -45,7 +46,8 @@ void BacktestingTab::loadData()
     //file = QStringLiteral("E:\\cbm\\startup\\qihuoshuju_good\\TieKuangshiEx_15min_Backtesting_Stats_Simple.csv");
     //file = QStringLiteral("TieKuangshiEx_15min_Backtesting_Stats_Simple.csv");
     //file = QStringLiteral("JiaoTan_15min_Backtesting_Stats_Simple.csv");
-    file = QStringLiteral("LuoWenGang_15min_Backtesting_Stats_Simple.csv");
+    //file = QStringLiteral("LuoWenGang_15min_Backtesting_Stats_Simple.csv");
+    file = backtestingConfig->backtestingSimpleFiles[backtestingConfig->testEngineIndex];
     if( !mDataFile->readBacktestingSimpleResult(file) )
     {
         QMessageBox::about(this, QStringLiteral("数据文件读取失败"), QStringLiteral("确定"));
@@ -55,7 +57,8 @@ void BacktestingTab::loadData()
     //file = QStringLiteral("E:\\cbm\\startup\\qihuoshuju_good\\TieKuangshiEx_15min_Backtesting_Stats.csv");
     //file = QStringLiteral("TieKuangshiEx_15min_Backtesting_Stats.csv");
     //file = QStringLiteral("JiaoTan_15min_Backtesting_Stats.csv");
-    file = QStringLiteral("LuoWenGang_15min_Backtesting_Stats.csv");
+    //file = QStringLiteral("LuoWenGang_15min_Backtesting_Stats.csv");
+    file = backtestingConfig->backtestingSimpleExFiles[backtestingConfig->testEngineIndex];
     if( !mDataFile->readBacktestingResult(file) )
     {
         QMessageBox::about(this, QStringLiteral("数据文件读取失败"), QStringLiteral("确定"));

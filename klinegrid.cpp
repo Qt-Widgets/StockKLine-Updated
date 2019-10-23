@@ -12,8 +12,9 @@
 #include "klinegrid.h"
 
 KLineGrid::KLineGrid(MarketDataSplitter *parent, DataFile* dataFile)
-    : DataWidget(parent, dataFile)
+    : DataWidget(parent, dataFile), backtestingConfig(BacktestingConfig::instance())
 {
+    currentProductIndex = backtestingConfig->testEngineIndex;
     //开启鼠标追踪
     setMouseTracking(true);
 
@@ -62,6 +63,11 @@ void KLineGrid::mouseReleaseEvent(QMouseEvent *event)
 
 void KLineGrid::paintEvent(QPaintEvent *event)
 {
+    if (currentProductIndex != backtestingConfig->testEngineIndex) {
+        marketDataTab->loadData();
+        currentProductIndex = backtestingConfig->testEngineIndex;
+    }
+
     AutoGrid::paintEvent(event);
 
     //画k线
@@ -325,6 +331,11 @@ void KLineGrid::drawTradingSignal(int index, int x, QPainter& painter, QPen& pen
     painter.drawText(QPoint( x - 2, getMarginTop() + 35), "*");
 
     painter.setPen(originalPen);
+}
+
+void KLineGrid::setMarketDataTab(MarketDataTab *value)
+{
+    marketDataTab = value;
 }
 
 void KLineGrid::drawCross()

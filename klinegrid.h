@@ -5,6 +5,8 @@
 #include "datafile.h"
 #include "showdetail.h"
 #include "marketdatasplitter.h"
+#include "backtesting/backtestingconfig.h"
+#include "marketdatatab.h"
 
 #include <QPoint>
 #include <QString>
@@ -45,6 +47,8 @@ public:
     void drawAverageLine();
     void drawCapitalLine();
 
+    void setMarketDataTab(MarketDataTab *value);
+
 private:
     void drawDataDetailBox();
     void updateDataDetailBox();
@@ -72,6 +76,10 @@ private:
     bool isDrawAverageLine = true;
 
     int topAverageLineInfoHeight = 20;
+
+    int currentProductIndex;
+    MarketDataTab* marketDataTab;
+    BacktestingConfig* backtestingConfig;
 
 signals:
 

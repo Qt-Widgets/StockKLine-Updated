@@ -6,13 +6,12 @@ StrategyLuoWenGangSimpleEx::StrategyLuoWenGangSimpleEx(TradeGatewayPtr pTradeGat
     : closeVecPtr_(std::make_shared<std::vector<double>>()),
     captialVecPtr_(std::make_shared<std::vector<double>>()),
     simpleStrategyCaptialVecPtr_(std::make_shared<std::vector<double>>()),
-    lastDiff1_(0.0), currentDiff1_(0.0),
-    maClose10Tracker(10, closeVecPtr_),
-    maClose17Tracker(17, closeVecPtr_),
-    maClose15Tracker(15, closeVecPtr_),
-    maClose50Tracker(50, closeVecPtr_),
-    maClose170Tracker(170, closeVecPtr_),
-    maClose190Tracker(190, closeVecPtr_),
+    lastDiff_(0.0), currentDiff_(0.0),
+    lastMA12_(0.0), currentMA12_(0.0),
+    lastMA250_(0.0), currentMA250_(0.0),
+    maClose5Tracker(5, closeVecPtr_),
+    maClose12Tracker(12, closeVecPtr_),
+    maClose250Tracker(250, closeVecPtr_),
     maCapitalTracker_(250, captialVecPtr_),
     maSimpleStrategyCapital250Tracker_(250, simpleStrategyCaptialVecPtr_),
     tradeGatewayForSimplePtr_(pTradeGatewayforSimple),
@@ -40,22 +39,16 @@ void StrategyLuoWenGangSimpleEx::onBar(KLineDataType &bar)
 {
     double close = bar.close_price;
     closeVecPtr_->push_back(close);
-    double maClose190 = maClose190Tracker.value();
-    double maClose170 = maClose170Tracker.value();
-    double maClose50 = maClose50Tracker.value();
-    double maClose15 = maClose15Tracker.value();
-    double maClose17 = maClose17Tracker.value();
-    double maClose10 = maClose10Tracker.value();
-    double diff = maClose15 - maClose170;
+    double maClose250 = maClose250Tracker.value();
+    double maClose12 = maClose12Tracker.value();
+    double maClose5 = maClose5Tracker.value();
+    double diff = maClose5 - maClose250;
     lastDiff_ = currentDiff_;
     currentDiff_ = diff;
-    double diff1 = maClose10 - maClose190;
-    lastDiff1_ = currentDiff1_;
-    currentDiff1_ = diff1;
-    lastMA15_ = currentMA15_;
-    currentMA15_ = maClose15;
-    lastMA50_ = currentMA50_;
-    currentMA50_ = maClose50;
+    lastMA12_ = currentMA12_;
+    currentMA12_ = maClose12;
+    lastMA250_ = currentMA250_;
+    currentMA250_ = maClose250;
 
     if (closeVecPtr_->size() <= 250) {
         return;
@@ -124,45 +117,29 @@ void StrategyLuoWenGangSimpleEx::onBar(KLineDataType &bar)
         }
     }
 
-    if (diff1 < 50.0 && close > maClose190 && diff > 0.0) {
+    if ( (lastMA12_ < lastMA250_ && currentMA12_ > currentMA250_) ||
+          (lastMA12_ < lastMA250_ && currentMA12_ == currentMA250_) ||
+          (lastMA12_ == lastMA250_ && currentMA12_ > currentMA250_)
+          ) {
         BPK(backtestingConfig->baseLot + adjVolume_);
     }
-    else if ( (lastDiff_ > 0.0 && currentDiff_ < 0.0) ||
-              (lastDiff_ > 0.0 && currentDiff_ == 0.0) ||
-              (lastDiff_ == 0.0 && currentDiff_ < 0.0)
-            ) {
-        SP(backtestingConfig->baseLot + adjVolume_);
-    }
-    else if (diff1 > 70.0 &&
-             ((lastMA50_ < lastMA15_ && currentMA50_ > currentMA15_) ||
-              (lastMA50_ < lastMA15_ && currentMA50_ == currentMA15_) ||
-              (lastMA50_ == lastMA15_ && currentMA50_ > currentMA15_)
-              )
-             ) {
-        SP(backtestingConfig->baseLot + adjVolume_);
-    }
-    else if (diff1 > 330.0) {
-        SP(backtestingConfig->baseLot + adjVolume_);
-    }
-    else if (diff1 > -50.0 && close < maClose190 && diff < 0.0) {
+    else if ( (lastMA12_ > lastMA250_ && currentMA12_ < currentMA250_) ||
+              (lastMA12_ > lastMA250_ && currentMA12_ == currentMA250_) ||
+              (lastMA12_ == lastMA250_ && currentMA12_ < currentMA250_)
+              ) {
         SPK(backtestingConfig->baseLot + adjVolume_);
     }
-    else if ( (lastDiff_ < 0.0 && currentDiff_ > 0.0) ||
-              (lastDiff_ < 0.0 && currentDiff_ == 0.0) ||
-              (lastDiff_ == 0.0 && currentDiff_ > 0.0)
+    else if ( (lastDiff_ < -180.0 && currentDiff_ > -180.0) ||
+              (lastDiff_ < -180.0 && currentDiff_ == -180.0) ||
+              (lastDiff_ == -180.0 && currentDiff_ > -180.0)
             ) {
-        BP(backtestingConfig->baseLot + adjVolume_);
+        BPK(backtestingConfig->baseLot + adjVolume_);
     }
-    else if (diff1 < -70.0 &&
-             ((lastMA15_ < lastMA50_ && currentMA15_ > currentMA50_) ||
-              (lastMA15_ < lastMA50_ && currentMA15_ == currentMA50_) ||
-              (lastMA15_ == lastMA50_ && currentMA15_ > currentMA50_)
-              )
-             ) {
-        BP(backtestingConfig->baseLot + adjVolume_);
-    }
-    else if (diff1 < -330.0) {
-        BP(backtestingConfig->baseLot + adjVolume_);
+    else if ( (lastDiff_ > 180.0 && currentDiff_ < 180.0) ||
+              (lastDiff_ > 180.0 && currentDiff_ == 180.0) ||
+              (lastDiff_ == 180.0 && currentDiff_ < 180.0)
+            ) {
+        SPK(backtestingConfig->baseLot + adjVolume_);
     }
 }
 

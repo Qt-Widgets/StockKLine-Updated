@@ -5,6 +5,7 @@
 #include <QHBoxLayout>
 #include <QCheckBox>
 #include <QPushButton>
+#include <QComboBox>
 #include "autogrid.h"
 #include "backtesting/backtestingconfig.h"
 
@@ -39,6 +40,8 @@ public:
 
     QLineEdit *getTieKuangShiNEdit() const;
 
+    QComboBox *getProductSelect() const;
+
 private:
     void drawBottomLine();
     QLineEdit* appendLabelEdit(QHBoxLayout* hbox, QString label, QPalette& palette);
@@ -60,6 +63,7 @@ private:
     QLineEdit* decLotDiffThreshold2Edit;
 
     QPushButton* runTestButton;
+    QComboBox* productSelect;
 
     BacktestingConfig* backTestConfig;
 };

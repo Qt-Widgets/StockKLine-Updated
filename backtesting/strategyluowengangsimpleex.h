@@ -45,16 +45,12 @@ private:
     VecPtr closeVecPtr_;
 
     double currentDiff_, lastDiff_;
-    double currentDiff1_, lastDiff1_;
-    double currentMA15_, lastMA15_;
-    double currentMA50_, lastMA50_;
+    double currentMA12_, lastMA12_;
+    double currentMA250_, lastMA250_;
 
-    MA maClose10Tracker;
-    MA maClose17Tracker;
-    MA maClose15Tracker;
-    MA maClose50Tracker;
-    MA maClose170Tracker;
-    MA maClose190Tracker;
+    MA maClose5Tracker;
+    MA maClose12Tracker;
+    MA maClose250Tracker;
 
     BacktestingConfig* backtestingConfig;
 

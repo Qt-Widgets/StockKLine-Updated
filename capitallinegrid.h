@@ -6,8 +6,8 @@
 #include "marketdatasplitter.h"
 #include "topbacktestingsimpleexmenu.h"
 #include "backtestingtab.h"
-#include "backtesting/backtestingdriverforluowengangsimpleex.h"
 #include "backtesting/backtestingconfig.h"
+#include "backtesting/backtestingdriverinterface.h"
 
 #include <QPoint>
 #include <QString>
@@ -58,6 +58,7 @@ private:
 public slots:
     void avgIntervalChanged();
     void backtestingConfigChanged();
+    void productChanged(int index);
 
 private:
     void updateTopAverageLineInfo();
@@ -90,7 +91,7 @@ private:
     BacktestingConfig* backtestingConfig;
     int avgInterval = 250;
 
-    BacktestingDriverForLuoWenGangSimpleEx backtestingDriver;
+    std::shared_ptr<BacktestingDriverInterface> backtestingDriver;
 
 signals:
 

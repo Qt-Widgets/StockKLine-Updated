@@ -1,12 +1,26 @@
 ﻿#ifndef BACKTESTINGCONFIG_H
 #define BACKTESTINGCONFIG_H
 
+#include <QString>
+#include <vector>
+
+#include "backtestingdriverforjiaotansimpleex2.h"
+#include "backtestingdriverforluowengangsimpleex.h"
+#include "backtestingdriverforsimpleex2.h"
+#include "backtestingdriverinterface.h"
+#include "backtestingdriverforjiaotansimpleex2.h"
+#include "backtestingdriverforluowengangsimpleex.h"
+#include "backtestingdriverforsimpleex2.h"
+
 class BacktestingConfig
 {
 public:
     static BacktestingConfig* instance() {
         if (!config) {
             config = new BacktestingConfig();
+            (config->backtestingDrivers).push_back(std::make_shared<BacktestingDriverForSimpleEx2>());
+            (config->backtestingDrivers).push_back(std::make_shared<BacktestingDriverForJiaoTanSimpleEx2>());
+            (config->backtestingDrivers).push_back(std::make_shared<BacktestingDriverForLuoWenGangSimpleEx>());
         }
         return config;
     }
@@ -46,6 +60,29 @@ public:
     double decLotDiffThreshold2;
 
     double tieKuangShiN = 40.0;
+
+    /////////////////////////////////////////////////////////////////////////////////
+    int testEngineIndex = 1;
+
+    std::vector<QString> marketDataFiles = {
+        QStringLiteral("TieKuangShi_15min_I.csv"),
+        QStringLiteral("JiaoTan_15min_JL9.csv"),
+        QStringLiteral("LuoWenGang_15min_RB.csv")
+    };
+
+    std::vector<QString> backtestingSimpleFiles = {
+        QStringLiteral("TieKuangshiEx_15min_Backtesting_Stats_Simple.csv"),
+        QStringLiteral("JiaoTan_15min_Backtesting_Stats_Simple.csv"),
+        QStringLiteral("LuoWenGang_15min_Backtesting_Stats_Simple.csv")
+    };
+
+    std::vector<QString> backtestingSimpleExFiles = {
+        QStringLiteral("TieKuangshiEx_15min_Backtesting_Stats.csv"),
+        QStringLiteral("JiaoTan_15min_Backtesting_Stats.csv"),
+        QStringLiteral("LuoWenGang_15min_Backtesting_Stats.csv")
+    };
+
+    std::vector<std::shared_ptr<BacktestingDriverInterface>> backtestingDrivers;
 
 private:
     BacktestingConfig() {

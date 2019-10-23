@@ -25,6 +25,12 @@ TopBacktestingSimpleExMenu::TopBacktestingSimpleExMenu(QWidget* parent)
     productLabel->setMinimumWidth(50);
     hbox->addWidget(productLabel);
 
+    productSelect = new QComboBox();
+    hbox->addWidget(productSelect);
+    productSelect->addItem(QStringLiteral("铁矿石"));
+    productSelect->addItem(QStringLiteral("焦炭"));
+    productSelect->addItem(QStringLiteral("螺纹钢"));
+
     QLabel* avgIntervalLabel = new QLabel(QStringLiteral("   图中均线: "));
     avgIntervalLabel->setPalette(palette);
     hbox->addWidget(avgIntervalLabel);
@@ -92,6 +98,11 @@ QLineEdit* TopBacktestingSimpleExMenu::appendEdit(QHBoxLayout* hbox, QPalette& p
     hbox->addWidget(edit);
 
     return edit;
+}
+
+QComboBox *TopBacktestingSimpleExMenu::getProductSelect() const
+{
+    return productSelect;
 }
 
 QLineEdit *TopBacktestingSimpleExMenu::getTieKuangShiNEdit() const

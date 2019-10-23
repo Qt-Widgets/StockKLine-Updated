@@ -99,6 +99,7 @@ HEADERS  += mainwindow.h \
     backtesting/backtestingdriverforluowengangsimpleex.h \
     backtesting/backtestingdriverforsimpleex.h \
     backtesting/backtestingdriverforsimpleex2.h \
+    backtesting/backtestingdriverinterface.h \
     backtesting/date.h \
     backtesting/strategyjiaotansimple.h \
     backtesting/strategyjiaotansimple2.h \

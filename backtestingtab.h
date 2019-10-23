@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include "datafile.h"
+#include "backtesting/backtestingconfig.h"
 
 class BacktestingTab : public QWidget
 {
@@ -20,6 +21,7 @@ private:
 
 private:
     DataFile* mDataFile;
+    BacktestingConfig* backtestingConfig;
 };
 
 #endif // BACKTESTING_H

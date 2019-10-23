@@ -4,8 +4,9 @@
 #include <vector>
 #include <memory>
 #include "KlineData.h"
+#include "backtestingdriverinterface.h"
 
-class BacktestingDriverForLuoWenGangSimpleEx
+class BacktestingDriverForLuoWenGangSimpleEx : public BacktestingDriverInterface
 {
 public:
     void test();

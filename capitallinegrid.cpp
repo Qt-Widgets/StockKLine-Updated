@@ -9,12 +9,15 @@
 #include <iostream>
 #include <iomanip>
 #include <sstream>
+#include <QComboBox>
 #include "mainwindow.h"
 #include "capitallinegrid.h"
 
 CapitalLineGrid::CapitalLineGrid(MarketDataSplitter *parent, DataFile* dataFile)
     : DataWidget(parent, dataFile), backtestingConfig(BacktestingConfig::instance())
 {
+    backtestingDriver = backtestingConfig->backtestingDrivers[backtestingConfig->testEngineIndex];
+
     //开启鼠标追踪
     setMouseTracking(true);
 
@@ -129,10 +132,21 @@ void CapitalLineGrid::backtestingConfigChanged()
     backtestingConfig->baseLot = topBacktestingMenu->getBaseLotEdit()->text().toInt();
     backtestingConfig->tieKuangShiN = topBacktestingMenu->getTieKuangShiNEdit()->text().toDouble();
 
-    backtestingDriver.test();
+    backtestingDriver->test();
     backtestingTab->loadData(); // 重新加载数据
 
     std::cout << "backtestingConfigChanged" << std::endl;
+}
+
+void CapitalLineGrid::productChanged(int index)
+{
+    backtestingConfig->testEngineIndex = index;
+    backtestingDriver = backtestingConfig->backtestingDrivers[backtestingConfig->testEngineIndex];
+
+    backtestingDriver->test();
+    backtestingTab->loadData(); // 重新加载数据
+
+    std::cout << "productChanged to " << index << std::endl;
 }
 
 void CapitalLineGrid::trackTopBacktestingMenu(TopBacktestingSimpleExMenu* topBacktestingMenu)
@@ -141,6 +155,9 @@ void CapitalLineGrid::trackTopBacktestingMenu(TopBacktestingSimpleExMenu* topBac
     // ugly, but working
     connect(topBacktestingMenu->getAvgIntervalEdit(), &QLineEdit::editingFinished, this, &CapitalLineGrid::avgIntervalChanged);
     connect(topBacktestingMenu->getRunTestButton(), &QPushButton::clicked, this, &CapitalLineGrid::backtestingConfigChanged);
+
+    void(QComboBox::*fp)(int)=&QComboBox::currentIndexChanged;
+    connect(topBacktestingMenu->getProductSelect(), fp, this, &CapitalLineGrid::productChanged);
 
 //    connect(topBacktestingMenu->getCapitalPeriodEdit(), &QLineEdit::editingFinished, this, &CapitalLineGrid::backtestingConfigChanged);
 //    connect(topBacktestingMenu->getNegThreshold3Edit(), &QLineEdit::editingFinished, this, &CapitalLineGrid::backtestingConfigChanged);
